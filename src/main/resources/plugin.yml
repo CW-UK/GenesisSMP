@@ -1,0 +1,16 @@
+name: GenesisPrefix
+main: eu.genesismc.genesisprefix.GenesisPrefix
+version: 1.0
+author: CW_UK
+api-version: 1.15
+depend: [LuckPerms]
+
+commands:
+  prefix:
+    description: Lists islands with highest bank balance
+    default: true
+    usage: "Usage: /prefix <prefix>"
+  suffix:
+    description: Lists islands with highest bank balance
+    default: true
+    usage: "Usage: /prefix <prefix>"
