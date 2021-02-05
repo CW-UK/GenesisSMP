@@ -1,12 +1,10 @@
 package eu.genesismc.genesisprefix;
 
-import net.luckperms.api.model.PermissionHolder;
 import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.PrefixNode;
-import net.luckperms.api.node.types.SuffixNode;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.luckperms.api.*;
@@ -24,7 +23,13 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GenesisPrefix extends JavaPlugin implements Listener {
+public final class GenesisPrefix extends JavaPlugin implements Listener {
+
+    private Utils utils;
+    private static GenesisPrefix plugin;
+    public static GenesisPrefix getPlugin() {
+        return plugin;
+    }
 
     public static HashMap<Player, String> waitingPrefix = new HashMap<Player, String>();
     public static HashMap<Player, String> waitingSuffix = new HashMap<Player, String>();
@@ -33,6 +38,10 @@ public class GenesisPrefix extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        plugin = this;
+        PluginManager pm = Bukkit.getServer().getPluginManager();
+        pm.registerEvents(new PrefixCommand(), this);
+
         Bukkit.getPluginManager().registerEvents(this, this);
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
@@ -56,11 +65,14 @@ public class GenesisPrefix extends JavaPlugin implements Listener {
         User updatePlayer = api.getPlayerAdapter(Player.class).getUser(player);
 
         if (cmd.getName().equalsIgnoreCase("prefix")) {
+
             if (args.length < 1) {
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Incorrect usage: /prefix <confirm|remove|set <prefix>>");
                 return true;
             }
+
             if (args[0].equals("set")) {
+
                 if (args.length < 2) {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "Incorrect usage: /prefix set <prefix>");
                     return true;
@@ -69,6 +81,7 @@ public class GenesisPrefix extends JavaPlugin implements Listener {
                     sender.sendMessage(pluginPrefix + "You need to purchase a prefix token before you can set one.");
                     return true;
                 }
+
                 String prefixInput = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
                 String firstCheckPrefix = initialCheck(player, prefixInput);
                 String preparedPrefix = prepareFix(firstCheckPrefix);
@@ -77,12 +90,15 @@ public class GenesisPrefix extends JavaPlugin implements Listener {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long. Maximum allowed length is " + this.getConfig().getInt("max-length"));
                     return true;
                 }
+
                 sender.sendMessage(pluginPrefix + "Your prefix will display as:");
                 sender.sendMessage(pluginPrefix + preparedPrefix);
                 sender.sendMessage(pluginPrefix + ChatColor.translateAlternateColorCodes('&',"Type &a&l/prefix confirm&e to set it, or use &a&l/prefix set&e again."));
                 waitingPrefix.put(player, preparedPrefix);
+
                 return true;
             }
+
             if (args[0].equals("confirm")) {
                 if (!waitingPrefix.containsKey(player)) {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "You do not have a prefix to confirm. Use the SET command first.");
