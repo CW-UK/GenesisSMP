@@ -7,10 +7,41 @@ depend: [LuckPerms]
 
 commands:
   prefix:
-    description: Lists islands with highest bank balance
+    description: Sets a prefix
     default: true
-    usage: "Usage: /prefix <prefix>"
   suffix:
-    description: Lists islands with highest bank balance
+    description: Sets a suffix
     default: true
-    usage: "Usage: /prefix <prefix>"
+
+permissions:
+  genesisprefix.*:
+    description: Gives access to all prefix commands
+    children:
+      genesisprefix.setothers: true
+      genesisprefix.removeothers: true
+      genesisprefix.code.k: true
+      genesisprefix.code.l: true
+      genesisprefix.code.o: true
+      genesisprefix.code.m: true
+      genesisprefix.code.n: true
+  genesisprefix.setothers:
+    description: Gives a user access to set prefixes/suffixes for other players.
+    default: op
+  genesisprefix.removeothers:
+    description: Gives a user access to remove prefixes/suffixes of other players.
+    default: op
+  genesisprefix.code.k:
+    default: op
+    description: Allows using magic (scramble) formatting code.
+  genesisprefix.code.l:
+    default: true
+    description: Allows using bold formatting code.
+  genesisprefix.code.o:
+    default: true
+    description: Allows using italic formatting code.
+  genesisprefix.code.m:
+    default: true
+    description: Allows using strikethrough formatting code.
+  genesisprefix.code.n:
+    default: true
+    description: Allows using underline formatting code.
