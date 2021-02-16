@@ -4,7 +4,6 @@ import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.PrefixNode;
 import net.luckperms.api.node.types.SuffixNode;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
@@ -37,7 +36,10 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
         if (cmd.getName().equalsIgnoreCase("suffix")) {
 
             if (args.length < 1) {
-                sender.sendMessage(pluginPrefix + ChatColor.RED + "Incorrect usage: /suffix <confirm|remove|set <suffix>>");
+                sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /suffix <confirm|remove|set <suffix>>");
+                sender.sendMessage(pluginPrefix + "Suffixes must be between " + config.getInt("min-suffix-length") + " and " + config.getInt("max-suffix-length") + " characters (excluding colors)");
+                sender.sendMessage(pluginPrefix + "You can use spaces.");
+                sender.sendMessage(pluginPrefix + "You can use colours, #rgb, bold, underline, italic and strike.");
                 return true;
             }
 
@@ -48,7 +50,8 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                     return true;
                 }
                 if (!player.hasPermission("donator.suffix") && !player.hasPermission("essentials.kits.legend")) {
-                    sender.sendMessage(pluginPrefix + "You need to purchase a suffix token before you can set one.");
+                    sender.sendMessage(pluginPrefix + "You need to purchase a suffix token before you can set a custom suffix.");
+                    sender.sendMessage(pluginPrefix + "Tokens are available at " + ChatColor.BLUE + "https://www.genesis-mc.net/shop");
                     return true;
                 }
 
@@ -57,11 +60,11 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                 String preparedSuffix = GenesisPrefix.getUtils().prepareFix(firstCheckSuffix);
 
                 if (GenesisPrefix.getUtils().getLength(preparedSuffix) > config.getInt("max-suffix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too long. Maximum allowed length is " + GenesisPrefix.getPlugin().getConfig().getInt("max-suffix-length"));
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too long - maximum allowed length is " + GenesisPrefix.getPlugin().getConfig().getInt("max-suffix-length"));
                     return true;
                 }
                 if (GenesisPrefix.getUtils().getLength(preparedSuffix) < config.getInt("min-suffix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too short. Minimum length is " + GenesisPrefix.getPlugin().getConfig().getInt("min-suffix-length"));
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too short - minimum length is " + GenesisPrefix.getPlugin().getConfig().getInt("min-suffix-length"));
                     return true;
                 }
 

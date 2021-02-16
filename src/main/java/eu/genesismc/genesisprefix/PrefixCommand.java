@@ -36,7 +36,10 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
         if (cmd.getName().equalsIgnoreCase("prefix")) {
 
             if (args.length < 1) {
-                sender.sendMessage(pluginPrefix + ChatColor.RED + "Incorrect usage: /prefix <confirm|remove|set <prefix>>");
+                sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /prefix <confirm|remove|set <prefix>>");
+                sender.sendMessage(pluginPrefix + "Prefixes must be between " + config.getInt("min-prefix-length") + " and " + config.getInt("max-prefix-length") + " characters (excluding colors)");
+                sender.sendMessage(pluginPrefix + "You can use spaces.");
+                sender.sendMessage(pluginPrefix + "You can use colour codes, #RGB, bold, underline, italic and strikethrough.");
                 return true;
             }
 
@@ -47,7 +50,8 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                     return true;
                 }
                 if (!player.hasPermission("donator.prefix")) {
-                    sender.sendMessage(pluginPrefix + "You need to purchase a prefix token before you can set one.");
+                    sender.sendMessage(pluginPrefix + "You need to purchase a prefix token before you can set a custom prefix.");
+                    sender.sendMessage(pluginPrefix + "Tokens are available at " + ChatColor.BLUE + "https://www.genesis-mc.net/shop");
                     return true;
                 }
 
@@ -56,11 +60,11 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                 String preparedPrefix = GenesisPrefix.getUtils().prepareFix(firstCheckPrefix);
 
                 if (GenesisPrefix.getUtils().getLength(preparedPrefix) > config.getInt("max-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long. Maximum allowed length is " + GenesisPrefix.getPlugin().getConfig().getInt("max-prefix-length"));
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - maximum allowed length is " + GenesisPrefix.getPlugin().getConfig().getInt("max-prefix-length"));
                     return true;
                 }
                 if (GenesisPrefix.getUtils().getLength(preparedPrefix) < config.getInt("min-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short. Minimum length is " + GenesisPrefix.getPlugin().getConfig().getInt("min-prefix-length"));
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - minimum length is " + GenesisPrefix.getPlugin().getConfig().getInt("min-prefix-length"));
                     return true;
                 }
 

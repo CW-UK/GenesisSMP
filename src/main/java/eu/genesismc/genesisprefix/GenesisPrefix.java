@@ -1,27 +1,16 @@
 package eu.genesismc.genesisprefix;
 
-import net.luckperms.api.model.data.DataMutateResult;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
-import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.PrefixNode;
+import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import net.luckperms.api.*;
+
 import java.util.HashMap;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public final class GenesisPrefix extends JavaPlugin implements Listener {
 
