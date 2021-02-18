@@ -24,6 +24,8 @@ permissions:
       genesisprefix.code.o: true
       genesisprefix.code.m: true
       genesisprefix.code.n: true
+      genesisprefix.donator.prefix: true
+      genesisprefix.donator.suffix: true
   genesisprefix.setothers:
     description: Gives a user access to set prefixes/suffixes for other players.
     default: op
@@ -45,3 +47,9 @@ permissions:
   genesisprefix.code.n:
     default: true
     description: Allows using underline formatting code.
+  genesisprefix.donator.prefix:
+    default: op
+    description: Given to players who have purhcased a prefix token.
+  genesisprefix.donator.suffix:
+    default: op
+    description: Given to players who have purchased a suffix token.

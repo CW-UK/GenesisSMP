@@ -38,8 +38,7 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
             if (args.length < 1) {
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /prefix <confirm|remove|set <prefix>>");
                 sender.sendMessage(pluginPrefix + "Prefixes must be between " + config.getInt("min-prefix-length") + " and " + config.getInt("max-prefix-length") + " characters (excluding colors)");
-                sender.sendMessage(pluginPrefix + "You can use spaces.");
-                sender.sendMessage(pluginPrefix + "You can use colour codes, #RGB, bold, underline, italic and strikethrough.");
+                sender.sendMessage(pluginPrefix + "You can use spaces, colours, #rgb, bold, underline, italic and strike.");
                 return true;
             }
 
@@ -49,9 +48,10 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "Incorrect usage: /prefix set <prefix>");
                     return true;
                 }
-                if (!player.hasPermission("donator.prefix")) {
-                    sender.sendMessage(pluginPrefix + "You need to purchase a prefix token before you can set a custom prefix.");
-                    sender.sendMessage(pluginPrefix + "Tokens are available at " + ChatColor.BLUE + "https://www.genesis-mc.net/shop");
+                if (!player.hasPermission("genesisprefix.donator.prefix")) {
+                    sender.sendMessage(
+                            pluginPrefix + "You need to purchase a prefix token before you can set a custom prefix. " +
+                            "Tokens are available at " + ChatColor.BLUE + "https://www.genesis-mc.net/shop");
                     return true;
                 }
 
@@ -60,11 +60,11 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                 String preparedPrefix = GenesisPrefix.getUtils().prepareFix(firstCheckPrefix);
 
                 if (GenesisPrefix.getUtils().getLength(preparedPrefix) > config.getInt("max-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - maximum allowed length is " + GenesisPrefix.getPlugin().getConfig().getInt("max-prefix-length"));
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - can't contain more than " + GenesisPrefix.getPlugin().getConfig().getInt("max-prefix-length") + " characters.");
                     return true;
                 }
                 if (GenesisPrefix.getUtils().getLength(preparedPrefix) < config.getInt("min-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - minimum length is " + GenesisPrefix.getPlugin().getConfig().getInt("min-prefix-length"));
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - must contain at least " + GenesisPrefix.getPlugin().getConfig().getInt("min-prefix-length") + " characters.");
                     return true;
                 }
 
@@ -90,7 +90,7 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                 else {
                     Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
                     updatePlayer.data().clear(removePrefix);
-                    DataMutateResult result = updatePlayer.data().remove(Node.builder("donator.prefix").build());
+                    DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.prefix").build());
                     DataMutateResult result2 = updatePlayer.data().add(PrefixNode.builder(GenesisPrefix.getPlugin().waitingPrefix.get(player), 61).build());
                     GenesisPrefix.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been set!");

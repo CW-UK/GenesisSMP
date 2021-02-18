@@ -1,6 +1,7 @@
 package eu.genesismc.genesisprefix;
 
 import net.md_5.bungee.api.ChatColor;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 
 import java.util.regex.Matcher;
@@ -35,7 +36,9 @@ public class Utils {
     }
 
     public int getLength (String input) {
-        return ChatColor.stripColor(input).length() - 2;
+        String toCheck = ChatColor.stripColor(input);
+        return (toCheck.length() - 2) - StringUtils.countMatches(toCheck, " ");
+
     }
 
     public boolean canUse (Player p, String chr) {
