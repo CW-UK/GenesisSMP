@@ -59,9 +59,4 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
     }
 
 
-
-
-
-
-
 }
