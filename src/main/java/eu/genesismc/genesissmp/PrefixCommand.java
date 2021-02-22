@@ -1,4 +1,4 @@
-package eu.genesismc.genesisprefix;
+package eu.genesismc.genesissmp;
 
 import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
@@ -24,14 +24,14 @@ import java.util.function.Predicate;
 
 public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
 
-    private String pluginPrefix = GenesisPrefix.getPlugin().pluginPrefix;
-    FileConfiguration config = GenesisPrefix.getPlugin().getConfig();
+    private String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+    FileConfiguration config = GenesisSMP.getPlugin().getConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         Player player = (Player) sender;
-        User updatePlayer = GenesisPrefix.getPlugin().api.getPlayerAdapter(Player.class).getUser(player);
+        User updatePlayer = GenesisSMP.getPlugin().api.getPlayerAdapter(Player.class).getUser(player);
 
         if (cmd.getName().equalsIgnoreCase("prefix")) {
 
@@ -56,58 +56,58 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                 }
 
                 String prefixInput = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
-                String firstCheckPrefix = GenesisPrefix.getUtils().initialCheck(player, prefixInput);
-                String preparedPrefix = GenesisPrefix.getUtils().prepareFix(firstCheckPrefix);
+                String firstCheckPrefix = GenesisSMP.getUtils().initialCheck(player, prefixInput);
+                String preparedPrefix = GenesisSMP.getUtils().prepareFix(firstCheckPrefix);
 
-                if (GenesisPrefix.getUtils().getLength(preparedPrefix) > config.getInt("max-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - can't contain more than " + GenesisPrefix.getPlugin().getConfig().getInt("max-prefix-length") + " characters.");
+                if (GenesisSMP.getUtils().getLength(preparedPrefix) > config.getInt("max-prefix-length")) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - can't contain more than " + GenesisSMP.getPlugin().getConfig().getInt("max-prefix-length") + " characters.");
                     return true;
                 }
-                if (GenesisPrefix.getUtils().getLength(preparedPrefix) < config.getInt("min-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - must contain at least " + GenesisPrefix.getPlugin().getConfig().getInt("min-prefix-length") + " characters.");
+                if (GenesisSMP.getUtils().getLength(preparedPrefix) < config.getInt("min-prefix-length")) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - must contain at least " + GenesisSMP.getPlugin().getConfig().getInt("min-prefix-length") + " characters.");
                     return true;
                 }
 
                 sender.sendMessage(pluginPrefix + "Your prefix will display as:");
                 sender.sendMessage(pluginPrefix + preparedPrefix);
                 sender.sendMessage(pluginPrefix + ChatColor.translateAlternateColorCodes('&',"Type &a&l/prefix confirm&e to set it."));
-                GenesisPrefix.getPlugin().waitingPrefix.put(player, preparedPrefix);
+                GenesisSMP.getPlugin().waitingPrefix.put(player, preparedPrefix);
 
                 return true;
             }
 
             if (args[0].equals("confirm")) {
-                if (!GenesisPrefix.getPlugin().waitingPrefix.containsKey(player)) {
+                if (!GenesisSMP.getPlugin().waitingPrefix.containsKey(player)) {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "You do not have a prefix to confirm. Use the SET command first.");
                     return true;
                 }
-                if (GenesisPrefix.getPlugin().waitingPrefix.get(player).equals("_remove")) {
+                if (GenesisSMP.getPlugin().waitingPrefix.get(player).equals("_remove")) {
                     Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
                     updatePlayer.data().clear(removePrefix);
-                    GenesisPrefix.getPlugin().waitingPrefix.remove(player);
+                    GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been removed.");
                 }
                 else {
                     Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
                     updatePlayer.data().clear(removePrefix);
                     DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.prefix").build());
-                    DataMutateResult result2 = updatePlayer.data().add(PrefixNode.builder(GenesisPrefix.getPlugin().waitingPrefix.get(player), 61).build());
-                    GenesisPrefix.getPlugin().waitingPrefix.remove(player);
+                    DataMutateResult result2 = updatePlayer.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingPrefix.get(player), 61).build());
+                    GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been set!");
                 }
-                GenesisPrefix.getPlugin().api.getUserManager().saveUser(updatePlayer);
+                GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
                 return true;
             }
             if (args[0].equals("remove")) {
                 sender.sendMessage(pluginPrefix + ChatColor.translateAlternateColorCodes('&',"Your prefix will be &c&lREMOVED&e. Confirm with &c/prefix confirm&a if you wish to remove it permanently."));
-                GenesisPrefix.getPlugin().waitingPrefix.put(player, "_remove");
+                GenesisSMP.getPlugin().waitingPrefix.put(player, "_remove");
                 return true;
             }
 
             if (args[0].equals("reload") && sender.isOp()) {
-                GenesisPrefix.getPlugin().reloadConfig();
-                GenesisPrefix.getPlugin().config = GenesisPrefix.getPlugin().getConfig();
-                config = GenesisPrefix.getPlugin().getConfig();
+                GenesisSMP.getPlugin().reloadConfig();
+                GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
+                config = GenesisSMP.getPlugin().getConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + " Configuration reloaded:");
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Prefix: Min " + config.getString("min-prefix-length") + " / Max " + config.getString("max-prefix-length"));
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Suffix: Min " + config.getString("min-suffix-length") + " / Max " + config.getString("max-suffix-length"));

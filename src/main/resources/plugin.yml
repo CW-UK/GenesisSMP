@@ -1,9 +1,9 @@
-name: GenesisPrefix
-main: eu.genesismc.genesisprefix.GenesisPrefix
+name: GenesisSMP
+main: eu.genesismc.genesissmp.GenesisSMP
 version: 1.0
 author: CW_UK
 api-version: 1.15
-depend: [LuckPerms]
+depend: [LuckPerms, Essentials]
 
 commands:
   prefix:

@@ -1,4 +1,4 @@
-package eu.genesismc.genesisprefix;
+package eu.genesismc.genesissmp;
 
 import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
@@ -24,14 +24,14 @@ import java.util.function.Predicate;
 
 public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
 
-    private String pluginPrefix = GenesisPrefix.getPlugin().pluginPrefix;
-    FileConfiguration config = GenesisPrefix.getPlugin().getConfig();
+    private String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+    FileConfiguration config = GenesisSMP.getPlugin().getConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         Player player = (Player) sender;
-        User updatePlayer = GenesisPrefix.getPlugin().api.getPlayerAdapter(Player.class).getUser(player);
+        User updatePlayer = GenesisSMP.getPlugin().api.getPlayerAdapter(Player.class).getUser(player);
 
         if (cmd.getName().equalsIgnoreCase("suffix")) {
 
@@ -56,51 +56,51 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                 }
 
                 String suffixInput = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
-                String firstCheckSuffix = GenesisPrefix.getUtils().initialCheck(player, suffixInput);
-                String preparedSuffix = GenesisPrefix.getUtils().prepareFix(firstCheckSuffix);
+                String firstCheckSuffix = GenesisSMP.getUtils().initialCheck(player, suffixInput);
+                String preparedSuffix = GenesisSMP.getUtils().prepareFix(firstCheckSuffix);
 
-                if (GenesisPrefix.getUtils().getLength(preparedSuffix) > config.getInt("max-suffix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too long - can't contain more than " + GenesisPrefix.getPlugin().getConfig().getInt("min-suffix-length") + " characters.");
+                if (GenesisSMP.getUtils().getLength(preparedSuffix) > config.getInt("max-suffix-length")) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too long - can't contain more than " + GenesisSMP.getPlugin().getConfig().getInt("min-suffix-length") + " characters.");
                     return true;
                 }
-                if (GenesisPrefix.getUtils().getLength(preparedSuffix) < config.getInt("min-suffix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too short - must contain at least " + GenesisPrefix.getPlugin().getConfig().getInt("max-suffix-length") + " characters.");
+                if (GenesisSMP.getUtils().getLength(preparedSuffix) < config.getInt("min-suffix-length")) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too short - must contain at least " + GenesisSMP.getPlugin().getConfig().getInt("max-suffix-length") + " characters.");
                     return true;
                 }
 
                 sender.sendMessage(pluginPrefix + "Your suffix will display as:");
                 sender.sendMessage(pluginPrefix + preparedSuffix);
                 sender.sendMessage(pluginPrefix + ChatColor.translateAlternateColorCodes('&',"Type &a&l/suffix confirm&e to set it."));
-                GenesisPrefix.getPlugin().waitingSuffix.put(player, preparedSuffix);
+                GenesisSMP.getPlugin().waitingSuffix.put(player, preparedSuffix);
 
                 return true;
             }
 
             if (args[0].equals("confirm")) {
-                if (!GenesisPrefix.getPlugin().waitingSuffix.containsKey(player)) {
+                if (!GenesisSMP.getPlugin().waitingSuffix.containsKey(player)) {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "You do not have a suffix to confirm. Use the SET command first.");
                     return true;
                 }
-                if (GenesisPrefix.getPlugin().waitingSuffix.get(player).equals("_remove")) {
+                if (GenesisSMP.getPlugin().waitingSuffix.get(player).equals("_remove")) {
                     Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
                     updatePlayer.data().clear(removeSuffix);
-                    GenesisPrefix.getPlugin().waitingSuffix.remove(player);
+                    GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been removed.");
                 }
                 else {
                     Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
                     updatePlayer.data().clear(removeSuffix);
                     DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.suffix").build());
-                    DataMutateResult result2 = updatePlayer.data().add(SuffixNode.builder(GenesisPrefix.getPlugin().waitingSuffix.get(player), 1).build());
-                    GenesisPrefix.getPlugin().waitingSuffix.remove(player);
+                    DataMutateResult result2 = updatePlayer.data().add(SuffixNode.builder(GenesisSMP.getPlugin().waitingSuffix.get(player), 1).build());
+                    GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been set!");
                 }
-                GenesisPrefix.getPlugin().api.getUserManager().saveUser(updatePlayer);
+                GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
                 return true;
             }
             if (args[0].equals("remove")) {
                 sender.sendMessage(pluginPrefix + ChatColor.translateAlternateColorCodes('&',"Your suffix will be &c&lREMOVED&e. Confirm with &c/suffix confirm&a if you wish to remove it permanently."));
-                GenesisPrefix.getPlugin().waitingSuffix.put(player, "_remove");
+                GenesisSMP.getPlugin().waitingSuffix.put(player, "_remove");
                 return true;
             }
             return false;

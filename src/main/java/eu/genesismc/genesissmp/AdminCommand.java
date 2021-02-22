@@ -1,4 +1,4 @@
-package eu.genesismc.genesisprefix;
+package eu.genesismc.genesissmp;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
