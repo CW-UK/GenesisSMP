@@ -59,12 +59,12 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                 String firstCheckPrefix = GenesisSMP.getUtils().initialCheck(player, prefixInput);
                 String preparedPrefix = GenesisSMP.getUtils().prepareFix(firstCheckPrefix);
 
-                if (GenesisSMP.getUtils().getLength(preparedPrefix) > config.getInt("max-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - can't contain more than " + GenesisSMP.getPlugin().getConfig().getInt("max-prefix-length") + " characters.");
+                if (GenesisSMP.getUtils().getLength(preparedPrefix) > config.getInt("prefixes.max-prefix-length")) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - can't contain more than " + GenesisSMP.getPlugin().getConfig().getInt("prefixes.max-prefix-length") + " characters.");
                     return true;
                 }
-                if (GenesisSMP.getUtils().getLength(preparedPrefix) < config.getInt("min-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - must contain at least " + GenesisSMP.getPlugin().getConfig().getInt("min-prefix-length") + " characters.");
+                if (GenesisSMP.getUtils().getLength(preparedPrefix) < config.getInt("prefixes.min-prefix-length")) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - must contain at least " + GenesisSMP.getPlugin().getConfig().getInt("prefixes.min-prefix-length") + " characters.");
                     return true;
                 }
 
@@ -109,8 +109,8 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                 GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
                 config = GenesisSMP.getPlugin().getConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + " Configuration reloaded:");
-                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Prefix: Min " + config.getString("min-prefix-length") + " / Max " + config.getString("max-prefix-length"));
-                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Suffix: Min " + config.getString("min-suffix-length") + " / Max " + config.getString("max-suffix-length"));
+                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Prefix: Min " + config.getString("prefixes.min-prefix-length") + " / Max " + config.getString("prefixes.max-prefix-length"));
+                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Suffix: Min " + config.getString("suffixes.min-suffix-length") + " / Max " + config.getString("suffixes.max-suffix-length"));
                 return true;
             }
 

@@ -59,12 +59,12 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                 String firstCheckSuffix = GenesisSMP.getUtils().initialCheck(player, suffixInput);
                 String preparedSuffix = GenesisSMP.getUtils().prepareFix(firstCheckSuffix);
 
-                if (GenesisSMP.getUtils().getLength(preparedSuffix) > config.getInt("max-suffix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too long - can't contain more than " + GenesisSMP.getPlugin().getConfig().getInt("min-suffix-length") + " characters.");
+                if (GenesisSMP.getUtils().getLength(preparedSuffix) > config.getInt("suffixes.max-suffix-length")) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too long - can't contain more than " + GenesisSMP.getPlugin().getConfig().getInt("suffixes.min-suffix-length") + " characters.");
                     return true;
                 }
-                if (GenesisSMP.getUtils().getLength(preparedSuffix) < config.getInt("min-suffix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too short - must contain at least " + GenesisSMP.getPlugin().getConfig().getInt("max-suffix-length") + " characters.");
+                if (GenesisSMP.getUtils().getLength(preparedSuffix) < config.getInt("suffixes.min-suffix-length")) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too short - must contain at least " + GenesisSMP.getPlugin().getConfig().getInt("suffixes.max-suffix-length") + " characters.");
                     return true;
                 }
 
