@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatFilter implements Listener {
-
+/*
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
 
@@ -45,5 +45,5 @@ public class ChatFilter implements Listener {
         }
         return (upperCase * 100 / msgLength);
     }
-
+*/
 }

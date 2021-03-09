@@ -60,7 +60,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new PrefixCommand(), this);
         pm.registerEvents(new SuffixCommand(), this);
         pm.registerEvents(new AdminCommand(), this);
-        pm.registerEvents(new ChatFilter(), this);
+        // pm.registerEvents(new ChatFilter(), this);
         pm.registerEvents(new PreventBlockXray(), this);
         pm.registerEvents(new PreventPickup(), this);
         pm.registerEvents(new LimitStriders(), this);

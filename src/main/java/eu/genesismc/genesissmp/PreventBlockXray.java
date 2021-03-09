@@ -51,12 +51,4 @@ public class PreventBlockXray implements Listener {
         }
     }
 
-
-
-    // BlockPistonExtendEvent
-    @EventHandler
-    public void PistonCheck(BlockPistonExtendEvent e) {
-
-    }
-
 }
