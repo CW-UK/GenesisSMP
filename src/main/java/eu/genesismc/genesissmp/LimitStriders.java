@@ -19,8 +19,7 @@ public class LimitStriders implements Listener {
         if (spawnedEntity instanceof Strider && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
             if (!config.getBoolean("LimitStriders.enabled")) { return; }
             Random r = new Random();
-            int result = r.nextInt(100)+1;
-            if (result > 6) {
+            if (r.nextInt(100)+1 > 6) {
                 e.setCancelled(true);
             }
         }
