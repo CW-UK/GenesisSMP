@@ -14,7 +14,6 @@ import java.util.HashMap;
 
 public final class GenesisSMP extends JavaPlugin implements Listener {
 
-    //public APIEndpoint upun = UltraPunishments.getAPI();
     private static GenesisSMP plugin;
     public FileConfiguration config = this.getConfig();
     public LuckPerms api;
@@ -61,9 +60,10 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new SuffixCommand(), this);
         pm.registerEvents(new AdminCommand(), this);
         // pm.registerEvents(new ChatFilter(), this);
-        pm.registerEvents(new PreventBlockXray(), this);
+        // pm.registerEvents(new PreventBlockXray(), this);
         pm.registerEvents(new PreventPickup(), this);
         pm.registerEvents(new LimitStriders(), this);
+        pm.registerEvents(new EndSpawnPoint(), this);
 
         // command handlers
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Registering command handlers..");
@@ -73,9 +73,13 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("suffix").setTabCompleter(new SuffixCommand());
 
         // luckperms API
-        Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into LuckPerms API..");
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        api = provider.getProvider();
+        try {
+            Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into LuckPerms API..");
+            RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+            api = provider.getProvider();
+        } catch (NullPointerException npe) {
+            Bukkit.getLogger().info(ChatColor.RED + "GenesisSMP > Could not connect to LuckPerms API.");
+        }
 
     }
 

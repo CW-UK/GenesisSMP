@@ -104,16 +104,6 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                 return true;
             }
 
-            if (args[0].equals("reload") && sender.isOp()) {
-                GenesisSMP.getPlugin().reloadConfig();
-                GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
-                config = GenesisSMP.getPlugin().getConfig();
-                sender.sendMessage(pluginPrefix + ChatColor.GREEN + " Configuration reloaded:");
-                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Prefix: Min " + config.getString("prefixes.min-prefix-length") + " / Max " + config.getString("prefixes.max-prefix-length"));
-                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Suffix: Min " + config.getString("suffixes.min-suffix-length") + " / Max " + config.getString("suffixes.max-suffix-length"));
-                return true;
-            }
-
             return false;
         }
         return false;

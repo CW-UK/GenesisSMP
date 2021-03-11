@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 public class PreventBlockXray implements Listener {
-
+/*
     Plugin plugin = GenesisSMP.getInstance();
     FileConfiguration config = GenesisSMP.getPlugin().getConfig();
 
@@ -103,5 +103,7 @@ public class PreventBlockXray implements Listener {
             }
         }
     }
+
+ */
 
 }

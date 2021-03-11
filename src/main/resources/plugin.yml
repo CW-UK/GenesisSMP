@@ -13,6 +13,9 @@ commands:
   suffix:
     description: Sets a suffix
     default: true
+  gsmp:
+    description: Admin command for GenesisSMP
+    default: op
 
 permissions:
   genesisprefix.*:
