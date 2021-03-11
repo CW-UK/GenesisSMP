@@ -73,6 +73,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("suffix").setExecutor(new SuffixCommand());
         this.getCommand("suffix").setTabCompleter(new SuffixCommand());
         this.getCommand("clearcrate").setExecutor(new EndLootCrate());
+        this.getCommand("clearcrate").setTabCompleter(new EndLootCrate());
         this.getCommand("gsmp").setExecutor(new AdminCommand());
         this.getCommand("gsmp").setTabCompleter(new AdminCommand());
 

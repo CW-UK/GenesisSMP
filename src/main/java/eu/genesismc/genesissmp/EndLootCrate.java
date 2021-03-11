@@ -6,13 +6,19 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.util.StringUtil;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class EndLootCrate implements CommandExecutor, Listener {
+public class EndLootCrate implements CommandExecutor, Listener, TabCompleter {
 
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("clearcrate")) {
 
@@ -57,6 +63,18 @@ public class EndLootCrate implements CommandExecutor, Listener {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("clearcrate")) {
+            if (args.length == 1) {
+                final List<String> commands = Arrays.asList("now", "later");
+                return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
+            }
+            return null;
+        }
+        return null;
     }
 
 }
