@@ -28,6 +28,12 @@ public class ConfigManager implements Listener {
         config.addDefault("EndSpawnPoint.pitch", 90.0);
         config.addDefault("EndSpawnPoint.yaw", 0.0);
 
+        config.addDefault("EndLootCrate.enabled", true);
+        config.addDefault("EndLootCrate.x", 0);
+        config.addDefault("EndLootCrate.y", 67);
+        config.addDefault("EndLootCrate.z", 0);
+        config.addDefault("EndLootCrate.delay", 6000L);
+
         config.options().copyDefaults(true);
         GenesisSMP.getPlugin().saveConfig();
 

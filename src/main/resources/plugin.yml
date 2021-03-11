@@ -16,6 +16,12 @@ commands:
   gsmp:
     description: Admin command for GenesisSMP
     default: op
+  clearcrate:
+    description: Clears the loot crate in The End
+    default: op
+    usage: /clearcrate <now|later>
+    permission: clearcrate.admin
+    permission-message: You do not have permission to perform this command.
 
 permissions:
   genesisprefix.*:

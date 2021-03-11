@@ -64,6 +64,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new PreventPickup(), this);
         pm.registerEvents(new LimitStriders(), this);
         pm.registerEvents(new EndSpawnPoint(), this);
+        pm.registerEvents(new EndLootCrate(), this);
 
         // command handlers
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Registering command handlers..");
@@ -71,6 +72,9 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("prefix").setTabCompleter(new PrefixCommand());
         this.getCommand("suffix").setExecutor(new SuffixCommand());
         this.getCommand("suffix").setTabCompleter(new SuffixCommand());
+        this.getCommand("clearcrate").setExecutor(new EndLootCrate());
+        this.getCommand("gsmp").setExecutor(new AdminCommand());
+        this.getCommand("gsmp").setTabCompleter(new AdminCommand());
 
         // luckperms API
         try {
