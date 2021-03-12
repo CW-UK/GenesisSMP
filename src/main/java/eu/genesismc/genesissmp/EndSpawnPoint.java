@@ -22,6 +22,10 @@ public class EndSpawnPoint implements Listener {
             FileConfiguration config = GenesisSMP.getPlugin().getConfig();
             if (!config.getBoolean("EndSpawnPoint.enabled")) { return; }
 
+            // Cancel the portal event and teleport the player instead because
+            // of MC's auto regen of the obsidian platform..
+            e.setCancelled(true);
+
             World w = Bukkit.getWorld(config.getString("EndSpawnPoint.world"));
             if (w == null) {
                 WorldCreator wc = new WorldCreator("world_the_end");
@@ -34,7 +38,7 @@ public class EndSpawnPoint implements Listener {
             float yaw = (float) config.getDouble("EndSpawnPoint.yaw");
             float pitch = (float) config.getDouble("EndSpawnPoint.pitch");
             Location loc = new Location(w, x, y, z, yaw, pitch);
-            e.setTo(loc);
+            e.getPlayer().teleport(loc);
 
         }
     }

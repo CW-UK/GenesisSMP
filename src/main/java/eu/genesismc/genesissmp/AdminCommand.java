@@ -19,10 +19,10 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
-        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-
         if (cmd.getName().equalsIgnoreCase("gsmp")) {
+
+            String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+            FileConfiguration config = GenesisSMP.getPlugin().getConfig();
 
             if (args[0].equals("reload") && sender.isOp()) {
                 GenesisSMP.getPlugin().reloadConfig();
@@ -45,9 +45,11 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 config.set("EndSpawnPoint.z", z);
                 config.set("EndSpawnPoint.yaw", yaw);
                 config.set("EndSpawnPoint.pitch", pitch);
+                GenesisSMP.getPlugin().saveConfig();
                 GenesisSMP.getPlugin().reloadConfig();
                 GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + " Spawn point for The End has been changed.");
+                return true;
             }
         }
 
