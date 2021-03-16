@@ -1,5 +1,6 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.commands;
 
+import eu.genesismc.genesissmp.GenesisSMP;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EndLootCrate implements CommandExecutor, Listener, TabCompleter {
+public class ClearCrate implements CommandExecutor, Listener, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

@@ -1,4 +1,4 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.events;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-public class PreventBlockXray implements Listener {
+public class PlayerMoveComposter implements Listener {
 /*
     Plugin plugin = GenesisSMP.getInstance();
     FileConfiguration config = GenesisSMP.getPlugin().getConfig();

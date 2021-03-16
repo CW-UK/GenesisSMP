@@ -1,4 +1,4 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.listeners;
 
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.StringUtils;

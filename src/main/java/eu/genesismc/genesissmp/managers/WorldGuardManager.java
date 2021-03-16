@@ -1,4 +1,4 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.managers;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;

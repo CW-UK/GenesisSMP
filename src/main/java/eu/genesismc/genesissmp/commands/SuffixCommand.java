@@ -1,5 +1,6 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.commands;
 
+import eu.genesismc.genesissmp.GenesisSMP;
 import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;

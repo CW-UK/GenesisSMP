@@ -1,5 +1,6 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.events;
 
+import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Strider;
@@ -9,7 +10,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.Random;
 
-public class LimitStriders implements Listener {
+public class CreatureSpawn implements Listener {
 
     FileConfiguration config = GenesisSMP.getPlugin().getConfig();
 

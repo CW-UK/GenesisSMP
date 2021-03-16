@@ -1,5 +1,6 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.events;
 
+import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Skeleton;
@@ -11,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
-public class PreventPickup implements Listener {
+public class EntityPickupItem implements Listener {
 
     FileConfiguration config = GenesisSMP.getPlugin().getConfig();
 

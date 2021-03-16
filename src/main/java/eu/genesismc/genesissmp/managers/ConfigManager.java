@@ -1,5 +1,6 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.managers;
 
+import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 

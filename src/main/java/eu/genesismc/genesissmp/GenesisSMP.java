@@ -1,6 +1,8 @@
 package eu.genesismc.genesissmp;
 
-import com.sk89q.worldguard.WorldGuard;
+import eu.genesismc.genesissmp.commands.*;
+import eu.genesismc.genesissmp.events.*;
+import eu.genesismc.genesissmp.managers.*;
 import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -67,10 +69,10 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new AdminCommand(), this);
         // pm.registerEvents(new ChatFilter(), this);
         // pm.registerEvents(new PreventBlockXray(), this);
-        pm.registerEvents(new PreventPickup(), this);
-        pm.registerEvents(new LimitStriders(), this);
-        pm.registerEvents(new EndSpawnPoint(), this);
-        pm.registerEvents(new EndLootCrate(), this);
+        pm.registerEvents(new EntityPickupItem(), this);
+        pm.registerEvents(new CreatureSpawn(), this);
+        pm.registerEvents(new PlayerPortal(), this);
+        pm.registerEvents(new ClearCrate(), this);
 
         // command handlers
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Registering command handlers..");
@@ -78,8 +80,8 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("prefix").setTabCompleter(new PrefixCommand());
         this.getCommand("suffix").setExecutor(new SuffixCommand());
         this.getCommand("suffix").setTabCompleter(new SuffixCommand());
-        this.getCommand("clearcrate").setExecutor(new EndLootCrate());
-        this.getCommand("clearcrate").setTabCompleter(new EndLootCrate());
+        this.getCommand("clearcrate").setExecutor(new ClearCrate());
+        this.getCommand("clearcrate").setTabCompleter(new ClearCrate());
         this.getCommand("gsmp").setExecutor(new AdminCommand());
         this.getCommand("gsmp").setTabCompleter(new AdminCommand());
 

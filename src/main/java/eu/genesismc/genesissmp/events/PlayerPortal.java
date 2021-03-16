@@ -1,5 +1,6 @@
-package eu.genesismc.genesissmp;
+package eu.genesismc.genesissmp.events;
 
+import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -10,10 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class EndSpawnPoint implements Listener {
+public class PlayerPortal implements Listener {
 
     @EventHandler
-    public void onPortal(PlayerPortalEvent e) {
+    public void onPortal(org.bukkit.event.player.PlayerPortalEvent e) {
         if (e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
 
             // Player already in the end - abort
