@@ -1,5 +1,6 @@
 package eu.genesismc.genesissmp;
 
+import com.sk89q.worldguard.WorldGuard;
 import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -30,6 +31,11 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
 
     public static GenesisSMP getInstance() {
         return (GenesisSMP) Bukkit.getPluginManager().getPlugin("GenesisSMP");
+    }
+
+    @Override
+    public void onLoad() {
+        WorldGuardManager.getInstance().registerFlags();
     }
 
     @Override
@@ -77,11 +83,21 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("gsmp").setExecutor(new AdminCommand());
         this.getCommand("gsmp").setTabCompleter(new AdminCommand());
 
+        // WorldGuard check
+        Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into WorldGuard..");
+        if (WorldGuardManager.getInstance().registered) {
+            Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > WorldGuard hook successful.");
+        }
+        else {
+            Bukkit.getLogger().info(ChatColor.RED + "GenesisSMP > WorldGuard hook failed!");
+        }
+
         // luckperms API
         try {
             Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into LuckPerms API..");
             RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
             api = provider.getProvider();
+            Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > LuckPerms hook successful.");
         } catch (NullPointerException npe) {
             Bukkit.getLogger().info(ChatColor.RED + "GenesisSMP > Could not connect to LuckPerms API.");
         }

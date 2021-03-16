@@ -3,7 +3,7 @@ main: eu.genesismc.genesissmp.GenesisSMP
 version: 1.0
 author: CW_UK
 api-version: 1.16
-depend: [LuckPerms, Essentials]
+depend: [LuckPerms, Essentials, WorldGuard, WorldEdit]
 softdepend: []
 
 commands:
