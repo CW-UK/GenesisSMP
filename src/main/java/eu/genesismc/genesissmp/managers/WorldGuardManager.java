@@ -4,12 +4,14 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.association.RegionAssociable;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class WorldGuardManager {
@@ -21,14 +23,6 @@ public class WorldGuardManager {
     public static WorldGuardManager getInstance() {
         if (instance == null) { instance = new WorldGuardManager(); }
         return instance;
-    }
-
-    public boolean regionIsCreativePlot(Player player) {
-        if(player == null) { return false; }
-        BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
-        com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
-        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
-        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), CREATIVE_PLOT); // not for boolean flag
     }
 
     public void registerFlags() {
@@ -45,6 +39,23 @@ public class WorldGuardManager {
         } catch (NoClassDefFoundError e) {
             Bukkit.getLogger().info(ChatColor.RED + "GenesisSMP > Could not register WorldGuard flags - WorldGuard not found!");
         }
+    }
+
+    public boolean regionIsCreativePlot(Player player) {
+        if (player == null) { return false; }
+        BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
+        com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), CREATIVE_PLOT); // not for boolean flag
+    }
+
+    public boolean blockIsCreativePlot(Location loc) {
+        if (loc == null) { return false; }
+        //if (StateFlag.test(WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().queryState(BukkitAdapter.adapt(loc), (RegionAssociable) null, CREATIVE_PLOT)))  {
+        return StateFlag.test(WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().queryState(BukkitAdapter.adapt(loc), (RegionAssociable) null, CREATIVE_PLOT));
+        //            return true;
+        //      }
+        //    return false;
     }
 
 }

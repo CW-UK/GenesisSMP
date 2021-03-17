@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.HashMap;
 
 public final class GenesisSMP extends JavaPlugin implements Listener {
@@ -60,19 +59,20 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         ConfigManager configManager = new ConfigManager();
         configManager.setupConfig();
 
-        // event registers
+        // event registration
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Registering event handlers..");
         PluginManager pm = Bukkit.getServer().getPluginManager();
         pm.registerEvents(this, this);
         pm.registerEvents(new PrefixCommand(), this);
         pm.registerEvents(new SuffixCommand(), this);
         pm.registerEvents(new AdminCommand(), this);
-        // pm.registerEvents(new ChatFilter(), this);
-        // pm.registerEvents(new PreventBlockXray(), this);
         pm.registerEvents(new EntityPickupItem(), this);
         pm.registerEvents(new CreatureSpawn(), this);
         pm.registerEvents(new PlayerPortal(), this);
         pm.registerEvents(new ClearCrate(), this);
+        // pm.registerEvents(new PlayerMove(), this);
+        // pm.registerEvents(new ChatFilter(), this);
+        // pm.registerEvents(new PreventBlockXray(), this);
 
         // command handlers
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Registering command handlers..");
