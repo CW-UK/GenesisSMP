@@ -1,5 +1,5 @@
-package eu.genesismc.genesissmp.managers;
-/*
+package eu.genesismc.genesissmp.inProgress;
+
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -15,7 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class WorldGuardManager {
-
+/*
     public static final StateFlag CREATIVE_PLOT = new StateFlag("creative-plot", false);
     public boolean registered = false;
     private static WorldGuardManager instance;
@@ -60,6 +60,5 @@ public class WorldGuardManager {
     }
 
 
-
+*/
 }
- */

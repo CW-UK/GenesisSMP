@@ -1,29 +1,7 @@
-package eu.genesismc.genesissmp.commands;
+package eu.genesismc.genesissmp.inProgress;
 
-/*
-import eu.genesismc.genesissmp.GenesisSMP;
-import eu.genesismc.genesissmp.Utils;
-import eu.genesismc.genesissmp.managers.InventoryManager;
-
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.util.StringUtil;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public class InventoryCommands implements CommandExecutor, Listener, TabCompleter {
-
+public class InventoryCommands {
+/* public class InventoryCommands implements CommandExecutor, Listener, TabCompleter {
     InventoryManager invManager = new InventoryManager();
     String pluginPrefix = ChatColor.translateAlternateColorCodes('&', "&6&lGenesisPlots > &e");
 
@@ -133,8 +111,7 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
         return null;
     }
 
-
+*/
 
 }
 
- */

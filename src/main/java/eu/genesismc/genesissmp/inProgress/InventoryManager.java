@@ -1,6 +1,5 @@
-package eu.genesismc.genesissmp.managers;
+package eu.genesismc.genesissmp.inProgress;
 
-/*
 import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class InventoryManager {
-
+/*
     Plugin plugin = GenesisSMP.getPlugin();
 
     public void saveInventory(Player p) throws IOException {
@@ -44,7 +43,5 @@ public class InventoryManager {
         }, 5L);
 
     }
-
+*/
 }
-
- */

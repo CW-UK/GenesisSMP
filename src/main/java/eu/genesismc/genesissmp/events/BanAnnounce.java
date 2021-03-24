@@ -33,7 +33,7 @@ public class BanAnnounce implements Listener {
         Player pOn = (Player) e.getPlayer();
 
         if (pOn.isOnline()) {
-            pOn.chat(baMsg);
+            pOn.chat(GenesisSMP.getUtils().getRGB(baMsg));
             if (strike) {
                 Location loc = pOn.getLocation();
                 for (int i = 1; i <= qty; i++) {
