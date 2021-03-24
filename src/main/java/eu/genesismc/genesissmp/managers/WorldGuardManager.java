@@ -1,5 +1,5 @@
 package eu.genesismc.genesissmp.managers;
-
+/*
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -41,6 +41,7 @@ public class WorldGuardManager {
         }
     }
 
+
     public boolean regionIsCreativePlot(Player player) {
         if (player == null) { return false; }
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
@@ -58,4 +59,7 @@ public class WorldGuardManager {
         //    return false;
     }
 
+
+
 }
+ */

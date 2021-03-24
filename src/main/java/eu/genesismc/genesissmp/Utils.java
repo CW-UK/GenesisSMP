@@ -79,4 +79,12 @@ public class Utils {
         return !loc.clone().add(0, -1, 0).getBlock().isLiquid();
     }
 
+    public Player getPlayer(String player) {
+        if (Bukkit.getPlayer(player) == null) {
+            Bukkit.getLogger().info("GenesisPlot > " + player + " is not an online player!");
+            return null;
+        }
+        return Bukkit.getPlayer(player);
+    }
+
 }

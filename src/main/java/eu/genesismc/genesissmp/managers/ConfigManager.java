@@ -35,6 +35,12 @@ public class ConfigManager implements Listener {
         config.addDefault("EndLootCrate.z", 0);
         config.addDefault("EndLootCrate.delay", 6000L);
 
+        config.addDefault("BanAnnounce.enabled", true);
+        config.addDefault("BanAnnounce.message", "So long, and thanks for all the fish.");
+        config.addDefault("BanAnnounce.sound", "ENTITY_LIGHTNING_BOLT_THUNDER");
+        config.addDefault("BanAnnounce.volume", 1.0F);
+        config.addDefault("BanAnnounce.pitch", 1.0F);
+
         config.options().copyDefaults(true);
         GenesisSMP.getPlugin().saveConfig();
 

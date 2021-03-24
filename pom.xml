@@ -56,5 +56,12 @@
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>ultrapunishments.com</groupId>
+      <artifactId>ultrapunishments</artifactId>
+      <version>1.6.8</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/resources/UltraPunishments.jar</systemPath>
+    </dependency>
   </dependencies>
 </project>
