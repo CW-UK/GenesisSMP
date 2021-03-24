@@ -33,10 +33,8 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Prefix: Min " + config.getString("prefixes.min-prefix-length") + " / Max " + config.getString("prefixes.max-prefix-length"));
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Suffix: Min " + config.getString("suffixes.min-suffix-length") + " / Max " + config.getString("suffixes.max-suffix-length"));
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "BanAnnounce Settings:");
-                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Sound: " + org.bukkit.ChatColor.WHITE + config.getString("sound"));
-                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Message: " + org.bukkit.ChatColor.WHITE + config.getString("message"));
-                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Volume: " + org.bukkit.ChatColor.WHITE + config.getString("volume"));
-                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Pitch: " + org.bukkit.ChatColor.WHITE + config.getString("pitch"));
+                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Strikes Enabled: " + org.bukkit.ChatColor.WHITE + config.getBoolean("BanAnnounce.strike"));
+                sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Strike Quantity: " + org.bukkit.ChatColor.WHITE + config.getInt("BanAnnounce.strike-amount"));
                 return true;
             }
             if (args[0].equals("setendspawn") && sender.isOp()) {

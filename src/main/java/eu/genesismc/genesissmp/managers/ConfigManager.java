@@ -36,6 +36,8 @@ public class ConfigManager implements Listener {
         config.addDefault("EndLootCrate.delay", 6000L);
 
         config.addDefault("BanAnnounce.enabled", true);
+        config.addDefault("BanAnnounce.strike", true);
+        config.addDefault("BanAnnounce.strike-amount", 2);
         config.addDefault("BanAnnounce.message", "So long, and thanks for all the fish.");
         config.addDefault("BanAnnounce.sound", "ENTITY_LIGHTNING_BOLT_THUNDER");
         config.addDefault("BanAnnounce.volume", 1.0F);
