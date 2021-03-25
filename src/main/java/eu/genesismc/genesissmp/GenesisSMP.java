@@ -1,8 +1,15 @@
 package eu.genesismc.genesissmp;
 
-import eu.genesismc.genesissmp.commands.*;
-import eu.genesismc.genesissmp.events.*;
-import eu.genesismc.genesissmp.managers.*;
+import eu.genesismc.genesissmp.commands.AdminCommand;
+import eu.genesismc.genesissmp.commands.ClearCrate;
+import eu.genesismc.genesissmp.commands.PrefixCommand;
+import eu.genesismc.genesissmp.commands.SuffixCommand;
+import eu.genesismc.genesissmp.events.BanAnnounce;
+import eu.genesismc.genesissmp.events.CreatureSpawn;
+import eu.genesismc.genesissmp.events.EntityPickupItem;
+import eu.genesismc.genesissmp.events.PlayerPortal;
+import eu.genesismc.genesissmp.inProgress.InventoryCommands;
+import eu.genesismc.genesissmp.managers.ConfigManager;
 import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -12,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.HashMap;
 
 public final class GenesisSMP extends JavaPlugin implements Listener {
@@ -71,7 +79,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new PlayerPortal(), this);
         pm.registerEvents(new ClearCrate(), this);
         pm.registerEvents(new BanAnnounce(), this);
-        // pm.registerEvents(new InventoryCommands(), this);
+        pm.registerEvents(new InventoryCommands(), this);
         // pm.registerEvents(new PlayerMove(), this);
         // pm.registerEvents(new ChatFilter(), this);
         // pm.registerEvents(new PreventBlockXray(), this);
@@ -86,8 +94,8 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("clearcrate").setTabCompleter(new ClearCrate());
         this.getCommand("gsmp").setExecutor(new AdminCommand());
         this.getCommand("gsmp").setTabCompleter(new AdminCommand());
-        // this.getCommand("plot").setExecutor(new InventoryCommands());
-        // this.getCommand("plot").setTabCompleter(new InventoryCommands());
+        this.getCommand("invman").setExecutor(new InventoryCommands());
+        this.getCommand("invman").setTabCompleter(new InventoryCommands());
 
         // WorldGuard check
         /*

@@ -1,4 +1,4 @@
-package eu.genesismc.genesissmp.inProgress;
+package eu.genesismc.genesissmp.managers;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.Bukkit;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class InventoryManager {
-/*
+
     Plugin plugin = GenesisSMP.getPlugin();
 
     public void saveInventory(Player p) throws IOException {
@@ -33,7 +33,6 @@ public class InventoryManager {
         p.getInventory().setArmorContents(content);
         content = ((List<ItemStack>) c.get("inventory.content")).toArray(new ItemStack[0]);
         p.getInventory().setContents(content);
-
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         scheduler.scheduleSyncDelayedTask(GenesisSMP.getPlugin(), new Runnable() {
             @Override
@@ -43,5 +42,5 @@ public class InventoryManager {
         }, 5L);
 
     }
-*/
+
 }

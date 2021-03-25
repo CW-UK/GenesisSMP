@@ -22,6 +22,10 @@ commands:
     usage: /clearcrate <now|later>
     permission: clearcrate.admin
     permission-message: You do not have permission to perform this command.
+  invman:
+    description: Manages saving/loading of inventories between GMS and GMC.
+    usage: /invman <save|restore> <username>
+    default: op
 
 permissions:
   genesisprefix.*:

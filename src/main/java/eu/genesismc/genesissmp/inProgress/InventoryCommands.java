@@ -1,24 +1,39 @@
 package eu.genesismc.genesissmp.inProgress;
 
-public class InventoryCommands {
-/* public class InventoryCommands implements CommandExecutor, Listener, TabCompleter {
+import eu.genesismc.genesissmp.GenesisSMP;
+import eu.genesismc.genesissmp.Utils;
+import eu.genesismc.genesissmp.managers.InventoryManager;
+import org.bukkit.command.*;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.util.StringUtil;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class InventoryCommands implements CommandExecutor, Listener, TabCompleter {
     InventoryManager invManager = new InventoryManager();
-    String pluginPrefix = ChatColor.translateAlternateColorCodes('&', "&6&lGenesisPlots > &e");
+    String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("plot")) {
+        if (cmd.getName().equalsIgnoreCase("invman")) {
 
-            Plugin plugin = GenesisSMP.getPlugin();
-            Utils utils = GenesisSMP.getUtils();
-            FileConfiguration config = plugin.getConfig();
+            if (!sender.isOp() || !(sender instanceof ConsoleCommandSender)) {
+                sender.sendMessage(pluginPrefix + "You do not have access to this command.");
+                return true;
+            }
 
             if (args.length > 1) {
+
+                Utils utils = GenesisSMP.getUtils();
 
                 // ****************************
                 //       Store inventory
                 // ****************************
-                if (args[0].equals("store")) {
+                if (args[0].equalsIgnoreCase("save")) {
 
                     Player p = utils.getPlayer(args[1]);
                     if (p == null) {
@@ -28,53 +43,23 @@ public class InventoryCommands {
 
                     try {
                         invManager.saveInventory(p);
-                        p.sendMessage(pluginPrefix + "Your survival inventory has been stored.");
+                        p.sendMessage(pluginPrefix + "Your survival inventory has been saved.");
+                        sender.sendMessage(pluginPrefix + p.getName() + "'s survival inventory has been saved.");
                         return true;
                     } catch (IOException e) {
                         p.sendMessage(pluginPrefix + "Your survival inventory could not be stored. Please inform a member of staff of this error.");
+                        sender.sendMessage(pluginPrefix + p.getName() + "'s survival inventory could not be saved! (IO Error)");
                         e.printStackTrace();
-                    }
-
-                    plugin.saveConfig();
-                }
-
-                // ****************************
-                //     Add player to plot
-                // ****************************
-                if (args[0].equals("enter")) {
-
-                    Player p = (Player) sender;
-                    int plot = Integer.parseInt(args[1]);
-                    if (config.getString("plots.plot" + plot) != null) {
-                        String owner = config.getString("plots.plot" + plot + ".member");
-                        if (owner.equalsIgnoreCase(p.getName())) {
-                            p.sendMessage(pluginPrefix + "You already have access to that plot.");
-                        }
-                        else {
-                            p.sendMessage(pluginPrefix + "That plot is in use by " + owner + ". Choose another one!");
-                        }
                         return true;
                     }
 
-                    try {
-                        invManager.saveInventory(p);
-                        p.sendMessage(pluginPrefix + "Your survival inventory has been stored safely. It will be returned to you when you leave the plot.");
-                        p.getInventory().clear();
-                        config.set("plots.plot" + plot + ".member", p.getName());
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg addmember -w flatworld Plot" + plot + "Inner " + p.getName());
-                        p.sendMessage(pluginPrefix + "Permission granted - you may now access Plot " + plot + " to build.");
-                        plugin.saveConfig();
-                        return true;
-                    } catch (IOException e) {
-                        p.sendMessage(pluginPrefix + "Your survival inventory could not be stored. Please inform a member of staff of this error.");
-                        e.printStackTrace();
-                    }
+                    //plugin.saveConfig();
                 }
 
                 // ****************************
                 //      Restore Inventory
                 // ****************************
-                if (args[0].equals("restore")) {
+                if (args[0].equalsIgnoreCase("restore")) {
 
                     Player p = utils.getPlayer(args[1]);
                     if (p == null) {
@@ -85,25 +70,32 @@ public class InventoryCommands {
                     try {
                         invManager.restoreInventory(p);
                         p.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
+                        sender.sendMessage(pluginPrefix + p.getName() + "'s survival inventory has been restored.");
                     } catch (IOException e) {
+                        p.sendMessage(pluginPrefix + "An error occurred restoring your inventory. Please inform a member of staff.");
+                        sender.sendMessage(pluginPrefix + p.getName() + "'s survival inventory could not be restored! (IO Error)");
                         e.printStackTrace();
                     } catch (NullPointerException npe) {
                         p.sendMessage(pluginPrefix + "You have no inventory to restore.");
+                        sender.sendMessage(pluginPrefix + p.getName() + "does not have a survival inventory to restore.");
                     }
                     return true;
                 }
-                return false;
-            }
-        }
-        return false;
-    }
 
+            }
+
+            sender.sendMessage(pluginPrefix + "Usage: /invman <save|restore> <username>");
+            return true;
+
+        }
+        return true;
+    }
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("plot")) {
+        if (cmd.getName().equalsIgnoreCase("invman")) {
             if (args.length == 1) {
-                final List<String> commands = Arrays.asList("store", "restore", "enter", "leave", "clear");
+                final List<String> commands = Arrays.asList("save", "restore");
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             }
             return null;
@@ -111,7 +103,4 @@ public class InventoryCommands {
         return null;
     }
 
-*/
-
 }
-
