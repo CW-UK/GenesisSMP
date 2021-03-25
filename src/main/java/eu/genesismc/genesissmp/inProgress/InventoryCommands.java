@@ -31,7 +31,7 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
                 Utils utils = GenesisSMP.getUtils();
 
                 // ****************************
-                //       Store inventory
+                //        Save Inventory
                 // ****************************
                 if (args[0].equalsIgnoreCase("save")) {
 
@@ -45,6 +45,7 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
                         invManager.saveInventory(p);
                         p.sendMessage(pluginPrefix + "Your survival inventory has been saved.");
                         sender.sendMessage(pluginPrefix + p.getName() + "'s survival inventory has been saved.");
+                        p.getInventory().clear();
                         return true;
                     } catch (IOException e) {
                         p.sendMessage(pluginPrefix + "Your survival inventory could not be stored. Please inform a member of staff of this error.");
