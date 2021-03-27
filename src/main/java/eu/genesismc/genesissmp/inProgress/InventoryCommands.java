@@ -54,7 +54,6 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
                         return true;
                     }
 
-                    //plugin.saveConfig();
                 }
 
                 // ****************************
@@ -103,5 +102,14 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
         }
         return null;
     }
+
+    // Do something to maybe track
+    // creative/survival inventories?
+
+    /*@EventHandler
+    public void gmChange(PlayerGameModeChangeEvent e) {
+        e.getPlayer().sendMessage("Your game mode is now " + e.getNewGameMode() + " (was " + e.getPlayer().getGameMode() + ")");
+    }
+    */
 
 }
