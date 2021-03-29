@@ -14,7 +14,7 @@ public class EntityTarget implements Listener {
         Entity entity = e.getEntity();
         Entity target = e.getTarget();
         if (entity instanceof Vex && target instanceof Player) {
-            if (e.getTarget() instanceof Player && e.getReason() != EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) {
+            if (e.getReason() != EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) {
                 e.setCancelled(true);
             }
         }
