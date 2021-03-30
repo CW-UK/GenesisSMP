@@ -25,7 +25,6 @@ public class InventoryManager {
         c.save(f);
     }
 
-    // TODO: Exception handler for this..
     @SuppressWarnings("unchecked")
     public void restoreInventory(Player p) throws IOException {
         File f = new File(plugin.getDataFolder().getAbsolutePath(), p.getName() + ".yml");
