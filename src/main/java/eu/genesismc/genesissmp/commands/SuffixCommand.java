@@ -117,7 +117,7 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             }
             if (args.length == 2 && args[0].equalsIgnoreCase("set")) {
-                final List<String> commands = Arrays.asList("<prefix>");
+                final List<String> commands = Arrays.asList("<suffix>");
                 return commands;
             }
             else {
