@@ -19,6 +19,8 @@ import java.util.List;
 
 public class ClearCrate implements CommandExecutor, Listener, TabCompleter {
 
+    static Plugin plugin = GenesisSMP.getPlugin();
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("clearcrate")) {
@@ -33,10 +35,10 @@ public class ClearCrate implements CommandExecutor, Listener, TabCompleter {
                 return true;
             }
 
+            long delay = config.getLong("EndLootCrate.delay");
             int x = config.getInt("EndLootCrate.x");
             int y = config.getInt("EndLootCrate.y");
             int z = config.getInt("EndLootCrate.z");
-            long delay = config.getLong("EndLootCrate.delay");
 
             if (args[0].equalsIgnoreCase("now")) {
                 try {
@@ -48,18 +50,16 @@ public class ClearCrate implements CommandExecutor, Listener, TabCompleter {
             }
 
             else if (args[0].equalsIgnoreCase("later")) {
-                Plugin plugin = GenesisSMP.getInstance();
                 sender.sendMessage("The Dragon Loot chest will be removed in 3 minutes!");
                 Bukkit.getLogger().info("The Dragon Loot chest will be removed in 3 minutes!");
-                BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-                scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Bukkit.getServer().getWorld("world_the_end").getBlockAt(x, y, z).setType(Material.AIR);
-                        } catch (NullPointerException npe) { return; }
-                    }
-                }, delay);
+                try {
+                    BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+                    scheduler.scheduleSyncDelayedTask(plugin, () -> {
+                        Bukkit.getServer().getWorld("world_the_end").getBlockAt(x, y, z).setType(Material.AIR);
+                    }, delay);
+                } catch (NullPointerException npe) {
+                    return true;
+                }
                 return true;
             }
         }

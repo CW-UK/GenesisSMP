@@ -15,7 +15,7 @@ import java.util.List;
 
 public class InventoryManager {
 
-    Plugin plugin = GenesisSMP.getPlugin();
+    static Plugin plugin = GenesisSMP.getPlugin();
 
     public void saveInventory(Player p) throws IOException {
         File f = new File(plugin.getDataFolder().getAbsolutePath(), p.getName() + ".yml");
@@ -33,14 +33,13 @@ public class InventoryManager {
         p.getInventory().setArmorContents(content);
         content = ((List<ItemStack>) c.get("inventory.content")).toArray(new ItemStack[0]);
         p.getInventory().setContents(content);
-        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.scheduleSyncDelayedTask(GenesisSMP.getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                f.delete();
-            }
-        }, 5L);
-
+        try {
+            BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+            scheduler.scheduleSyncDelayedTask(plugin, f::delete, 5L);
+        }
+        catch (Exception e) {
+            // it broke
+        }
     }
 
 }
