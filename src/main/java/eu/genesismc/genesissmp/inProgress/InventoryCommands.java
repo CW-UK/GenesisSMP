@@ -21,7 +21,7 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("invman")) {
 
-            if (!sender.isOp() || !(sender instanceof ConsoleCommandSender)) {
+            if (!sender.isOp() && !(sender instanceof ConsoleCommandSender)) {
                 sender.sendMessage(pluginPrefix + "You do not have access to this command.");
                 return true;
             }
