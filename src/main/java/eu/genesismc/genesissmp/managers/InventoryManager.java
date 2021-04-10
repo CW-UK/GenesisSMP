@@ -35,7 +35,12 @@ public class InventoryManager {
         p.getInventory().setContents(content);
         try {
             BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-            scheduler.scheduleSyncDelayedTask(plugin, f::delete, 5L);
+            scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    f.delete();
+                }
+            }, 5L);
         }
         catch (Exception e) {
             // it broke
