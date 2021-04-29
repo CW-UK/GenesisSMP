@@ -97,6 +97,7 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                     sender.sendMessage(pluginPrefix + "Your prefix has been set!");
                 }
                 GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
+                GenesisSMP.getPlugin().api.runUpdateTask();
                 return true;
             }
             if (args[0].equals("remove")) {

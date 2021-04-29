@@ -97,6 +97,7 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                     sender.sendMessage(pluginPrefix + "Your suffix has been set!");
                 }
                 GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
+                GenesisSMP.getPlugin().api.runUpdateTask();
                 return true;
             }
             if (args[0].equals("remove")) {
