@@ -7,3 +7,5 @@ target/
 .classpath
 resources/*.jar
 dependency-reduced-pom.xml
+src/main/resources/UltraPunishments.jar
+src/main/resources/UltraPunishments.jar
