@@ -59,7 +59,7 @@
     <dependency>
       <groupId>ultrapunishments.com</groupId>
       <artifactId>ultrapunishments</artifactId>
-      <version>1.6.8</version>
+      <version>1.7.1</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/src/main/resources/UltraPunishments.jar</systemPath>
     </dependency>
