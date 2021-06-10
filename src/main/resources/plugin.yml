@@ -1,6 +1,6 @@
 name: GenesisSMP
 main: eu.genesismc.genesissmp.GenesisSMP
-version: 2.0
+version: 2.1
 author: CW_UK
 api-version: 1.16
 depend: [LuckPerms, Essentials, WorldGuard, WorldEdit]
@@ -25,6 +25,10 @@ commands:
   invman:
     description: Manages saving/loading of inventories between GMS and GMC.
     usage: /invman <save|restore> <username>
+    default: op
+  plot:
+    description: Manages creative plot access.
+    usage: /plot <enter|leave|lock|unlock> [number]
     default: op
 
 permissions:
@@ -67,3 +71,7 @@ permissions:
   genesisprefix.donator.suffix:
     default: op
     description: Given to players who have purchased a suffix token.
+
+  genesissmp.plots.lock:
+    default: op
+    description: Allows locking of plot/plots to prevent users accessing.

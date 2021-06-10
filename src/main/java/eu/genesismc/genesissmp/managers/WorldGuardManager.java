@@ -1,4 +1,4 @@
-package eu.genesismc.genesissmp.inProgress;
+package eu.genesismc.genesissmp.managers;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
@@ -15,7 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class WorldGuardManager {
-/*
+
     public static final StateFlag CREATIVE_PLOT = new StateFlag("creative-plot", false);
     public boolean registered = false;
     private static WorldGuardManager instance;
@@ -41,7 +41,6 @@ public class WorldGuardManager {
         }
     }
 
-
     public boolean regionIsCreativePlot(Player player) {
         if (player == null) { return false; }
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
@@ -52,13 +51,8 @@ public class WorldGuardManager {
 
     public boolean blockIsCreativePlot(Location loc) {
         if (loc == null) { return false; }
-        //if (StateFlag.test(WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().queryState(BukkitAdapter.adapt(loc), (RegionAssociable) null, CREATIVE_PLOT)))  {
         return StateFlag.test(WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().queryState(BukkitAdapter.adapt(loc), (RegionAssociable) null, CREATIVE_PLOT));
-        //            return true;
-        //      }
-        //    return false;
     }
 
 
-*/
 }

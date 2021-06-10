@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.genesismc</groupId>
   <artifactId>GenesisSMP</artifactId>
-  <version>2.0</version>
+  <version>2.1</version>
   <build>
     <plugins>
       <plugin>
@@ -59,9 +59,9 @@
     <dependency>
       <groupId>ultrapunishments.com</groupId>
       <artifactId>ultrapunishments</artifactId>
-      <version>1.7.1</version>
+      <version>1.7.6</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/UltraPunishments.jar</systemPath>
+      <systemPath>${project.basedir}/src/main/resources/UltraPunishments-1.7.6.jar</systemPath>
     </dependency>
   </dependencies>
 </project>

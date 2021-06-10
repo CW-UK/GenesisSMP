@@ -1,12 +1,9 @@
 package eu.genesismc.genesissmp;
 
-import eu.genesismc.genesissmp.commands.AdminCommand;
-import eu.genesismc.genesissmp.commands.ClearCrate;
-import eu.genesismc.genesissmp.commands.PrefixCommand;
-import eu.genesismc.genesissmp.commands.SuffixCommand;
+import eu.genesismc.genesissmp.commands.*;
 import eu.genesismc.genesissmp.events.*;
-import eu.genesismc.genesissmp.inProgress.InventoryCommands;
 import eu.genesismc.genesissmp.managers.ConfigManager;
+import eu.genesismc.genesissmp.managers.WorldGuardManager;
 import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -41,7 +38,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
 
     @Override
     public void onLoad() {
-        // WorldGuardManager.getInstance().registerFlags();
+        WorldGuardManager.getInstance().registerFlags();
     }
 
     @Override
@@ -71,12 +68,13 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new PrefixCommand(), this);
         pm.registerEvents(new SuffixCommand(), this);
         pm.registerEvents(new AdminCommand(), this);
+        pm.registerEvents(new PlotCommand(), this);
+        pm.registerEvents(new InventoryCommands(), this);
         pm.registerEvents(new EntityPickupItem(), this);
         pm.registerEvents(new CreatureSpawn(), this);
         pm.registerEvents(new PlayerPortal(), this);
         pm.registerEvents(new ClearCrate(), this);
         pm.registerEvents(new BanAnnounce(), this);
-        pm.registerEvents(new InventoryCommands(), this);
         pm.registerEvents(new EntityTarget(), this);
         // pm.registerEvents(new ChatFilter(), this);
         // pm.registerEvents(new PreventBlockXray(), this);
@@ -93,9 +91,10 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("gsmp").setTabCompleter(new AdminCommand());
         this.getCommand("invman").setExecutor(new InventoryCommands());
         this.getCommand("invman").setTabCompleter(new InventoryCommands());
+        this.getCommand("plot").setExecutor(new PlotCommand());
+        this.getCommand("plot").setTabCompleter(new PlotCommand());
 
         // WorldGuard check
-        /*
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into WorldGuard..");
         if (WorldGuardManager.getInstance().registered) {
             Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > WorldGuard hook successful.");
@@ -103,7 +102,6 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         else {
             Bukkit.getLogger().info(ChatColor.RED + "GenesisSMP > WorldGuard hook failed!");
         }
-        */
 
         // luckperms API
         try {

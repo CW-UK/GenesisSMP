@@ -43,6 +43,13 @@ public class ConfigManager implements Listener {
         config.addDefault("BanAnnounce.volume", 1.0F);
         config.addDefault("BanAnnounce.pitch", 1.0F);
 
+        config.addDefault("Plots.Locked", false);
+        for (int x = 1; x <= 8; x++) {
+            config.addDefault("Plots.Plot"+x+".Owner", null);
+            config.addDefault("Plots.Plot"+x+".TimeLeave", null);
+            config.addDefault("Plots.Plot"+x+".Locked", false);
+        }
+
         config.options().copyDefaults(true);
         GenesisSMP.getPlugin().saveConfig();
 

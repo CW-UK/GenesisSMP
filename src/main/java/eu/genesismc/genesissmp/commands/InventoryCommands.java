@@ -1,4 +1,4 @@
-package eu.genesismc.genesissmp.inProgress;
+package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import eu.genesismc.genesissmp.Utils;
@@ -102,14 +102,5 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
         }
         return null;
     }
-
-    // Do something to maybe track
-    // creative/survival inventories?
-
-    /*@EventHandler
-    public void gmChange(PlayerGameModeChangeEvent e) {
-        e.getPlayer().sendMessage("Your game mode is now " + e.getNewGameMode() + " (was " + e.getPlayer().getGameMode() + ")");
-    }
-    */
 
 }
