@@ -1,11 +1,10 @@
 package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
-import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.SuffixNode;
+import net.luckperms.api.node.types.PrefixNode;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -89,15 +88,22 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                     sender.sendMessage(pluginPrefix + "Your suffix has been removed.");
                 }
                 else {
-                    Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
+
+                    GenesisSMP.getPlugin().api.getUserManager().modifyUser(((Player) sender).getUniqueId(), user -> {
+                        updatePlayer.data().remove(Node.builder("genesisprefix.donator.suffix").build());
+                        updatePlayer.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingSuffix.get(player), 1).build());
+                    });
+
+                    /*Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
                     updatePlayer.data().clear(removeSuffix);
                     DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.suffix").build());
-                    DataMutateResult result2 = updatePlayer.data().add(SuffixNode.builder(GenesisSMP.getPlugin().waitingSuffix.get(player), 1).build());
+                    DataMutateResult result2 = updatePlayer.data().add(SuffixNode.builder(GenesisSMP.getPlugin().waitingSuffix.get(player), 1).build());*/
+
                     GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been set!");
                 }
-                GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
-                GenesisSMP.getPlugin().api.runUpdateTask();
+                //GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
+                //GenesisSMP.getPlugin().api.runUpdateTask();
                 return true;
             }
             if (args[0].equals("remove")) {

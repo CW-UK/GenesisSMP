@@ -76,6 +76,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new ClearCrate(), this);
         pm.registerEvents(new BanAnnounce(), this);
         pm.registerEvents(new EntityTarget(), this);
+        pm.registerEvents(new PlayerJoin(), this);
         // pm.registerEvents(new ChatFilter(), this);
         // pm.registerEvents(new PreventBlockXray(), this);
 
