@@ -2,7 +2,6 @@ package eu.genesismc.genesissmp.events;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Strider;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,11 +15,12 @@ public class CreatureSpawn implements Listener {
 
     @EventHandler
     public void striderSpawn(CreatureSpawnEvent e) {
-        Entity spawnedEntity = e.getEntity();
-        if (spawnedEntity instanceof Strider && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
-            if (!config.getBoolean("LimitStriders.enabled")) { return; }
+        if (e.getEntity() instanceof Strider && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+            if (!config.getBoolean("LimitStriders.enabled")) {
+                return;
+            }
             Random r = new Random();
-            if (r.nextInt(100)+1 > 4) {
+            if (r.nextInt(100) + 1 > 4) {
                 e.setCancelled(true);
             }
         }

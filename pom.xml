@@ -33,6 +33,10 @@
         <id>enginehub-repo</id>
         <url>https://maven.enginehub.org/repo/</url>
       </repository>
+      <repository>
+        <id>papermc</id>
+        <url>https://papermc.io/repo/repository/maven-public/</url>
+      </repository>
   </repositories>
   <dependencies>
      <dependency>
@@ -68,5 +72,11 @@
       <scope>system</scope>
       <systemPath>${project.basedir}/src/main/resources/UltraPunishments-1.7.6.jar</systemPath>
     </dependency>
+    <!--<dependency>
+      <groupId>com.destroystokyo.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>1.16.5-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>-->
   </dependencies>
 </project>

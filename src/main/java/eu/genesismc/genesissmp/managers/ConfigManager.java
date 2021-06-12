@@ -21,6 +21,11 @@ public class ConfigManager implements Listener {
         config.addDefault("PreventPickup.enabled", true);
         config.addDefault("PreventBlockXray.enabled", true);
 
+        config.addDefault("BlockChunkLimit.enabled", true);
+        config.addDefault("BlockChunkLimit.blocks.SPAWNER", 25);
+        config.addDefault("BlockChunkLimit.blocks.DISPENSER", 100);
+        config.addDefault("BlockChunkLimit.blocks.DROPPER", 100);
+
         config.addDefault("EndSpawnPoint.enabled", true);
         config.addDefault("EndSpawnPoint.world", "world_the_end");
         config.addDefault("EndSpawnPoint.x", 98.50);

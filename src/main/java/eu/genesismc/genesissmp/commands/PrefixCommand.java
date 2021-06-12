@@ -87,7 +87,7 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                         Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
                         updatePlayer.data().clear(removePrefix);
                     });
-                    
+
                     GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been removed.");
                 }
