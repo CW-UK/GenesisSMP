@@ -25,9 +25,6 @@ import java.util.function.Predicate;
 
 public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
 
-    private final String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
-    FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
@@ -35,6 +32,9 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
         User updatePlayer = GenesisSMP.getPlugin().api.getPlayerAdapter(Player.class).getUser(player);
 
         if (cmd.getName().equalsIgnoreCase("prefix")) {
+
+            String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+            FileConfiguration config = GenesisSMP.getInstance().config;
 
             if (args.length < 1) {
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /prefix <confirm|remove|set <prefix>>");

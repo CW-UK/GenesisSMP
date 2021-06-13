@@ -5,9 +5,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
 
-    public FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-
     public void setupConfig() {
+
+        FileConfiguration config = GenesisSMP.getPlugin().config;
 
         config.addDefault("prefixes.min-prefix-length", 3);
         config.addDefault("prefixes.max-prefix-length", 16);

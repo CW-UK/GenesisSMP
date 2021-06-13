@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class EntityPickupItem implements Listener {
 
-    FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+    FileConfiguration config = GenesisSMP.getInstance().config;
 
     @EventHandler
     public void pickup(EntityPickupItemEvent e) {

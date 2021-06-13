@@ -22,11 +22,12 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
 
     InventoryManager invManager = new InventoryManager();
     PlotManager plotManager = new PlotManager();
-    String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("plot")) {
+
+            String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
 
             if (args.length < 1) {
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /plot <enter [number]|leave>");

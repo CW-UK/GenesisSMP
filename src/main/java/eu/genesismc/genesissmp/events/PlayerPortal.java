@@ -19,7 +19,7 @@ public class PlayerPortal implements Listener {
             // Player already in the end - abort
             if (e.getFrom().getWorld().getName().equals("world_the_end")) { return; }
 
-            FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+            FileConfiguration config = GenesisSMP.getInstance().config;
             if (!config.getBoolean("EndSpawnPoint.enabled")) { return; }
 
             // Cancel the portal event and teleport the player instead because

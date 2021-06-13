@@ -25,9 +25,6 @@ import java.util.function.Predicate;
 
 public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
 
-    private String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
-    FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
@@ -35,6 +32,9 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
         User updatePlayer = GenesisSMP.getPlugin().api.getPlayerAdapter(Player.class).getUser(player);
 
         if (cmd.getName().equalsIgnoreCase("suffix")) {
+
+            String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+            FileConfiguration config = GenesisSMP.getInstance().config;
 
             if (args.length < 1) {
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /suffix <confirm|remove|set <suffix>>");

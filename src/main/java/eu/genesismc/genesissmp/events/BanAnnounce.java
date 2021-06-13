@@ -14,7 +14,7 @@ public class BanAnnounce implements Listener {
     @EventHandler
     public void onBan(BanEvent e) {
 
-        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        FileConfiguration config = GenesisSMP.getInstance().config;
         if (!config.getBoolean("BanAnnounce.enabled")) { return; }
 
         String baMsg = config.getString("BanAnnounce.message");

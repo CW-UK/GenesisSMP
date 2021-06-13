@@ -11,11 +11,12 @@ import java.util.Random;
 
 public class CreatureSpawn implements Listener {
 
-    FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-
     @EventHandler
     public void striderSpawn(CreatureSpawnEvent e) {
         if (e.getEntity() instanceof Strider && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+
+            FileConfiguration config = GenesisSMP.getInstance().config;
+
             if (!config.getBoolean("LimitStriders.enabled")) {
                 return;
             }
