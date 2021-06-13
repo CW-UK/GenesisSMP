@@ -1,6 +1,5 @@
 package eu.genesismc.genesissmp.events;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vex;
 import org.bukkit.event.EventHandler;
@@ -11,12 +10,8 @@ public class EntityTarget implements Listener {
 
     @EventHandler
     public void vexTarget(EntityTargetEvent e) {
-        Entity entity = e.getEntity();
-        Entity target = e.getTarget();
-        if (entity instanceof Vex && target instanceof Player) {
-            if (e.getReason() != EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) {
-                e.setCancelled(true);
-            }
+        if (e.getEntity() instanceof Vex && e.getTarget() instanceof Player) {
+            if (e.getReason() != EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) { e.setTarget(null); }
         }
     }
 
