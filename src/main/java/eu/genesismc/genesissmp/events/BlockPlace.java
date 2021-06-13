@@ -15,8 +15,6 @@ import java.util.Arrays;
 
 public class BlockPlace implements Listener {
 
-    private static BlockPlace instance;
-
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(final BlockPlaceEvent event) {
 
