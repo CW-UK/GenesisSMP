@@ -2,9 +2,8 @@ package eu.genesismc.genesissmp.managers;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
 
-public class ConfigManager implements Listener {
+public class ConfigManager {
 
     public FileConfiguration config = GenesisSMP.getPlugin().getConfig();
 
@@ -59,4 +58,5 @@ public class ConfigManager implements Listener {
         GenesisSMP.getPlugin().saveConfig();
 
     }
+
 }

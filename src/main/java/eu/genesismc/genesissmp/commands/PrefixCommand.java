@@ -1,6 +1,7 @@
 package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
+import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
@@ -82,32 +83,21 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                     return true;
                 }
                 if (GenesisSMP.getPlugin().waitingPrefix.get(player).equals("_remove")) {
-
-                    GenesisSMP.getPlugin().api.getUserManager().modifyUser(((Player) sender).getUniqueId(), user -> {
-                        Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
-                        updatePlayer.data().clear(removePrefix);
-                    });
-
+                    Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
+                    updatePlayer.data().clear(removePrefix);
                     GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been removed.");
                 }
                 else {
-
-                    GenesisSMP.getPlugin().api.getUserManager().modifyUser(((Player) sender).getUniqueId(), user -> {
-                        updatePlayer.data().remove(Node.builder("genesisprefix.donator.prefix").build());
-                        updatePlayer.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingPrefix.get(player), 61).build());
-                    });
-
-                    /*Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
+                    Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
                     updatePlayer.data().clear(removePrefix);
                     DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.prefix").build());
-                    DataMutateResult result2 = updatePlayer.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingPrefix.get(player), 61).build());*/
-
+                    DataMutateResult result2 = updatePlayer.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingPrefix.get(player), 61).build());
                     GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been set!");
                 }
-                //GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
-                //GenesisSMP.getPlugin().api.runUpdateTask();
+                GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
+                GenesisSMP.getPlugin().api.runUpdateTask();
                 return true;
             }
             if (args[0].equals("remove")) {

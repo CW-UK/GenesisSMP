@@ -15,10 +15,10 @@ import java.util.Arrays;
 
 public class BlockPlace implements Listener {
 
-    FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(final BlockPlaceEvent event) {
+
+        FileConfiguration config = GenesisSMP.getInstance().config;
 
         // TODO: Add bypass per block, e.g. blocklimit.bypass.all
         //       or blocklimit.bypass.SPAWNER etc.
@@ -35,7 +35,7 @@ public class BlockPlace implements Listener {
 
         if (chunkAmount + 1 > currentLimit) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.RED + "A per-chunk limit of " + ChatColor.WHITE + currentLimit + ChatColor.RED + " is in place for " + ChatColor.WHITE + type.toString().toLowerCase() + "s");
+            player.sendMessage(ChatColor.RED + "A limit of " + ChatColor.WHITE + currentLimit + ChatColor.RED + " per chunk is in place for " + ChatColor.WHITE + type.toString().toLowerCase() + "s");
         }
 
     }
