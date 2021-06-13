@@ -22,8 +22,6 @@ public class BlockPlace implements Listener {
 
         FileConfiguration config = GenesisSMP.getInstance().config;
 
-        // TODO: Add bypass per block, e.g. blocklimit.bypass.all
-        //       or blocklimit.bypass.SPAWNER etc.
         if (!config.getBoolean("BlockChunkLimit.enabled")) { return; }
         final Player player = event.getPlayer();
         if (player.hasPermission("genesissmp.blocklimit.bypass.all") || player.isOp()) { return; }
