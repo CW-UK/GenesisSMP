@@ -31,19 +31,13 @@ public class BlockPlace implements Listener {
         final Material type = block.getType();
         final Chunk chunk = block.getChunk();
         final int currentLimit = config.getInt("BlockChunkLimit.blocks." + event.getBlock().getType());
-        //final long chunkAmount = check(chunk, type);
         final long chunkAmount = Arrays.stream(chunk.getTileEntities()).filter(te -> te.getType() == type).count();
 
         if (chunkAmount + 1 > currentLimit) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.RED + "A per-chunk limit of " + ChatColor.WHITE + currentLimit + ChatColor.RED + " is in place for the block " + ChatColor.WHITE + type);
+            player.sendMessage(ChatColor.RED + "A per-chunk limit of " + ChatColor.WHITE + currentLimit + ChatColor.RED + " is in place for " + ChatColor.WHITE + type.toString().toLowerCase() + "s");
         }
 
     }
 
-    /*public static long check(final Chunk chunk, final Material material) {
-        return Arrays.stream(chunk.getTileEntities())
-                .filter(te -> te.getType() == material)
-                .count();
-    }*/
 }

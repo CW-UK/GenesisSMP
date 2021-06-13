@@ -96,9 +96,9 @@ public class PlotManager {
      */
     public void assignPlotToPlayer(int i, Player p) {
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-        config.set("Plots.Plot"+i+".Owner", p.getUniqueId());
+        config.set("Plots.Plot"+i+".Owner", p.getUniqueId().toString());
         config.set("Plots.Plot"+i+".Locked", true);
-        config.set("Plots.InPlot." + p.getUniqueId(), i);
+        config.set("Plots.InPlot." + p.getUniqueId().toString(), i);
         GenesisSMP.getPlugin().saveConfig();
     }
 
@@ -110,7 +110,7 @@ public class PlotManager {
      */
     public boolean hasAssignedPlot(UUID u) {
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-        if (config.contains("Plots.InPlot."+u)) {
+        if (config.contains("Plots.InPlot."+u.toString())) {
             return true;
         }
         return false;
@@ -124,7 +124,7 @@ public class PlotManager {
      */
     public int getAssignedPlot(UUID u) {
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-        return config.getInt("Plots.InPlot."+u);
+        return config.getInt("Plots.InPlot."+u.toString());
     }
 
     /**
