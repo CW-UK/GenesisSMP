@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 public class WorldGuardManager {
 
     public static final StateFlag CREATIVE_PLOT = new StateFlag("creative-plot", false);
+    public static final StateFlag INVENTORY_DROP = new StateFlag("inventory-drop", false);
     public boolean registered = false;
     private static WorldGuardManager instance;
 
@@ -30,6 +31,7 @@ public class WorldGuardManager {
             FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
             try {
                 registry.register(CREATIVE_PLOT);
+                registry.register(INVENTORY_DROP);
                 Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > WorldGuard flags registered successfully.");
                 registered = true;
             } catch (FlagConflictException e) {
@@ -52,6 +54,14 @@ public class WorldGuardManager {
     public boolean blockIsCreativePlot(Location loc) {
         if (loc == null) { return false; }
         return StateFlag.test(WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().queryState(BukkitAdapter.adapt(loc), (RegionAssociable) null, CREATIVE_PLOT));
+    }
+
+    public boolean regionHasInvDrop(Player player) {
+        if (player == null) { return false; }
+        BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
+        com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), INVENTORY_DROP); // not for boolean flag
     }
 
 
