@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -115,6 +116,14 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
             Bukkit.getLogger().info(ChatColor.RED + "GenesisSMP > Could not connect to LuckPerms API.");
         }
 
+        // register BlockChunkLimit blocks and generate permission nodes
+        try {
+            for (String key : config.getConfigurationSection("BlockChunkLimit.blocks").getKeys(false)) {
+                Bukkit.getPluginManager().addPermission(new Permission("genesissmp.blocklimit.bypass." + key));
+            }
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().info("GenesisSMP: Failed to get list from BlockChunkLimit in config.");
+        }
     }
 
 }

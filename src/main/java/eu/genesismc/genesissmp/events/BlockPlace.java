@@ -15,6 +15,8 @@ import java.util.Arrays;
 
 public class BlockPlace implements Listener {
 
+    private static BlockPlace instance;
+
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(final BlockPlaceEvent event) {
 
@@ -24,9 +26,9 @@ public class BlockPlace implements Listener {
         //       or blocklimit.bypass.SPAWNER etc.
         if (!config.getBoolean("BlockChunkLimit.enabled")) { return; }
         final Player player = event.getPlayer();
-        if (player.hasPermission("genesissmp.blocklimit.bypass") || player.isOp()) { return; }
+        if (player.hasPermission("genesissmp.blocklimit.bypass.all") || player.isOp()) { return; }
         final Block block = event.getBlock();
-        if (!config.contains("BlockChunkLimit.blocks." + block.getType())) { return; }
+        if (!config.contains("BlockChunkLimit.blocks." + block.getType()) || player.hasPermission("genesissmp.blocklimit.bypass." + block.getType())) { return; }
 
         final Material type = block.getType();
         final Chunk chunk = block.getChunk();

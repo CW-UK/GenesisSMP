@@ -76,6 +76,6 @@ permissions:
     default: op
     description: Allows locking of plot/plots to prevent users accessing.
 
-  genesissmp.blocklimit.bypass:
+  genesissmp.blocklimit.bypass.all:
     default: op
     description: Allows bypassing of block place limits.
