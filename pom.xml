@@ -68,9 +68,9 @@
     <dependency>
       <groupId>ultrapunishments.com</groupId>
       <artifactId>ultrapunishments</artifactId>
-      <version>1.7.6</version>
+      <version>1.7.8</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/UltraPunishments-1.7.6.jar</systemPath>
+      <systemPath>${project.basedir}/src/main/resources/UltraPunishments-1.7.8.jar</systemPath>
     </dependency>
     <!--<dependency>
       <groupId>com.destroystokyo.paper</groupId>

@@ -18,7 +18,7 @@ public class BanAnnounce implements Listener {
         if (!config.getBoolean("BanAnnounce.enabled")) { return; }
 
         String baMsg = config.getString("BanAnnounce.message");
-        Boolean strike = config.getBoolean("BanAnnounce.strike");
+        boolean strike = config.getBoolean("BanAnnounce.strike");
         int qty = config.getInt("BanAnnounce.strike-amount");
         Player pOn = (Player) e.getPlayer();
 
@@ -33,10 +33,6 @@ public class BanAnnounce implements Listener {
             }
         }
 
-    }
-
-    public Float getFloat(String str) {
-        try { return Float.valueOf(str); } catch (Exception e) { return 1.0F; }
     }
 
 }
