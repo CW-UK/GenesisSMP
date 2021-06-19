@@ -1,14 +1,11 @@
 package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
-import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
-import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.SuffixNode;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +18,6 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
 
@@ -83,23 +79,18 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                     return true;
                 }
                 if (GenesisSMP.getPlugin().waitingSuffix.get(player).equals("_remove")) {
-                    Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
-                    updatePlayer.data().clear(removeSuffix);
+                    /*Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
+                    updatePlayer.data().clear(removeSuffix);*/
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " removesuffix 1");
                     GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been removed.");
                 }
                 else {
-
-                    /*GenesisSMP.getPlugin().api.getUserManager().modifyUser(((Player) sender).getUniqueId(), user -> {
-                        user.data().remove(Node.builder("genesisprefix.donator.suffix").build());
-                        user.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingSuffix.get(player), 1).build());
-                    });*/
-
-                    Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
+                    /*Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
                     updatePlayer.data().clear(removeSuffix);
                     DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.suffix").build());
-                    DataMutateResult result2 = updatePlayer.data().add(SuffixNode.builder(GenesisSMP.getPlugin().waitingSuffix.get(player), 1).build());
-
+                    DataMutateResult result2 = updatePlayer.data().add(SuffixNode.builder(GenesisSMP.getPlugin().waitingSuffix.get(player), 1).build());*/
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " setsuffix 1 " + GenesisSMP.getPlugin().waitingSuffix.get(player));
                     GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been set!");
                 }

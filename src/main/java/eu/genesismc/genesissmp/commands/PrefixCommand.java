@@ -1,14 +1,11 @@
 package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
-import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
-import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.PrefixNode;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +18,6 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
 
@@ -83,16 +79,18 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                     return true;
                 }
                 if (GenesisSMP.getPlugin().waitingPrefix.get(player).equals("_remove")) {
-                    Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
-                    updatePlayer.data().clear(removePrefix);
+                    /*Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
+                    updatePlayer.data().clear(removePrefix);*/
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " removeprefix 61");
                     GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been removed.");
                 }
                 else {
-                    Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
+                    /*Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
                     updatePlayer.data().clear(removePrefix);
                     DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.prefix").build());
-                    DataMutateResult result2 = updatePlayer.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingPrefix.get(player), 61).build());
+                    DataMutateResult result2 = updatePlayer.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingPrefix.get(player), 61).build());*/
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " setprefix 61 " + GenesisSMP.getPlugin().waitingPrefix.get(player));
                     GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been set!");
                 }
