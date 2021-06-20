@@ -19,11 +19,13 @@ public class BlockPlace implements Listener {
     public void onBlockPlace(final BlockPlaceEvent event) {
 
         FileConfiguration config = GenesisSMP.getInstance().config;
-
         if (!config.getBoolean("BlockChunkLimit.enabled")) { return; }
+
         final Player player = event.getPlayer();
-        if (player.hasPermission("genesissmp.blocklimit.bypass.all") || player.isOp()) { return; }
         final Block block = event.getBlock();
+
+        if (player.getWorld().getName().equals("smphub")) { return; }
+        if (player.hasPermission("genesissmp.blocklimit.bypass.all") || player.isOp()) { return; }
         if (!config.contains("BlockChunkLimit.blocks." + block.getType()) || player.hasPermission("genesissmp.blocklimit.bypass." + block.getType())) { return; }
 
         final Material type = block.getType();
