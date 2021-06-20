@@ -12,46 +12,47 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <source>16</source>
-              <target>16</target>
-          </configuration>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>16</source>
+          <target>16</target>
+        </configuration>
       </plugin>
-  </plugins>
+    </plugins>
   </build>
-    <repositories>
-      <repository>
-        <id>spigot-repo</id>
-        <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
-      </repository>
-      <repository>
-        <id>sk89q-repo</id>
-        <url>https://maven.sk89q.com/repo/</url>
-      </repository>
-      <repository>
-        <id>enginehub-repo</id>
-        <url>https://maven.enginehub.org/repo/</url>
-      </repository>
-      <repository>
-        <id>papermc</id>
-        <url>https://papermc.io/repo/repository/maven-public/</url>
-      </repository>
+  <repositories>
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
+    </repository>
+    <repository>
+      <id>sk89q-repo</id>
+      <url>https://maven.sk89q.com/repo/</url>
+    </repository>
+    <repository>
+      <id>enginehub-repo</id>
+      <url>https://maven.enginehub.org/repo/</url>
+    </repository>
+    <repository>
+      <id>papermc</id>
+      <url>https://papermc.io/repo/repository/maven-public/</url>
+    </repository>
   </repositories>
   <dependencies>
-     <dependency>
-       <groupId>org.spigotmc</groupId>
-       <artifactId>spigot-api</artifactId>
-       <version>1.16.5-R0.1-SNAPSHOT</version>
-       <type>jar</type>
-       <scope>provided</scope>
-     </dependency>
-     <dependency>
-       <groupId>net.luckperms</groupId>
-       <artifactId>api</artifactId>
-       <version>5.2</version>
-       <scope>provided</scope>
-     </dependency>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.16.5-R0.1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.luckperms</groupId>
+      <artifactId>api</artifactId>
+      <version>5.2</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>com.sk89q.worldguard</groupId>
       <artifactId>worldguard-bukkit</artifactId>
@@ -71,6 +72,13 @@
       <version>1.7.8</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/src/main/resources/UltraPunishments-1.7.8.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>bukkit.enjin.com</groupId>
+      <artifactId>enjinminecraftplugin</artifactId>
+      <version>3.5.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/resources/EnjinMinecraftPlugin.jar</systemPath>
     </dependency>
     <!--<dependency>
       <groupId>com.destroystokyo.paper</groupId>
