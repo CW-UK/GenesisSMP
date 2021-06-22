@@ -4,7 +4,7 @@ version: 2.2
 author: CW_UK
 api-version: 1.16
 depend: [LuckPerms, Essentials, WorldGuard, WorldEdit, UltraPunishments]
-softdepend: []
+softdepend: [EnjinMinecraftPlugin]
 
 commands:
   prefix:
