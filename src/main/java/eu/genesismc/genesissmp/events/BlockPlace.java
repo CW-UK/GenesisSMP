@@ -15,6 +15,11 @@ import java.util.Arrays;
 
 public class BlockPlace implements Listener {
 
+    //GenesisSMP plugin;
+    //public BlockPlace(GenesisSMP plugin) {
+    //    this.plugin = plugin;
+    //}
+
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(final BlockPlaceEvent event) {
 
