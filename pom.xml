@@ -44,7 +44,6 @@
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
       <version>1.16.5-R0.1-SNAPSHOT</version>
-      <type>jar</type>
       <scope>provided</scope>
     </dependency>
     <dependency>
