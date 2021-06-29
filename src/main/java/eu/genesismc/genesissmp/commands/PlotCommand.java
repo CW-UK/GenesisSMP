@@ -1,3 +1,4 @@
+/*
 package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
@@ -214,3 +215,4 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
 
 
 }
+*/

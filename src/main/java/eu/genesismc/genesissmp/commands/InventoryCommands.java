@@ -1,4 +1,6 @@
+/*
 package eu.genesismc.genesissmp.commands;
+
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import eu.genesismc.genesissmp.Utils;
@@ -104,3 +106,4 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
     }
 
 }
+*/
