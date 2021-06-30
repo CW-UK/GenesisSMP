@@ -69,8 +69,8 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new PrefixCommand(), this);
         pm.registerEvents(new SuffixCommand(), this);
         pm.registerEvents(new AdminCommand(), this);
-        //pm.registerEvents(new PlotCommand(), this);
-        //pm.registerEvents(new InventoryCommands(), this);
+        pm.registerEvents(new PlotCommand(), this);
+        pm.registerEvents(new InventoryCommands(), this);
         pm.registerEvents(new EntityPickupItem(), this);
         pm.registerEvents(new CreatureSpawn(), this);
         pm.registerEvents(new PlayerPortal(), this);
@@ -82,8 +82,8 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new PlayerDeath(), this);
         pm.registerEvents(new HangingBreak(), this);
         pm.registerEvents(new AnvilInventory(), this);
-        // pm.registerEvents(new ChatFilter(), this);
-        // pm.registerEvents(new PreventBlockXray(), this);
+        //pm.registerEvents(new ChatFilter(), this);
+        //pm.registerEvents(new PreventBlockXray(), this);
 
         // command handlers
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Registering command handlers..");
@@ -95,10 +95,10 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("clearcrate").setTabCompleter(new ClearCrate());
         this.getCommand("gsmp").setExecutor(new AdminCommand());
         this.getCommand("gsmp").setTabCompleter(new AdminCommand());
-        //this.getCommand("invman").setExecutor(new InventoryCommands());
-        //this.getCommand("invman").setTabCompleter(new InventoryCommands());
-        //this.getCommand("plot").setExecutor(new PlotCommand());
-        //this.getCommand("plot").setTabCompleter(new PlotCommand());
+        this.getCommand("invman").setExecutor(new InventoryCommands());
+        this.getCommand("invman").setTabCompleter(new InventoryCommands());
+        this.getCommand("plot").setExecutor(new PlotCommand());
+        this.getCommand("plot").setTabCompleter(new PlotCommand());
 
         // WorldGuard check
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into WorldGuard..");
