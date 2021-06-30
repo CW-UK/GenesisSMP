@@ -55,6 +55,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + " Spawn point for The End has been changed.");
                 return true;
             }
+            return true;
         }
 
         return false;
