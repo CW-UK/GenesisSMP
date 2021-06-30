@@ -242,22 +242,24 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 }
                 else {
                     commands = Arrays.asList(
-                            "CopperBlock",
-                            "CrimsonNylium",
+                            "Copper_Block",
+                            "Crimson_Nylium",
                             "Deepslate",
-                            "DeepslateBricks",
-                            "DeepslateTiles",
-                            "DripstoneBlock",
-                            "GrassBlock",
+                            "Deepslate_Bricks",
+                            "Deepslate_Tiles",
+                            "Dripstone_Block",
+                            "Flowering_Azalea",
+                            "Grass_Block",
                             "Lava",
+                            "Moss_Block",
                             "Netherrack",
-                            "PolishedDeepslate",
-                            "RootedDirt",
+                            "Polished_Deepslate",
+                            "Rooted_Dirt",
                             "Sand",
                             "Snow",
                             "Stone",
                             "Tuff",
-                            "WarpedNylium",
+                            "Warped_Nylium",
                             "Water"
                     );
                 }
