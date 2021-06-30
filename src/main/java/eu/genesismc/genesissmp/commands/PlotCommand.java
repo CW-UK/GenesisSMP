@@ -1,4 +1,3 @@
-/*
 package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
@@ -101,6 +100,30 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 return true;
             }
 
+            // ****************
+            //    CLEAR PLOT
+            // ****************
+            if (args[0].equalsIgnoreCase("clear")) {
+                try {
+                    plotManager.clearPlot(1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+
+            // *****************
+            //   FLOOR COMMAND
+            // *****************
+            if (args[0].equalsIgnoreCase("floor")) {
+                try {
+                    Bukkit.getLogger().info("ATTEMPT1: Trying to set floor to " + args[1].toLowerCase());
+                    plotManager.plotFloor(args[1]);
+                } catch (IOException e) {
+                    sender.sendMessage(pluginPrefix + "Invalid floor option.");
+                }
+                return true;
+            }
 
             // ****************
             //    LOCK PLOT
@@ -200,13 +223,45 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("plot")) {
+            Bukkit.getLogger().info("Arg0: " + args[0]);
             if (args.length == 1) {
-                final List<String> commands = Arrays.asList("enter", "leave", "lock", "unlock");
+                final List<String> commands = Arrays.asList(
+                        "clear",
+                        "enter",
+                        "floor",
+                        "leave",
+                        "lock",
+                        "unlock"
+                );
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             }
             if (args.length == 2) {
-                final List<String> commands = Arrays.asList("1","2","3","4","5","6","7","8");
-                return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
+                final List<String> commands;
+                if (!args[0].equalsIgnoreCase("floor")) {
+                    commands = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
+                }
+                else {
+                    commands = Arrays.asList(
+                            "CopperBlock",
+                            "CrimsonNylium",
+                            "Deepslate",
+                            "DeepslateBricks",
+                            "DeepslateTiles",
+                            "DripstoneBlock",
+                            "GrassBlock",
+                            "Lava",
+                            "Netherrack",
+                            "PolishedDeepslate",
+                            "RootedDirt",
+                            "Sand",
+                            "Snow",
+                            "Stone",
+                            "Tuff",
+                            "WarpedNylium",
+                            "Water"
+                    );
+                }
+                return StringUtil.copyPartialMatches(args[1], commands, new ArrayList<>());
             }
             return null;
         }
@@ -215,4 +270,4 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
 
 
 }
-*/
+

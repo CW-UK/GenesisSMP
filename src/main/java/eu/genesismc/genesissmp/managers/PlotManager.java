@@ -1,10 +1,26 @@
 package eu.genesismc.genesissmp.managers;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.session.ClipboardHolder;
 import eu.genesismc.genesissmp.GenesisSMP;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 public class PlotManager {
@@ -147,6 +163,51 @@ public class PlotManager {
     public Location getTeleportOut(int i) {
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
         return config.getLocation("Plots.Plot"+i+".TeleportOut");
+    }
+
+    public void clearPlot(int plotNumber) throws IOException {
+
+        com.sk89q.worldedit.world.World world = BukkitAdapter.adapt(Bukkit.getWorld("smphub"));
+        File file = new File("plugins/GenesisSMP/schematics/plot-air.schem");
+        ClipboardFormat format = ClipboardFormats.findByFile(file);
+
+        try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
+            Clipboard clipboard = reader.read();
+            try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1)) {
+                Operation operation = new ClipboardHolder(clipboard)
+                        .createPaste(editSession)
+                        .to(BlockVector3.at(85, 13, 124))
+                        .ignoreAirBlocks(false)
+                        .build();
+                Operations.complete(operation);
+            } catch (WorldEditException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void plotFloor(String choice) throws IOException {
+
+        Bukkit.getLogger().info("ATTEMPT2: Trying to set floor to " + choice.toLowerCase());
+        com.sk89q.worldedit.world.World world = BukkitAdapter.adapt(Bukkit.getWorld("smphub"));
+        File file = new File("plugins/GenesisSMP/schematics/floor-" + choice.toLowerCase() + ".schem");
+        ClipboardFormat format = ClipboardFormats.findByFile(file);
+
+        try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
+            Clipboard clipboard = reader.read();
+            try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1)) {
+                Operation operation = new ClipboardHolder(clipboard)
+                        .createPaste(editSession)
+                        .to(BlockVector3.at(85, 14, 124))
+                        .ignoreAirBlocks(false)
+                        .build();
+                Operations.complete(operation);
+            } catch (WorldEditException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }
