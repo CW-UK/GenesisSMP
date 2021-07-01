@@ -52,7 +52,29 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 GenesisSMP.getPlugin().saveConfig();
                 GenesisSMP.getPlugin().reloadConfig();
                 GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
-                sender.sendMessage(pluginPrefix + ChatColor.GREEN + " Spawn point for The End has been changed.");
+                sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Spawn point for The End has been changed.");
+                return true;
+            }
+            if (args[0].equals("setplotcenter") && sender.isOp()) {
+                if (args.length < 2) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "You need to specify a plot number!");
+                    return true;
+                }
+                Player p = (Player) sender;
+                int plot = Integer.parseInt(args[1]);
+                int x = (int) p.getLocation().getX();
+                int y = (int) p.getLocation().getY();
+                int z = (int) p.getLocation().getZ();
+                config.set("Plots.Plot"+plot+".ClearX", x);
+                config.set("Plots.Plot"+plot+".ClearY", y);
+                config.set("Plots.Plot"+plot+".ClearZ", z);
+                config.set("Plots.Plot"+plot+".FloorX", x);
+                config.set("Plots.Plot"+plot+".FloorY", y+1);
+                config.set("Plots.Plot"+plot+".FloorZ", z);
+                GenesisSMP.getPlugin().saveConfig();
+                GenesisSMP.getPlugin().reloadConfig();
+                GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
+                sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Plot " + plot + " has been updated with new coordinates.");
                 return true;
             }
             return true;
@@ -65,7 +87,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gsmp")) {
             if (args.length == 1) {
-                final List<String> commands = Arrays.asList("reload", "setendspawn");
+                final List<String> commands = Arrays.asList("reload", "setendspawn", "setplotcenter");
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             }
             return null;
