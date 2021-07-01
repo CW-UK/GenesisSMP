@@ -277,20 +277,6 @@ public class PlotManager {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 4 &f");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 5 &f&oClaim this plot with");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 &f&o/plot enter " + plot);
-        // get plot sign location
-        /*World world = Bukkit.getWorld("smphub");
-        if (world != null) {
-            int signX = plotSignLocation("X", plot);
-            int signY = plotSignLocation("Y", plot);
-            int signZ = plotSignLocation("Z", plot);
-            Block block = world.getBlockAt(signX, signY, signZ);
-            BlockState state = block.getState();
-            if (!(state instanceof Sign)) { return; }
-            Sign sign = (Sign) state;
-            sign.setLine(1, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "AVAILABLE");
-            sign.setLine(2, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "TO CLAIM");
-            sign.update();
-        }*/
     }
 
 }
