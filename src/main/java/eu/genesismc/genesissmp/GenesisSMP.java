@@ -3,6 +3,7 @@ package eu.genesismc.genesissmp;
 import eu.genesismc.genesissmp.commands.*;
 import eu.genesismc.genesissmp.events.*;
 import eu.genesismc.genesissmp.managers.ConfigManager;
+import eu.genesismc.genesissmp.managers.PlaceholderManager;
 import eu.genesismc.genesissmp.managers.WorldGuardManager;
 import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
@@ -56,6 +57,10 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         // plugin variables
         plugin = this;
         utils = new Utils();
+
+        // Placeholders
+        Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into PlaceholderAPI..");
+        new PlaceholderManager().register();
 
         // config initialisation
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Loading configuration..");
