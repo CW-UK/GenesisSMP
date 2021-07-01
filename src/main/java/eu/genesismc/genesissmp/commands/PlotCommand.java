@@ -96,6 +96,11 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             // ****************
             if (args[0].equalsIgnoreCase("leave")) {
 
+                if (!plotManager.hasAssignedPlot(player.getUniqueId())) {
+                    sender.sendMessage(pluginPrefix + "You do not have a plot assigned.");
+                    return true;
+                }
+
                 int plot = plotManager.getAssignedPlot(player.getUniqueId());
                 // Remove player from plot members
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + playerName);
@@ -114,6 +119,8 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory could not be restored! (IO Error)");
                     e.printStackTrace();
                 }
+
+                sender.sendMessage(pluginPrefix + ChatColor.GREEN + "You have been successfully removed from Plot " + plot);
 
                 return true;
             }

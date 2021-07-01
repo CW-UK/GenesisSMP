@@ -13,13 +13,8 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import eu.genesismc.genesissmp.GenesisSMP;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -116,9 +111,11 @@ public class PlotManager {
      * @param p Player object
      */
     public void assignPlotToPlayer(int i, Player p) {
+        int twentyFourHours = 86400000;
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
         config.set("Plots.Plot"+i+".Owner", p.getUniqueId().toString());
         config.set("Plots.Plot"+i+".Locked", true);
+        config.set("Plots.Plot"+i+".Expires", System.currentTimeMillis() + twentyFourHours);
         config.set("Plots.InPlot." + p.getUniqueId().toString(), i);
         GenesisSMP.getPlugin().saveConfig();
     }
@@ -130,9 +127,9 @@ public class PlotManager {
      */
     public void unassignPlotFromPlayer(int i, Player p) {
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-        config.set("Plots.Plot"+i+".Owner", "");
+        config.set("Plots.Plot"+i+".Owner", null);
         config.set("Plots.Plot"+i+".Locked", false);
-        config.set("Plots.InPlot." + p.getUniqueId().toString(), "");
+        config.set("Plots.InPlot." + p.getUniqueId().toString(), null);
         GenesisSMP.getPlugin().saveConfig();
     }
 
@@ -188,12 +185,16 @@ public class PlotManager {
      * Returns int
      * @param coord X,Y,Z
      * @param plot int
-     * @param floor boolean
+     * @param isFloor boolean
      * @return Location
      */
     public int plotCenter(String coord, int plot, boolean isFloor) {
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-        return isFloor ? config.getInt("Plots.Plot"+plot+".Center"+coord)+1 : config.getInt("Plots.Plot"+plot+".Center"+coord);
+        if (isFloor && coord.equals("Y")) {
+            return config.getInt("Plots.Plot" + plot + ".Center" + coord) + 1;
+        } else {
+            return config.getInt("Plots.Plot"+plot+".Center"+coord);
+        }
     }
 
     /**
@@ -208,6 +209,12 @@ public class PlotManager {
         return config.getInt("Plots.Plot"+plot+".Sign"+coord);
     }
 
+    public long getTimeUntilExpiry(int plot) {
+        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        //TODO: Check in here if expiry time is <0 to expire the plot and remove the current owner.
+        return System.currentTimeMillis() - config.getLong("Plots.Plot"+plot+".Expires");
+    }
+
     public void clearPlot(int plotNumber) throws IOException {
 
         com.sk89q.worldedit.world.World world = BukkitAdapter.adapt(Bukkit.getWorld("smphub"));
@@ -216,9 +223,9 @@ public class PlotManager {
 
         try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             Clipboard clipboard = reader.read();
-            int clearX = plotCenter("x", plotNumber, false);
-            int clearY = plotCenter("y", plotNumber, false);
-            int clearZ = plotCenter("z", plotNumber, false);
+            int clearX = plotCenter("X", plotNumber, false);
+            int clearY = plotCenter("Y", plotNumber, false);
+            int clearZ = plotCenter("Z", plotNumber, false);
             try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1)) {
                 Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
@@ -238,16 +245,16 @@ public class PlotManager {
         com.sk89q.worldedit.world.World world = BukkitAdapter.adapt(Bukkit.getWorld("smphub"));
         File file = new File("plugins/GenesisSMP/schematics/floor-" + choice.toLowerCase() + ".schem");
         ClipboardFormat format = ClipboardFormats.findByFile(file);
-        int floorX = plotCenter("x", plotNumber, true);
-        int floorY = plotCenter("y", plotNumber, true);
-        int floorZ = plotCenter("z", plotNumber, true);
+        int floorX = plotCenter("X", plotNumber, true);
+        int floorY = plotCenter("Y", plotNumber, true);
+        int floorZ = plotCenter("Z", plotNumber, true);
 
         try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             Clipboard clipboard = reader.read();
             try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1)) {
                 Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
-                        .to(BlockVector3.at(85, 14, 124))
+                        .to(BlockVector3.at(floorX, floorY, floorZ))
                         .ignoreAirBlocks(false)
                         .build();
                 Operations.complete(operation);
@@ -259,37 +266,31 @@ public class PlotManager {
     }
 
     public void plotSignClaimed(Player player, int plot) {
-        // get plot sign location
-        World world = Bukkit.getWorld("smphub");
-        if (world != null) {
-            int signX = plotSignLocation("x", plot);
-            int signY = plotSignLocation("y", plot);
-            int signZ = plotSignLocation("z", plot);
-            Block block = world.getBlockAt(signX, signY, signZ);
-            BlockState state = block.getState();
-            if (!(state instanceof Sign)) { return; }
-            Sign sign = (Sign) state;
-            sign.setLine(1, ChatColor.RED + "" + ChatColor.BOLD + "CLAIMED");
-            sign.setLine(2, player.getName());
-            sign.update();
-        }
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 3 &c&lClaimed");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 4 " + player.getName());
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 5 &f");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {medium}&e%plots_expiry_"+plot+"%");
     }
 
     public void plotSignExpired(int plot) {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 3 &a&lAvailable");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 4 &f");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 5 &f&oClaim this plot with");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 &f&o/plot enter " + plot);
         // get plot sign location
-        World world = Bukkit.getWorld("smphub");
+        /*World world = Bukkit.getWorld("smphub");
         if (world != null) {
-            int signX = plotSignLocation("x", plot);
-            int signY = plotSignLocation("y", plot);
-            int signZ = plotSignLocation("z", plot);
-            Block block = world.getBlockAt(85, 17, 151);
+            int signX = plotSignLocation("X", plot);
+            int signY = plotSignLocation("Y", plot);
+            int signZ = plotSignLocation("Z", plot);
+            Block block = world.getBlockAt(signX, signY, signZ);
             BlockState state = block.getState();
             if (!(state instanceof Sign)) { return; }
             Sign sign = (Sign) state;
             sign.setLine(1, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "AVAILABLE");
             sign.setLine(2, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "TO CLAIM");
             sign.update();
-        }
+        }*/
     }
 
 }
