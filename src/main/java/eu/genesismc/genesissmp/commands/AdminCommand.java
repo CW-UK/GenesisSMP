@@ -2,8 +2,6 @@ package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -77,28 +75,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Plot " + plot + " has been updated with new coordinates.");
                 return true;
             }
-            if (args[0].equals("setplotsign") && sender.isOp()) {
-                if (args.length < 2) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "You need to specify a plot number!");
-                    return true;
-                }
-                Player p = (Player) sender;
-                Block signBlock = p.getTargetBlock(null, 10);
-                if (!(signBlock instanceof Sign)) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "You need to look at a sign before setting.");
-                    return true;
-                }
-                int plot = Integer.parseInt(args[1]);
-                int x = (int) signBlock.getLocation().getX();
-                int y = (int) signBlock.getLocation().getY();
-                int z = (int) signBlock.getLocation().getZ();
-                config.set("Plots.Plot"+plot+".SignX", x);
-                config.set("Plots.Plot"+plot+".SignY", y);
-                config.set("Plots.Plot"+plot+".SignZ", z);
-                reloadConfig();
-                sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Plot " + plot + "'s sign has been updated with new coordinates.");
-                return true;
-            }
+
             return true;
         }
 
@@ -109,11 +86,11 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gsmp")) {
             if (args.length == 1) {
-                final List<String> commands = Arrays.asList("reload", "setendspawn", "setplotcenter", "setplotsign");
+                final List<String> commands = Arrays.asList("reload", "setendspawn", "setplotcenter");
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             }
             if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("setplotcenter") || args[0].equalsIgnoreCase("setplotsign")) {
+                if (args[0].equalsIgnoreCase("setplotcenter")) {
                     final List<String> commands = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
                     return StringUtil.copyPartialMatches(args[1], commands, new ArrayList<>());
                 }
