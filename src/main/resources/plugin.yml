@@ -3,7 +3,7 @@ main: eu.genesismc.genesissmp.GenesisSMP
 version: 2.2
 author: CW_UK
 api-version: 1.16
-depend: [LuckPerms, Essentials, WorldGuard, WorldEdit, UltraPunishments]
+depend: [LuckPerms, Essentials, WorldGuard, WorldEdit, UltraPunishments, PlaceholderAPI]
 softdepend: [EnjinMinecraftPlugin]
 
 commands:
