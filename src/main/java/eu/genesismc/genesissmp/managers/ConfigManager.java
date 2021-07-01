@@ -48,6 +48,7 @@ public class ConfigManager {
         config.addDefault("BanAnnounce.pitch", 1.0F);
 
         config.addDefault("Plots.Locked", false);
+        config.addDefault("Plots.ExpiryTime", 86400000);
         for (int x = 1; x <= 8; x++) {
             config.addDefault("Plots.Plot"+x+".Owner", null);
             config.addDefault("Plots.Plot"+x+".TimeLeave", null);

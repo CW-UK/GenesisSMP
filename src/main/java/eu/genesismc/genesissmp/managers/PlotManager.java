@@ -111,11 +111,11 @@ public class PlotManager {
      * @param p Player object
      */
     public void assignPlotToPlayer(int i, Player p) {
-        int twentyFourHours = 86400000;
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        long timeToExpire = config.getLong("Plots.ExpiryTime");
         config.set("Plots.Plot"+i+".Owner", p.getUniqueId().toString());
         config.set("Plots.Plot"+i+".Locked", true);
-        config.set("Plots.Plot"+i+".Expires", System.currentTimeMillis() + twentyFourHours);
+        config.set("Plots.Plot"+i+".Expires", System.currentTimeMillis() + timeToExpire);
         config.set("Plots.InPlot." + p.getUniqueId().toString(), i);
         GenesisSMP.getPlugin().saveConfig();
     }
@@ -195,18 +195,6 @@ public class PlotManager {
         } else {
             return config.getInt("Plots.Plot"+plot+".Center"+coord);
         }
-    }
-
-    /**
-     * Get specified coordinate of plot sign
-     * Returns int
-     * @param coord X,Y,Z
-     * @param plot int
-     * @return Location
-     */
-    public int plotSignLocation(String coord, int plot) {
-        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
-        return config.getInt("Plots.Plot"+plot+".Sign"+coord);
     }
 
     public long getTimeUntilExpiry(int plot) {
