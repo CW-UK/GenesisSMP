@@ -36,6 +36,11 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 return true;
             }
 
+            if (args[0].equalsIgnoreCase("expire")) {
+                plotManager.expirePlot(Integer.parseInt(args[1]));
+                return true;
+            }
+
             // ****************
             //    ENTER PLOT
             // ****************
@@ -60,6 +65,11 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
 
                     if (plotManager.plotIsLocked(plotNumber)) {
                         sender.sendMessage(pluginPrefix + "This plot has been locked by an administrator.");
+                        return true;
+                    }
+
+                    if (plotManager.allPlotsLocked()) {
+                        sender.sendMessage(pluginPrefix + "All plots are currently locked by an administrator.");
                         return true;
                     }
 
@@ -106,7 +116,6 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + playerName);
                 // Remove player from config for the plot
                 plotManager.unassignPlotFromPlayer(plot, player);
-                plotManager.plotSignClaimed(player, plot);
                 plotManager.plotSignExpired(plot);
 
                 // Restore inventory
@@ -176,12 +185,21 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 }
 
                 if (args.length < 2) {
-                    sender.sendMessage(pluginPrefix + "You need to specify a plot number: /plot lock <x>");
+                    sender.sendMessage(pluginPrefix + "You need to specify a plot number: /plot lock <x|all>");
                     return true;
                 }
 
                 if (plotManager.allPlotsLocked()) {
                     sender.sendMessage(pluginPrefix + "All plots are currently locked.");
+                    return true;
+                }
+
+                if (args[1].equalsIgnoreCase("all")) {
+                    if (plotManager.lockAllPlots()) {
+                        sender.sendMessage(pluginPrefix + "All unclaimed plots have been locked.");
+                        return true;
+                    }
+                    sender.sendMessage(pluginPrefix + "Something went wrong trying to lock all unclaimed plots.");
                     return true;
                 }
 
@@ -221,12 +239,16 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 }
 
                 if (args.length < 2) {
-                    sender.sendMessage(pluginPrefix + "You need to specify a plot number: /plot unlock <x>");
+                    sender.sendMessage(pluginPrefix + "You need to specify a plot number: /plot unlock <x|all>");
                     return true;
                 }
 
-                if (plotManager.allPlotsLocked()) {
-                    sender.sendMessage(pluginPrefix + "All plots are currently locked.");
+                if (args[1].equalsIgnoreCase("all")) {
+                    if (plotManager.unlockAllPlots()) {
+                        sender.sendMessage(pluginPrefix + "All unclaimed plots have been unlocked.");
+                        return true;
+                    }
+                    sender.sendMessage(pluginPrefix + "Something went wrong trying to unlock all unclaimed plots.");
                     return true;
                 }
 
@@ -235,6 +257,11 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     int plotNumber = Integer.parseInt(args[1]);
                     if (plotNumber > 8 || plotNumber < 1) {
                         sender.sendMessage(pluginPrefix + "You need to specify a plot between 1 and 8 inclusive.");
+                        return true;
+                    }
+
+                    if (plotManager.allPlotsLocked()) {
+                        sender.sendMessage(pluginPrefix + "You cannot unlock individual plots while all plots are locked.");
                         return true;
                     }
 
@@ -264,20 +291,33 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("plot")) {
             if (args.length == 1) {
-                final List<String> commands = Arrays.asList(
+                List<String> commands = Arrays.asList(
                         "clear",
                         "enter",
                         "floor",
-                        "leave",
-                        "lock",
-                        "unlock"
+                        "leave"
                 );
+                if (commandSender.isOp() || commandSender.hasPermission("genesissmp.plots.lock")) {
+                    commands = Arrays.asList(
+                            "clear",
+                            "enter",
+                            "floor",
+                            "leave",
+                            "lock",
+                            "unlock"
+                    );
+                }
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             }
             if (args.length == 2) {
                 final List<String> commands;
                 if (!args[0].equalsIgnoreCase("floor") && !args[0].equalsIgnoreCase("leave")) {
-                    commands = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
+                    if (args[0].equalsIgnoreCase("lock") || args[1].equalsIgnoreCase("unlock")) {
+                        commands = Arrays.asList("all","1", "2", "3", "4", "5", "6", "7", "8");
+                    }
+                    else {
+                        commands = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
+                    }
                 }
                 else {
                     commands = Arrays.asList(

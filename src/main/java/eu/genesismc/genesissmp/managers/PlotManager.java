@@ -25,6 +25,8 @@ import java.util.UUID;
 
 public class PlotManager {
 
+    InventoryManager inventoryManager = new InventoryManager();
+
     /**
      * Check if plot is in use.
      * @param i Plot Number
@@ -93,6 +95,30 @@ public class PlotManager {
     }
 
     /**
+     * Locks all plots
+     * Returns true if locking was successful.
+     * @return boolean
+     */
+    public boolean lockAllPlots() {
+        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        config.set("Plots.Locked", true);
+        GenesisSMP.getPlugin().saveConfig();
+        return true;
+    }
+
+    /**
+     * Unlocks all plots
+     * Returns true if unlocking was successful.
+     * @return boolean
+     */
+    public boolean unlockAllPlots() {
+        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        config.set("Plots.Locked", false);
+        GenesisSMP.getPlugin().saveConfig();
+        return true;
+    }
+
+    /**
      * Unlocks a plot
      * Returns true if unlocking was successful.
      * @param i Plot number
@@ -129,6 +155,7 @@ public class PlotManager {
         FileConfiguration config = GenesisSMP.getPlugin().getConfig();
         config.set("Plots.Plot"+i+".Owner", null);
         config.set("Plots.Plot"+i+".Locked", false);
+        config.set("Plots.Plot"+i+".Expires", null);
         config.set("Plots.InPlot." + p.getUniqueId().toString(), null);
         GenesisSMP.getPlugin().saveConfig();
     }
@@ -203,6 +230,34 @@ public class PlotManager {
         return System.currentTimeMillis() - config.getLong("Plots.Plot"+plot+".Expires");
     }
 
+    public void expirePlot(int plot) {
+
+        Player plotOwner = Bukkit.getPlayer(UUID.fromString(plotOwner(plot)));
+        Bukkit.getLogger().info("Player is " + Bukkit.getPlayer(UUID.fromString(plotOwner(plot))));
+        String playerName = plotOwner.getName();
+        String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+
+        Bukkit.getLogger().info("Unassigning expired creative plot #"+plot+" from " + playerName);
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + playerName);
+        unassignPlotFromPlayer(plot, plotOwner);
+        plotSignExpired(plot);
+
+        if (plotOwner.isOnline()) {
+            Bukkit.getLogger().info("Owner is online");
+            try {
+                Bukkit.getLogger().info("Restoring inventory");
+                plotOwner.sendMessage(pluginPrefix + "Your creative plot has expired.");
+                inventoryManager.restoreInventory(plotOwner);
+            } catch (Exception e) {
+                //ignore
+            }
+        }
+        else {
+            Bukkit.getLogger().info("Player was offline, unable to restore.");
+        }
+
+    }
+
     public void clearPlot(int plotNumber) throws IOException {
 
         com.sk89q.worldedit.world.World world = BukkitAdapter.adapt(Bukkit.getWorld("smphub"));
@@ -254,7 +309,7 @@ public class PlotManager {
     }
 
     public void plotSignClaimed(Player player, int plot) {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 3 &c&lClaimed");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 3 &c&l✖ Claimed ✖");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 4 " + player.getName());
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 5 &f");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {medium}&e%plots_expiry_"+plot+"%");
