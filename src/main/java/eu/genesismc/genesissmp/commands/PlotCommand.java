@@ -28,6 +28,8 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
         if (cmd.getName().equalsIgnoreCase("plot")) {
 
             String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+            Player player = (Player) sender;
+            String playerName = player.getName();
 
             if (args.length < 1) {
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /plot <enter [number]|leave>");
@@ -38,9 +40,6 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             //    ENTER PLOT
             // ****************
             if (args[0].equalsIgnoreCase("enter")) {
-
-                Player player = (Player) sender;
-                String playerName = player.getName();
 
                 if (plotManager.hasAssignedPlot(player.getUniqueId())) {
                     sender.sendMessage(pluginPrefix + "You have already been assigned Plot " + plotManager.getAssignedPlot(player.getUniqueId()));
@@ -70,7 +69,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     try {
                         invManager.saveInventory(player);
                         player.sendMessage(pluginPrefix + "Your survival inventory has been saved.");
-                        sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory has been saved.");
+                        //sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory has been saved.");
                         player.getInventory().clear();
                     } catch (IOException e) {
                         player.sendMessage(pluginPrefix + "Your survival inventory could not be stored. Please inform a member of staff of this error.");
@@ -79,10 +78,10 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                         return true;
                     }
                     // Add player as member of plot
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg addmember -w smphub plot1 " + playerName);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg addmember -w smphub plot" + plotNumber + " " + playerName);
                     // Add player to config for the plot
                     plotManager.assignPlotToPlayer(plotNumber, player);
-
+                    plotManager.plotSignClaimed(player, plotNumber);
 
                 } catch (NumberFormatException e) {
                     sender.sendMessage(pluginPrefix + "You need to specify a plot number: /plot enter <x>");
@@ -97,6 +96,25 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             // ****************
             if (args[0].equalsIgnoreCase("leave")) {
 
+                int plot = plotManager.getAssignedPlot(player.getUniqueId());
+                // Remove player from plot members
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + playerName);
+                // Remove player from config for the plot
+                plotManager.unassignPlotFromPlayer(plot, player);
+                plotManager.plotSignClaimed(player, plot);
+                plotManager.plotSignExpired(plot);
+
+                // Restore inventory
+                try {
+                    invManager.restoreInventory(player);
+                    player.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
+                    //sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory has been saved.");
+                } catch (IOException e) {
+                    player.sendMessage(pluginPrefix + "Your survival inventory could not be restored. Please inform a member of staff of this error.");
+                    sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory could not be restored! (IO Error)");
+                    e.printStackTrace();
+                }
+
                 return true;
             }
 
@@ -104,8 +122,14 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             //    CLEAR PLOT
             // ****************
             if (args[0].equalsIgnoreCase("clear")) {
+                if (!plotManager.hasAssignedPlot(player.getUniqueId())) {
+                    sender.sendMessage(pluginPrefix + "You need to have an assigned plot before you can clear it.");
+                    return true;
+                }
                 try {
-                    plotManager.clearPlot(1);
+                    int plot = plotManager.getAssignedPlot(player.getUniqueId());
+                    sender.sendMessage(pluginPrefix + "Clearing the area at Plot " + plot + " for you.");
+                    plotManager.clearPlot(plot);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -116,9 +140,18 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             //   FLOOR COMMAND
             // *****************
             if (args[0].equalsIgnoreCase("floor")) {
+                if (!plotManager.hasAssignedPlot(player.getUniqueId())) {
+                    sender.sendMessage(pluginPrefix + "You need to have an assigned plot before you can change it.");
+                    return true;
+                }
+                if (args.length < 2) {
+                    sender.sendMessage(pluginPrefix + "You need to specify a floor type: /plot floor <floor>");
+                    return true;
+                }
                 try {
-                    Bukkit.getLogger().info("ATTEMPT1: Trying to set floor to " + args[1].toLowerCase());
-                    plotManager.plotFloor(args[1]);
+                    int plot = plotManager.getAssignedPlot(player.getUniqueId());
+                    sender.sendMessage(pluginPrefix + "Changing the floor of Plot " + plot + " to " + args[1]);
+                    plotManager.plotFloor(plot, args[1]);
                 } catch (IOException e) {
                     sender.sendMessage(pluginPrefix + "Invalid floor option.");
                 }
@@ -255,7 +288,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                             "Polished_Deepslate",
                             "Rooted_Dirt",
                             "Sand",
-                            "Snow",
+                            "Snow_Block",
                             "Stone",
                             "Tuff",
                             "Warped_Nylium",

@@ -13,8 +13,13 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import eu.genesismc.genesissmp.GenesisSMP;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -119,6 +124,19 @@ public class PlotManager {
     }
 
     /**
+     * Unassign plot from player
+     * @param i Plot number
+     * @param p Player object
+     */
+    public void unassignPlotFromPlayer(int i, Player p) {
+        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        config.set("Plots.Plot"+i+".Owner", "");
+        config.set("Plots.Plot"+i+".Locked", false);
+        config.set("Plots.InPlot." + p.getUniqueId().toString(), "");
+        GenesisSMP.getPlugin().saveConfig();
+    }
+
+    /**
      * Check if player already has a plot assigned
      * Returns true/false
      * @param u UUID
@@ -165,6 +183,31 @@ public class PlotManager {
         return config.getLocation("Plots.Plot"+i+".TeleportOut");
     }
 
+    /**
+     * Get specified coordinate of plot center point
+     * Returns int
+     * @param coord X,Y,Z
+     * @param plot int
+     * @param floor boolean
+     * @return Location
+     */
+    public int plotCenter(String coord, int plot, boolean isFloor) {
+        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        return isFloor ? config.getInt("Plots.Plot"+plot+".Center"+coord)+1 : config.getInt("Plots.Plot"+plot+".Center"+coord);
+    }
+
+    /**
+     * Get specified coordinate of plot sign
+     * Returns int
+     * @param coord X,Y,Z
+     * @param plot int
+     * @return Location
+     */
+    public int plotSignLocation(String coord, int plot) {
+        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        return config.getInt("Plots.Plot"+plot+".Sign"+coord);
+    }
+
     public void clearPlot(int plotNumber) throws IOException {
 
         com.sk89q.worldedit.world.World world = BukkitAdapter.adapt(Bukkit.getWorld("smphub"));
@@ -173,10 +216,13 @@ public class PlotManager {
 
         try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             Clipboard clipboard = reader.read();
+            int clearX = plotCenter("x", plotNumber, false);
+            int clearY = plotCenter("y", plotNumber, false);
+            int clearZ = plotCenter("z", plotNumber, false);
             try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1)) {
                 Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
-                        .to(BlockVector3.at(85, 13, 124))
+                        .to(BlockVector3.at(clearX, clearY, clearZ))
                         .ignoreAirBlocks(false)
                         .build();
                 Operations.complete(operation);
@@ -187,12 +233,14 @@ public class PlotManager {
 
     }
 
-    public void plotFloor(String choice) throws IOException {
+    public void plotFloor(int plotNumber, String choice) throws IOException {
 
-        Bukkit.getLogger().info("ATTEMPT2: Trying to set floor to " + choice.toLowerCase());
         com.sk89q.worldedit.world.World world = BukkitAdapter.adapt(Bukkit.getWorld("smphub"));
         File file = new File("plugins/GenesisSMP/schematics/floor-" + choice.toLowerCase() + ".schem");
         ClipboardFormat format = ClipboardFormats.findByFile(file);
+        int floorX = plotCenter("x", plotNumber, true);
+        int floorY = plotCenter("y", plotNumber, true);
+        int floorZ = plotCenter("z", plotNumber, true);
 
         try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             Clipboard clipboard = reader.read();
@@ -208,6 +256,40 @@ public class PlotManager {
             }
         }
 
+    }
+
+    public void plotSignClaimed(Player player, int plot) {
+        // get plot sign location
+        World world = Bukkit.getWorld("smphub");
+        if (world != null) {
+            int signX = plotSignLocation("x", plot);
+            int signY = plotSignLocation("y", plot);
+            int signZ = plotSignLocation("z", plot);
+            Block block = world.getBlockAt(signX, signY, signZ);
+            BlockState state = block.getState();
+            if (!(state instanceof Sign)) { return; }
+            Sign sign = (Sign) state;
+            sign.setLine(1, ChatColor.RED + "" + ChatColor.BOLD + "CLAIMED");
+            sign.setLine(2, player.getName());
+            sign.update();
+        }
+    }
+
+    public void plotSignExpired(int plot) {
+        // get plot sign location
+        World world = Bukkit.getWorld("smphub");
+        if (world != null) {
+            int signX = plotSignLocation("x", plot);
+            int signY = plotSignLocation("y", plot);
+            int signZ = plotSignLocation("z", plot);
+            Block block = world.getBlockAt(85, 17, 151);
+            BlockState state = block.getState();
+            if (!(state instanceof Sign)) { return; }
+            Sign sign = (Sign) state;
+            sign.setLine(1, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "AVAILABLE");
+            sign.setLine(2, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "TO CLAIM");
+            sign.update();
+        }
     }
 
 }

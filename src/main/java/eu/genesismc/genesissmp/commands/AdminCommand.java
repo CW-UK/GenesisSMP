@@ -2,6 +2,8 @@ package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +19,12 @@ import java.util.List;
 
 public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
 
+    private void reloadConfig() {
+        GenesisSMP.getPlugin().saveConfig();
+        GenesisSMP.getPlugin().reloadConfig();
+        GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
@@ -26,8 +34,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
             FileConfiguration config = GenesisSMP.getPlugin().getConfig();
 
             if (args[0].equals("reload") && sender.isOp()) {
-                GenesisSMP.getPlugin().reloadConfig();
-                GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
+                reloadConfig();
                 config = GenesisSMP.getPlugin().getConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Configuration reloaded!");
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Prefix: Min " + config.getString("prefixes.min-prefix-length") + " / Max " + config.getString("prefixes.max-prefix-length"));
@@ -49,9 +56,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 config.set("EndSpawnPoint.z", z);
                 config.set("EndSpawnPoint.yaw", yaw);
                 config.set("EndSpawnPoint.pitch", pitch);
-                GenesisSMP.getPlugin().saveConfig();
-                GenesisSMP.getPlugin().reloadConfig();
-                GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
+                reloadConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Spawn point for The End has been changed.");
                 return true;
             }
@@ -65,16 +70,33 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 int x = (int) p.getLocation().getX();
                 int y = (int) p.getLocation().getY();
                 int z = (int) p.getLocation().getZ();
-                config.set("Plots.Plot"+plot+".ClearX", x);
-                config.set("Plots.Plot"+plot+".ClearY", y);
-                config.set("Plots.Plot"+plot+".ClearZ", z);
-                config.set("Plots.Plot"+plot+".FloorX", x);
-                config.set("Plots.Plot"+plot+".FloorY", y+1);
-                config.set("Plots.Plot"+plot+".FloorZ", z);
-                GenesisSMP.getPlugin().saveConfig();
-                GenesisSMP.getPlugin().reloadConfig();
-                GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
+                config.set("Plots.Plot"+plot+".CenterX", x);
+                config.set("Plots.Plot"+plot+".CenterY", y);
+                config.set("Plots.Plot"+plot+".CenterZ", z);
+                reloadConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Plot " + plot + " has been updated with new coordinates.");
+                return true;
+            }
+            if (args[0].equals("setplotsign") && sender.isOp()) {
+                if (args.length < 2) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "You need to specify a plot number!");
+                    return true;
+                }
+                Player p = (Player) sender;
+                Block signBlock = p.getTargetBlock(null, 10);
+                if (!(signBlock instanceof Sign)) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "You need to look at a sign before setting.");
+                    return true;
+                }
+                int plot = Integer.parseInt(args[1]);
+                int x = (int) signBlock.getLocation().getX();
+                int y = (int) signBlock.getLocation().getY();
+                int z = (int) signBlock.getLocation().getZ();
+                config.set("Plots.Plot"+plot+".SignX", x);
+                config.set("Plots.Plot"+plot+".SignY", y);
+                config.set("Plots.Plot"+plot+".SignZ", z);
+                reloadConfig();
+                sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Plot " + plot + "'s sign has been updated with new coordinates.");
                 return true;
             }
             return true;
@@ -87,8 +109,15 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gsmp")) {
             if (args.length == 1) {
-                final List<String> commands = Arrays.asList("reload", "setendspawn", "setplotcenter");
+                final List<String> commands = Arrays.asList("reload", "setendspawn", "setplotcenter", "setplotsign");
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
+            }
+            if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("setplotcenter") || args[0].equalsIgnoreCase("setplotsign")) {
+                    final List<String> commands = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
+                    return StringUtil.copyPartialMatches(args[1], commands, new ArrayList<>());
+                }
+                return null;
             }
             return null;
         }
