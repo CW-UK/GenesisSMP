@@ -28,14 +28,14 @@ public class BlockPlace implements Listener {
 
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
+        final Material type = block.getType();
 
         if (player.getWorld().getName().equals("smphub")) { return; }
         if (player.hasPermission("genesissmp.blocklimit.bypass.all") || player.isOp()) { return; }
-        if (!config.contains("BlockChunkLimit.blocks." + block.getType()) || player.hasPermission("genesissmp.blocklimit.bypass." + block.getType())) { return; }
+        if (!config.contains("BlockChunkLimit.blocks." + type) || player.hasPermission("genesissmp.blocklimit.bypass." + type)) { return; }
 
-        final Material type = block.getType();
         final Chunk chunk = block.getChunk();
-        final int currentLimit = config.getInt("BlockChunkLimit.blocks." + event.getBlock().getType());
+        final int currentLimit = config.getInt("BlockChunkLimit.blocks." + type);
         final long chunkAmount = Arrays.stream(chunk.getTileEntities()).filter(te -> te.getType() == type).count();
 
         if (chunkAmount + 1 > currentLimit) {
