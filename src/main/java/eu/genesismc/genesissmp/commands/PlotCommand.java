@@ -223,7 +223,6 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("plot")) {
-            Bukkit.getLogger().info("Arg0: " + args[0]);
             if (args.length == 1) {
                 final List<String> commands = Arrays.asList(
                         "clear",
