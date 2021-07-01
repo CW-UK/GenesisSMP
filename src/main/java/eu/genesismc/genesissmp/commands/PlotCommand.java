@@ -276,7 +276,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             }
             if (args.length == 2) {
                 final List<String> commands;
-                if (!args[0].equalsIgnoreCase("floor")) {
+                if (!args[0].equalsIgnoreCase("floor") && !args[0].equalsIgnoreCase("leave")) {
                     commands = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
                 }
                 else {
