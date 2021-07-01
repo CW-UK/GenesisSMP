@@ -18,7 +18,7 @@ public class InventoryManager {
     static Plugin plugin = GenesisSMP.getPlugin();
 
     public void saveInventory(Player p) throws IOException {
-        File f = new File(plugin.getDataFolder().getAbsolutePath(), p.getName() + ".yml");
+        File f = new File("plugins/GenesisSMP/inventories/", p.getName() + ".yml");
         FileConfiguration c = YamlConfiguration.loadConfiguration(f);
         c.set("inventory.armor", p.getInventory().getArmorContents());
         c.set("inventory.content", p.getInventory().getContents());
@@ -27,7 +27,8 @@ public class InventoryManager {
 
     @SuppressWarnings("unchecked")
     public void restoreInventory(Player p) throws IOException {
-        File f = new File(plugin.getDataFolder().getAbsolutePath(), p.getName() + ".yml");
+        Bukkit.getLogger().info("Inventory restore request received for " + p.getName());
+        File f = new File("plugins/GenesisSMP/inventories/", p.getName() + ".yml");
         FileConfiguration c = YamlConfiguration.loadConfiguration(f);
         ItemStack[] content = ((List<ItemStack>) c.get("inventory.armor")).toArray(new ItemStack[0]);
         p.getInventory().setArmorContents(content);
@@ -43,7 +44,7 @@ public class InventoryManager {
             }, 5L);
         }
         catch (Exception e) {
-            // it broke
+            Bukkit.getLogger().info("An error occured restoring inventory for " + p.getName());
         }
     }
 
