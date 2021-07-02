@@ -18,7 +18,6 @@ import java.util.List;
 public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
 
     private void reloadConfig() {
-        GenesisSMP.getPlugin().saveConfig();
         GenesisSMP.getPlugin().reloadConfig();
         GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
     }
@@ -54,6 +53,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 config.set("EndSpawnPoint.z", z);
                 config.set("EndSpawnPoint.yaw", yaw);
                 config.set("EndSpawnPoint.pitch", pitch);
+                GenesisSMP.getPlugin().saveConfig();
                 reloadConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Spawn point for The End has been changed.");
                 return true;
@@ -71,6 +71,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 config.set("Plots.Plot"+plot+".CenterX", x);
                 config.set("Plots.Plot"+plot+".CenterY", y);
                 config.set("Plots.Plot"+plot+".CenterZ", z);
+                GenesisSMP.getPlugin().saveConfig();
                 reloadConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Plot " + plot + " has been updated with new coordinates.");
                 return true;
