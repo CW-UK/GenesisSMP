@@ -9,7 +9,7 @@ public class MuteAnnounce implements Listener {
 
         Bukkit.getLogger().info(ChatColor.AQUA + "BAN DETECTED!!");
 
-        FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+        FileConfiguration config = GenesisSMP.getPlugin().config;
         if (!config.getBoolean("BanAnnounce.enabled")) { return; }
 
         String baMsg = config.getString("BanAnnounce.message");

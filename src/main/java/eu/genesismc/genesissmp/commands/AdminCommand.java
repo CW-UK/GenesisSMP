@@ -28,7 +28,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
         if (cmd.getName().equalsIgnoreCase("gsmp")) {
 
             String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
-            FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+            FileConfiguration config = GenesisSMP.getPlugin().config;
 
             if (args[0].equals("reload") && sender.isOp()) {
                 reloadConfig();

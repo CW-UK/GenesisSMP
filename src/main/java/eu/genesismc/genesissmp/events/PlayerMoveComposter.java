@@ -18,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 public class PlayerMoveComposter implements Listener {
 /*
     Plugin plugin = GenesisSMP.getInstance();
-    FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+    FileConfiguration config = GenesisSMP.getPlugin().config;
 
     @EventHandler
     public void PlayerMove(PlayerMoveEvent e) {

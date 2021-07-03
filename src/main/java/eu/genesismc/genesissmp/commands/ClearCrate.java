@@ -29,7 +29,7 @@ public class ClearCrate implements CommandExecutor, Listener, TabCompleter {
                 return false;
             }
 
-            FileConfiguration config = GenesisSMP.getPlugin().getConfig();
+            FileConfiguration config = GenesisSMP.getPlugin().config;
             if (!config.getBoolean("EndLootCrate.enabled")) {
                 sender.sendMessage(ChatColor.RED + "This module is not enabled.");
                 return true;

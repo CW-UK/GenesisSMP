@@ -57,11 +57,11 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                 String preparedPrefix = GenesisSMP.getUtils().prepareFix(firstCheckPrefix);
 
                 if (GenesisSMP.getUtils().getLength(preparedPrefix) > config.getInt("prefixes.max-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - can't contain more than " + GenesisSMP.getPlugin().getConfig().getInt("prefixes.max-prefix-length") + " characters.");
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - can't contain more than " + GenesisSMP.getPlugin().config.getInt("prefixes.max-prefix-length") + " characters.");
                     return true;
                 }
                 if (GenesisSMP.getUtils().getLength(preparedPrefix) < config.getInt("prefixes.min-prefix-length")) {
-                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - must contain at least " + GenesisSMP.getPlugin().getConfig().getInt("prefixes.min-prefix-length") + " characters.");
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - must contain at least " + GenesisSMP.getPlugin().config.getInt("prefixes.min-prefix-length") + " characters.");
                     return true;
                 }
 
