@@ -4,6 +4,7 @@ import eu.genesismc.genesissmp.commands.*;
 import eu.genesismc.genesissmp.events.*;
 import eu.genesismc.genesissmp.managers.ConfigManager;
 import eu.genesismc.genesissmp.managers.PlaceholderManager;
+import eu.genesismc.genesissmp.managers.PlotManager;
 import eu.genesismc.genesissmp.managers.WorldGuardManager;
 import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
@@ -15,15 +16,18 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 
 public final class GenesisSMP extends JavaPlugin implements Listener {
 
     private static GenesisSMP plugin;
-    public FileConfiguration config = this.getConfig();
+    public FileConfiguration config;
     public LuckPerms api;
     private Utils utils;
+    BukkitTask plotTask;
+    PlotManager plotManager;
     public HashMap<Player, String> waitingPrefix = new HashMap<Player, String>();
     public HashMap<Player, String> waitingSuffix = new HashMap<Player, String>();
     public String pluginPrefix = ChatColor.translateAlternateColorCodes('&', "&6&lGenesisMc > &e");
@@ -44,7 +48,14 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
     }
 
     @Override
+    public void onDisable() {
+        plotTask.cancel();
+    }
+
+    @Override
     public void onEnable() {
+
+        config = this.getConfig();
 
         Bukkit.getLogger().info(ChatColor.AQUA + "  _____                      _      _____ __  __ _____");
         Bukkit.getLogger().info(ChatColor.AQUA + " / ____|                    (_)    / ____|  \\/  |  __ \\");
@@ -132,6 +143,13 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         } catch (NullPointerException e) {
             Bukkit.getLogger().info("GenesisSMP: Failed to get list from BlockChunkLimit in config.");
         }
+
+        // Creative plot expiry checker
+        plotManager = new PlotManager();
+        plotTask = Bukkit.getServer().getScheduler().runTaskTimer(this, ()->{
+            plotManager.runExpiryCheck();
+        }, 0, 600);
+
     }
 
 }
