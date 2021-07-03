@@ -36,6 +36,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 return true;
             }
 
+            // TODO: Remove this debug
             if (args[0].equalsIgnoreCase("expire")) {
                 plotManager.expirePlot(Integer.parseInt(args[1]));
                 return true;
@@ -46,8 +47,8 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             // ****************
             if (args[0].equalsIgnoreCase("enter")) {
 
-                if (plotManager.hasAssignedPlot(player.getUniqueId())) {
-                    sender.sendMessage(pluginPrefix + "You have already been assigned Plot " + plotManager.getAssignedPlot(player.getUniqueId()));
+                if (plotManager.hasAssignedPlot(player)) {
+                    sender.sendMessage(pluginPrefix + "You have already been assigned Plot " + plotManager.getAssignedPlot(player));
                     return true;
                 }
 
@@ -60,6 +61,11 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     int plotNumber = Integer.parseInt(args[1]);
                     if (plotNumber > 8 || plotNumber < 1) {
                         sender.sendMessage(pluginPrefix + "You need to specify a plot between 1 and 8 inclusive.");
+                        return true;
+                    }
+
+                    if (plotManager.plotInUse(plotNumber)) {
+                        sender.sendMessage(pluginPrefix + "This plot is currently in use by another player.");
                         return true;
                     }
 
@@ -106,27 +112,25 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             // ****************
             if (args[0].equalsIgnoreCase("leave")) {
 
-                if (!plotManager.hasAssignedPlot(player.getUniqueId())) {
+                if (!plotManager.hasAssignedPlot(player)) {
                     sender.sendMessage(pluginPrefix + "You do not have a plot assigned.");
                     return true;
                 }
 
-                int plot = plotManager.getAssignedPlot(player.getUniqueId());
+                int plot = plotManager.getAssignedPlot(player);
                 // Remove player from plot members
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + playerName);
                 // Remove player from config for the plot
-                plotManager.unassignPlotFromPlayer(plot, player);
+                plotManager.unassignPlotFromPlayer(plot, player.getName());
                 plotManager.plotSignExpired(plot);
 
                 // Restore inventory
                 try {
                     invManager.restoreInventory(player);
                     player.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
-                    //sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory has been saved.");
                 } catch (IOException e) {
                     player.sendMessage(pluginPrefix + "Your survival inventory could not be restored. Please inform a member of staff of this error.");
-                    sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory could not be restored! (IO Error)");
-                    e.printStackTrace();
+                    return true;
                 }
 
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "You have been successfully removed from Plot " + plot);
@@ -138,12 +142,12 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             //    CLEAR PLOT
             // ****************
             if (args[0].equalsIgnoreCase("clear")) {
-                if (!plotManager.hasAssignedPlot(player.getUniqueId())) {
+                if (!plotManager.hasAssignedPlot(player)) {
                     sender.sendMessage(pluginPrefix + "You need to have an assigned plot before you can clear it.");
                     return true;
                 }
                 try {
-                    int plot = plotManager.getAssignedPlot(player.getUniqueId());
+                    int plot = plotManager.getAssignedPlot(player);
                     sender.sendMessage(pluginPrefix + "Clearing the area at Plot " + plot + " for you.");
                     plotManager.clearPlot(plot);
                 } catch (IOException e) {
@@ -156,7 +160,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             //   FLOOR COMMAND
             // *****************
             if (args[0].equalsIgnoreCase("floor")) {
-                if (!plotManager.hasAssignedPlot(player.getUniqueId())) {
+                if (!plotManager.hasAssignedPlot(player)) {
                     sender.sendMessage(pluginPrefix + "You need to have an assigned plot before you can change it.");
                     return true;
                 }
@@ -165,7 +169,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     return true;
                 }
                 try {
-                    int plot = plotManager.getAssignedPlot(player.getUniqueId());
+                    int plot = plotManager.getAssignedPlot(player);
                     sender.sendMessage(pluginPrefix + "Changing the floor of Plot " + plot + " to " + args[1]);
                     plotManager.plotFloor(plot, args[1]);
                 } catch (IOException e) {
