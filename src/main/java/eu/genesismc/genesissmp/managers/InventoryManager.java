@@ -27,14 +27,14 @@ public class InventoryManager {
 
     @SuppressWarnings("unchecked")
     public void restoreInventory(Player p) throws IOException {
-        Bukkit.getLogger().info("Inventory restore request received for " + p.getName());
+        Bukkit.getLogger().info("[GenesisSMP] Inventory restore request received for " + p.getName());
         File f = new File("plugins/GenesisSMP/inventories/", p.getName() + ".yml");
         FileConfiguration c = YamlConfiguration.loadConfiguration(f);
-        ItemStack[] content = ((List<ItemStack>) c.get("inventory.armor")).toArray(new ItemStack[0]);
-        p.getInventory().setArmorContents(content);
-        content = ((List<ItemStack>) c.get("inventory.content")).toArray(new ItemStack[0]);
-        p.getInventory().setContents(content);
         try {
+            ItemStack[] content = ((List<ItemStack>) c.get("inventory.armor")).toArray(new ItemStack[0]);
+            p.getInventory().setArmorContents(content);
+            content = ((List<ItemStack>) c.get("inventory.content")).toArray(new ItemStack[0]);
+            p.getInventory().setContents(content);
             BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
             scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
@@ -42,9 +42,10 @@ public class InventoryManager {
                     f.delete();
                 }
             }, 5L);
-        }
-        catch (Exception e) {
-            Bukkit.getLogger().info("An error occured restoring inventory for " + p.getName());
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().info("[GenesisSMP] Inventory was empty when trying to restore " + p.getName());
+        } catch (Exception e) {
+            Bukkit.getLogger().info("[GenesisSMP] Something else went wrong..");
         }
     }
 
