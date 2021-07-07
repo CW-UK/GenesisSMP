@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.util.Arrays;
@@ -44,5 +45,18 @@ public class BlockPlace implements Listener {
         }
 
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onDropper(BlockDispenseEvent e) {
+        FileConfiguration config = GenesisSMP.getInstance().config;
+        final Chunk chunk = e.getBlock().getChunk();
+        final int currentLimit = config.getInt("BlockChunkLimit.dispensing-per-chunk");
+        final long chunkAmount = Arrays.stream(chunk.getTileEntities()).filter(te -> te.getType() == Material.DROPPER || te.getType() == Material.DISPENSER).count();
+        if (chunkAmount >= currentLimit) {
+            e.setCancelled(true);
+            //Bukkit.getLogger().info("Cancelling " + chunkAmount + "(" + currentLimit + ") dispensing blocks in chunk " + chunk);
+        }
+    }
+
 
 }
