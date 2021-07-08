@@ -21,6 +21,8 @@ public class ConfigManager {
         config.addDefault("PreventBlockXray.enabled", true);
 
         config.addDefault("BlockChunkLimit.enabled", true);
+        config.addDefault("BlockChunkLimit.dispensing-per-chunk-enabled", true);
+        config.addDefault("BlockChunkLimit.dispensing-per-chunk", 25);
         config.addDefault("BlockChunkLimit.blocks.SPAWNER", 25);
         config.addDefault("BlockChunkLimit.blocks.DISPENSER", 25);
         config.addDefault("BlockChunkLimit.blocks.DROPPER", 25);

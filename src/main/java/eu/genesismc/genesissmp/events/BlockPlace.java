@@ -48,14 +48,19 @@ public class BlockPlace implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onDropper(BlockDispenseEvent e) {
+
         FileConfiguration config = GenesisSMP.getInstance().config;
+        if (!config.getBoolean("BlockChunkLimit.dispensing-per-chunk-enabled")) { return; }
+
         final Chunk chunk = e.getBlock().getChunk();
         final int currentLimit = config.getInt("BlockChunkLimit.dispensing-per-chunk");
         final long chunkAmount = Arrays.stream(chunk.getTileEntities()).filter(te -> te.getType() == Material.DROPPER || te.getType() == Material.DISPENSER).count();
+
         if (chunkAmount >= currentLimit) {
             e.setCancelled(true);
             //Bukkit.getLogger().info("Cancelling " + chunkAmount + "(" + currentLimit + ") dispensing blocks in chunk " + chunk);
         }
+
     }
 
 
