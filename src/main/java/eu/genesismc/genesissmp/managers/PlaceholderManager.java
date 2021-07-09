@@ -35,7 +35,7 @@ public class PlaceholderManager extends PlaceholderExpansion implements Listener
                 int plot = Integer.parseInt(ph.replace("expiry_", ""));
                 long millis = config.getLong("Plots.Plot" + plot + ".Expires") - System.currentTimeMillis();
 
-                if (millis < 1) {
+                if (millis < 2000) {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {animation: expiring.txt}");
                     return "";
                 }
