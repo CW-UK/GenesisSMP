@@ -90,7 +90,7 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                     updatePlayer.data().clear(removeSuffix);
                     DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.suffix").build());
                     DataMutateResult result2 = updatePlayer.data().add(SuffixNode.builder(GenesisSMP.getPlugin().waitingSuffix.get(player), 1).build());*/
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " meta setsuffix 1 " + GenesisSMP.getPlugin().waitingSuffix.get(player));
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " meta setsuffix 1 \"" + GenesisSMP.getPlugin().waitingSuffix.get(player) + "\"");
                     GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been set!");
                 }

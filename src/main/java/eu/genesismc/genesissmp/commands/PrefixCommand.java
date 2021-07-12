@@ -90,7 +90,7 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                     updatePlayer.data().clear(removePrefix);
                     DataMutateResult result = updatePlayer.data().remove(Node.builder("genesisprefix.donator.prefix").build());
                     DataMutateResult result2 = updatePlayer.data().add(PrefixNode.builder(GenesisSMP.getPlugin().waitingPrefix.get(player), 61).build());*/
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " meta setprefix 61 " + GenesisSMP.getPlugin().waitingPrefix.get(player));
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " meta setprefix 61 \"" + GenesisSMP.getPlugin().waitingPrefix.get(player) + "\"");
                     GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been set!");
                 }
