@@ -22,6 +22,8 @@ import java.util.HashMap;
 
 public final class GenesisSMP extends JavaPlugin implements Listener {
 
+    /*public CancellationDetector<PortalCreateEvent> detector = new CancellationDetector<PortalCreateEvent>(PortalCreateEvent.class);*/
+
     private static GenesisSMP plugin;
     public FileConfiguration config;
     public LuckPerms api;
@@ -50,6 +52,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         plotTask.cancel();
+        /*detector.close();*/
     }
 
     @Override
@@ -68,6 +71,13 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         // plugin variables
         plugin = this;
         utils = new Utils();
+
+        /*detector.addListener(new CancellationDetector.CancelListener<PortalCreateEvent>() {
+            @Override
+            public void onCancelled(Plugin plugin, PortalCreateEvent event) {
+                System.out.println(event + " cancelled by " + plugin);
+            }
+        });*/
 
         // Placeholders
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into PlaceholderAPI..");
