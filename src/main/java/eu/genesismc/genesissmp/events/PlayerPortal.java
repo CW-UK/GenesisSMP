@@ -7,13 +7,15 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PlayerPortal implements Listener {
 
     @EventHandler
-    public void onPortal(org.bukkit.event.player.PlayerPortalEvent e) {
+    public void onPortal(PlayerPortalEvent e) {
         if (e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
 
             // Player already in the end - abort
@@ -40,6 +42,16 @@ public class PlayerPortal implements Listener {
             Location loc = new Location(w, x, y, z, yaw, pitch);
             e.getPlayer().teleport(loc);
 
+        }
+
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+    public void onNetherPortal(PlayerPortalEvent e) {
+        if (e.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+            if (e.getPlayer().getWorld().getName().contains("smphub")) {
+                e.setCancelled(true);
+            }
         }
     }
 
