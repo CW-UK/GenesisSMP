@@ -2,6 +2,7 @@ package eu.genesismc.genesissmp.events;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Strider;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,6 +26,13 @@ public class CreatureSpawn implements Listener {
                 e.setCancelled(true);
             }
         }
+
+        if (e.getEntity() instanceof PigZombie && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NETHER_PORTAL) {
+            if (e.getLocation().getWorld().getName().contains("smphub")) {
+                e.setCancelled(true);
+            }
+        }
+
     }
 
 }
