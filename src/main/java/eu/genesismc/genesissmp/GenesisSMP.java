@@ -28,6 +28,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
     public FileConfiguration config;
     public LuckPerms api;
     private Utils utils;
+    GiveEnjinPoints gep;
     BukkitTask plotTask;
     PlotManager plotManager;
     public HashMap<Player, String> waitingPrefix = new HashMap<Player, String>();
@@ -38,6 +39,9 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
     }
     public static Utils getUtils() {
         return getPlugin().utils;
+    }
+    public static GiveEnjinPoints getGEP() {
+        return getPlugin().gep;
     }
 
     public static GenesisSMP getInstance() {
@@ -71,6 +75,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         // plugin variables
         plugin = this;
         utils = new Utils();
+        gep = new GiveEnjinPoints();
 
         /*detector.addListener(new CancellationDetector.CancelListener<PortalCreateEvent>() {
             @Override
