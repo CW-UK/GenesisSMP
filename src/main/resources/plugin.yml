@@ -1,6 +1,6 @@
 name: GenesisSMP
 main: eu.genesismc.genesissmp.GenesisSMP
-version: 2.2
+version: 2.3
 author: CW_UK
 api-version: 1.17
 depend: [LuckPerms, Essentials, WorldGuard, WorldEdit, UltraPunishments, PlaceholderAPI, HolographicDisplays]
@@ -16,6 +16,7 @@ commands:
   gsmp:
     description: Admin command for GenesisSMP
     default: op
+    permission-message: You do not have permission to perform this command.
   clearcrate:
     description: Clears the loot crate in The End
     default: op
@@ -29,6 +30,8 @@ commands:
   plot:
     description: Manages creative plot access.
     usage: /plot <enter|leave|lock|unlock> [number]
+    permission: genesissmp.plots.use
+    permission-message: You do not have permission to perform this command.
     default: op
 
 permissions:
@@ -75,7 +78,15 @@ permissions:
   genesissmp.plots.lock:
     default: op
     description: Allows locking of plot/plots to prevent users accessing.
-
+  genesissmp.plots.use:
+    default: op
+    description: Allows using /plot command.
   genesissmp.blocklimit.bypass.all:
     default: op
     description: Allows bypassing of block place limits.
+  genesissmp.checkenjin:
+    default: op
+    description: Allows checking if a user is registered on Enjin.
+  genesissmp.giveenjin:
+    default: op
+    description: Allows giving a user Enjin points.

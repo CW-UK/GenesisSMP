@@ -2,6 +2,8 @@ package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import net.md_5.bungee.api.ChatColor;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,6 +31,31 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
 
             String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
             FileConfiguration config = GenesisSMP.getPlugin().config;
+
+            if (args[0].equals("givepoints") && (sender.isOp() || sender.hasPermission("genesissmp.giveenjin"))) {
+                if (args.length > 3) {
+                    String reason = StringUtils.join(ArrayUtils.subarray(args, 3, args.length), " ");
+                    GenesisSMP.getGEP().giveEnjinPoints(args[1], Integer.parseInt(args[2]), reason);
+                }
+                else {
+                    GenesisSMP.getGEP().giveEnjinPoints(args[1], Integer.parseInt(args[2]), null);
+                }
+                return true;
+            }
+
+            if (args[0].equals("check") && sender.hasPermission("genesissmp.checkenjin")) {
+                if (args.length < 2) {
+                    sender.sendMessage(pluginPrefix + ChatColor.RED + "Wrong usage: /gsmp check <player>");
+                    return true;
+                }
+                if (GenesisSMP.getGEP().isRegistered(args[1])) {
+                    sender.sendMessage(args[1] + ChatColor.GREEN + " is registered with Enjin.");
+                }
+                else {
+                    sender.sendMessage(args[1] + ChatColor.RED + " is not registered with Enjin.");
+                }
+                return true;
+            }
 
             if (args[0].equals("reload") && sender.isOp()) {
                 reloadConfig();
@@ -86,14 +113,17 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gsmp")) {
-            if (args.length == 1) {
-                final List<String> commands = Arrays.asList("reload", "setendspawn", "setplotcenter");
-                return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
-            }
-            if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("setplotcenter")) {
-                    final List<String> commands = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
-                    return StringUtil.copyPartialMatches(args[1], commands, new ArrayList<>());
+            if (commandSender.isOp() || commandSender.hasPermission("genesissmp.giveenjin") || commandSender.hasPermission("genesissmp.checkenjin")) {
+                if (args.length == 1) {
+                    final List<String> commands = Arrays.asList("reload", "setendspawn", "setplotcenter", "check", "givepoints");
+                    return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
+                }
+                if (args.length == 2) {
+                    if (args[0].equalsIgnoreCase("setplotcenter")) {
+                        final List<String> commands = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
+                        return StringUtil.copyPartialMatches(args[1], commands, new ArrayList<>());
+                    }
+                    return null;
                 }
                 return null;
             }
