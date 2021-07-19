@@ -39,7 +39,7 @@ public class BlockPlace implements Listener {
         final int currentLimit = config.getInt("BlockChunkLimit.blocks." + type);
         final long chunkAmount = Arrays.stream(chunk.getTileEntities()).filter(te -> te.getType() == type).count();
 
-        if (chunkAmount + 1 > currentLimit) {
+        if (chunkAmount > currentLimit) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "A limit of " + ChatColor.WHITE + currentLimit + ChatColor.RED + " per chunk is in place for " + ChatColor.WHITE + type.toString().toLowerCase() + "s");
         }
