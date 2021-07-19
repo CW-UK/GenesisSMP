@@ -25,6 +25,7 @@ import java.io.IOException;
 public class PlotManager {
 
     InventoryManager inventoryManager = new InventoryManager();
+    final boolean debug = false;
 
     /**
      * Check if plot is in use.
@@ -32,6 +33,7 @@ public class PlotManager {
      * @return boolean
      */
     public boolean plotInUse(int i) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running plotInUse for " + i); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         return config.getString("Plots.Plot" + i + ".Owner") != null;
     }
@@ -42,6 +44,7 @@ public class PlotManager {
      * @return String player
      */
     public String plotOwner(int i) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running plotOwner for " + i); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         return config.getString("Plots.Plot" + i + ".Owner");
     }
@@ -53,6 +56,7 @@ public class PlotManager {
      * @return boolean
      */
     public boolean plotIsLocked(int i) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running plotIsLocked for " + i); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         if (config.getBoolean("Plots.Plot" + i + ".Locked")) {
             return true;
@@ -66,6 +70,7 @@ public class PlotManager {
      * @return boolean
      */
     public boolean allPlotsLocked() {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running allPlotsLocked"); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         return config.getBoolean("Plots.Locked");
     }
@@ -77,6 +82,7 @@ public class PlotManager {
      * @return boolean
      */
     public boolean lockPlot(int i) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running lockPlot for " + i); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         config.set("Plots.Plot"+i+".Locked", true);
         GenesisSMP.getPlugin().saveConfig();
@@ -89,6 +95,7 @@ public class PlotManager {
      * @return boolean
      */
     public boolean lockAllPlots() {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running lockAllPlots"); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         config.set("Plots.Locked", true);
         GenesisSMP.getPlugin().saveConfig();
@@ -101,6 +108,7 @@ public class PlotManager {
      * @return boolean
      */
     public boolean unlockAllPlots() {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running unlockAllPlots"); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         config.set("Plots.Locked", false);
         GenesisSMP.getPlugin().saveConfig();
@@ -114,6 +122,7 @@ public class PlotManager {
      * @return boolean
      */
     public boolean unlockPlot(int i) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running unlockPlot for " + i); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         config.set("Plots.Plot"+i+".Locked", false);
         GenesisSMP.getPlugin().saveConfig();
@@ -126,6 +135,7 @@ public class PlotManager {
      * @param p Player object
      */
     public void assignPlotToPlayer(int i, Player p) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running assignPlotToPlayer for " + i); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         long timeToExpire = config.getLong("Plots.ExpiryTime");
         config.set("Plots.Plot"+i+".Owner", p.getName());
@@ -141,6 +151,7 @@ public class PlotManager {
      * @param name Player name as string
      */
     public void unassignPlotFromPlayer(int i, String name) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running unassignPlotFromPlayer for " + i); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         config.set("Plots.Plot"+i+".Owner", null);
         config.set("Plots.Plot"+i+".Locked", false);
@@ -156,6 +167,7 @@ public class PlotManager {
      * @return boolean
      */
     public boolean hasAssignedPlot(Player p) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running hasAssignedPlot for " + p); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         if (config.contains("Plots.InPlot."+p.getName())) {
             return true;
@@ -170,6 +182,7 @@ public class PlotManager {
      * @return int
      */
     public int getAssignedPlot(Player p) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running getAssignedPlot for " + p); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         return config.getInt("Plots.InPlot."+p.getName());
     }
@@ -185,7 +198,7 @@ public class PlotManager {
     public int plotCenter(String coord, int plot, boolean isFloor) {
         FileConfiguration config = GenesisSMP.getPlugin().config;
         if (isFloor && coord.equals("Y")) {
-            return config.getInt("Plots.Plot" + plot + ".Center" + coord) + 1;
+            return config.getInt("Plots.Plot"+plot+".Center"+coord)+1;
         } else {
             return config.getInt("Plots.Plot"+plot+".Center"+coord);
         }
@@ -198,28 +211,34 @@ public class PlotManager {
      */
     public void expirePlot(int plot) {
 
-        String plotOwner = plotOwner(plot);
-        Bukkit.getLogger().info("Player is " + plotOwner);
-        String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running expirePlot for " + plot); }
 
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + plotOwner);
-        unassignPlotFromPlayer(plot, plotOwner);
-        plotSignExpired(plot);
+        try {
 
-        if (Bukkit.getPlayerExact(plotOwner) != null) {
-            Player whosePlot = Bukkit.getPlayerExact(plotOwner);
-            assert whosePlot != null;
-            whosePlot.sendMessage(pluginPrefix + "Your creative plot has expired.");
-            /*try {
-                Bukkit.getLogger().info("Restoring inventory");
-                inventoryManager.restoreInventory(whosePlot);
-            } catch (Exception e) {
-                //ignore
-            }*/
+            String plotOwner = plotOwner(plot);
+            Bukkit.getLogger().info("Player is " + plotOwner);
+            String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + plotOwner);
+            unassignPlotFromPlayer(plot, plotOwner);
+            plotSignExpired(plot);
+
+            if (Bukkit.getPlayerExact(plotOwner) != null) {
+                Player whosePlot = Bukkit.getPlayerExact(plotOwner);
+                assert whosePlot != null;
+                whosePlot.sendMessage(pluginPrefix + "Your creative plot has expired.");
+                try {
+                    Bukkit.getLogger().info("Restoring inventory of " + whosePlot);
+                    inventoryManager.restoreInventory(whosePlot);
+                } catch (Exception e) {
+                    //ignore
+                }
+            } else {
+                Bukkit.getLogger().info("Player was offline, unable to restore inventory.");
+            }
+        } catch (Exception e) {
+            Bukkit.getLogger().info(e.getStackTrace().toString());
         }
-        /*else {
-            Bukkit.getLogger().info("Player was offline, unable to restore.");
-        }*/
 
     }
 
@@ -285,10 +304,11 @@ public class PlotManager {
      * @param plot int
      */
     public void plotSignClaimed(Player player, int plot) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running plotSignClaimed for " + plot); }
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 3 &c&l✖ Claimed ✖");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 4 " + player.getName());
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 5 &f");
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {medium}&e%plots_expiry_"+plot+"%");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {medium}&e%plots_"+plot+"%");
     }
 
     /**
@@ -297,6 +317,7 @@ public class PlotManager {
      * @param plot int
      */
     public void plotSignExpired(int plot) {
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running plotSignExpired for " + plot); }
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 3 &a&lAvailable");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 4 &f");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 5 &f&oClaim this plot with");
@@ -309,21 +330,30 @@ public class PlotManager {
      */
 
     public void runExpiryCheck() {
-        Bukkit.getLogger().info("Checking creative plots for expired claims..");
-        FileConfiguration config = GenesisSMP.getPlugin().config;
-        long currentTime = System.currentTimeMillis();
-        for (int i = 1; i < 8; i++) {
-            long expires = config.getLong("Plots.Plot"+i+".Expires", 999);
-            if (expires != 999) {
-                Bukkit.getLogger().info("Plot " + i + " will be checked.");
-                if (currentTime > expires) {
-                    Bukkit.getLogger().info(ChatColor.RED + "Plot "+i+" needs to expire..");
-                    expirePlot(i);
+        if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running runExpiryCheck"); }
+        try {
+            Bukkit.getLogger().info("Checking creative plots for expired claims..");
+            FileConfiguration config = GenesisSMP.getPlugin().config;
+            long currentTime = System.currentTimeMillis();
+            for (int i = 1; i < 9; i++) {
+                Bukkit.getLogger().info("Checking plot " + i);
+                long expires = config.getLong("Plots.Plot" + i + ".Expires", 999);
+                if (expires != 999) {
+                    if (currentTime > expires) {
+                        Bukkit.getLogger().info(ChatColor.RED + "Plot " + i + " needs to expire..");
+                        int finalI = i;
+                        Bukkit.getScheduler().runTaskLater(GenesisSMP.getPlugin(), () -> {
+                            try {
+                                expirePlot(finalI);
+                            } catch (Exception e) {
+                                Bukkit.getLogger().info(e.getStackTrace().toString());
+                            }
+                        }, 20L);
+                    }
                 }
             }
-            /*else {
-                Bukkit.getLogger().info("Plot " + i + " does not need to be checked.");
-            }*/
+        } catch (Exception e) {
+            Bukkit.getLogger().info(e.getStackTrace().toString());
         }
     }
 
