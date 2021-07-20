@@ -30,7 +30,7 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
         if (cmd.getName().equalsIgnoreCase("suffix")) {
 
             String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
-            FileConfiguration config = GenesisSMP.getInstance().config;
+            FileConfiguration config = GenesisSMP.getPlugin().config;
 
             if (args.length < 1) {
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /suffix <confirm|remove|set <suffix>>");
@@ -54,21 +54,22 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
 
                 String suffixInput = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
                 String firstCheckSuffix = GenesisSMP.getUtils().initialCheck(player, suffixInput);
-                String preparedSuffix = GenesisSMP.getUtils().prepareFix(firstCheckSuffix);
+                String strippedSuffix = GenesisSMP.getUtils().prepareFix(firstCheckSuffix);
+                String prettySuffix = GenesisSMP.getUtils().prettyFix(firstCheckSuffix);
 
-                if (GenesisSMP.getUtils().getLength(preparedSuffix) > config.getInt("suffixes.max-suffix-length")) {
+                if (GenesisSMP.getUtils().getLength(prettySuffix) > config.getInt("suffixes.max-suffix-length")) {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too long - can't contain more than " + GenesisSMP.getPlugin().config.getInt("suffixes.max-suffix-length") + " characters.");
                     return true;
                 }
-                if (GenesisSMP.getUtils().getLength(preparedSuffix) < config.getInt("suffixes.min-suffix-length")) {
+                if (GenesisSMP.getUtils().getLength(prettySuffix) < config.getInt("suffixes.min-suffix-length")) {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "Suffix too short - must contain at least " + GenesisSMP.getPlugin().config.getInt("suffixes.min-suffix-length") + " characters.");
                     return true;
                 }
 
                 sender.sendMessage(pluginPrefix + "Your suffix will display as:");
-                sender.sendMessage(pluginPrefix + preparedSuffix);
+                sender.sendMessage(pluginPrefix + prettySuffix);
                 sender.sendMessage(pluginPrefix + ChatColor.translateAlternateColorCodes('&',"Type &a&l/suffix confirm&e to set it."));
-                GenesisSMP.getPlugin().waitingSuffix.put(player, preparedSuffix);
+                GenesisSMP.getPlugin().waitingSuffix.put(player, strippedSuffix);
 
                 return true;
             }

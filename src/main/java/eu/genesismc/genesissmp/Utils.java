@@ -48,6 +48,11 @@ public class Utils {
     }
 
     public String prepareFix (String input) {
+        //return ChatColor.GRAY + "[" + getRGB(input) + ChatColor.GRAY + "]";
+        return "&7[" + input + "&7]";
+    }
+
+    public String prettyFix (String input) {
         return ChatColor.GRAY + "[" + getRGB(input) + ChatColor.GRAY + "]";
     }
 

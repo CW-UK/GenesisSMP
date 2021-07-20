@@ -30,7 +30,7 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
         if (cmd.getName().equalsIgnoreCase("prefix")) {
 
             String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
-            FileConfiguration config = GenesisSMP.getInstance().config;
+            FileConfiguration config = GenesisSMP.getPlugin().config;
 
             if (args.length < 1) {
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Usage: /prefix <confirm|remove|set <prefix>>");
@@ -54,21 +54,22 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
 
                 String prefixInput = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
                 String firstCheckPrefix = GenesisSMP.getUtils().initialCheck(player, prefixInput);
-                String preparedPrefix = GenesisSMP.getUtils().prepareFix(firstCheckPrefix);
+                String strippedPrefix = GenesisSMP.getUtils().prepareFix(firstCheckPrefix);
+                String prettyPrefix = GenesisSMP.getUtils().prettyFix(firstCheckPrefix);
 
-                if (GenesisSMP.getUtils().getLength(preparedPrefix) > config.getInt("prefixes.max-prefix-length")) {
+                if (GenesisSMP.getUtils().getLength(prettyPrefix) > config.getInt("prefixes.max-prefix-length")) {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too long - can't contain more than " + GenesisSMP.getPlugin().config.getInt("prefixes.max-prefix-length") + " characters.");
                     return true;
                 }
-                if (GenesisSMP.getUtils().getLength(preparedPrefix) < config.getInt("prefixes.min-prefix-length")) {
+                if (GenesisSMP.getUtils().getLength(prettyPrefix) < config.getInt("prefixes.min-prefix-length")) {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "Prefix too short - must contain at least " + GenesisSMP.getPlugin().config.getInt("prefixes.min-prefix-length") + " characters.");
                     return true;
                 }
 
                 sender.sendMessage(pluginPrefix + "Your prefix will display as:");
-                sender.sendMessage(pluginPrefix + preparedPrefix);
+                sender.sendMessage(pluginPrefix + prettyPrefix);
                 sender.sendMessage(pluginPrefix + ChatColor.translateAlternateColorCodes('&',"Type &a&l/prefix confirm&e to set it."));
-                GenesisSMP.getPlugin().waitingPrefix.put(player, preparedPrefix);
+                GenesisSMP.getPlugin().waitingPrefix.put(player, strippedPrefix);
 
                 return true;
             }
