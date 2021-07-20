@@ -104,7 +104,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 return true;
             }
 
-            return true;
+            return false;
         }
 
         return false;
