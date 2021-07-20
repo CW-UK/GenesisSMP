@@ -1,7 +1,6 @@
 package eu.genesismc.genesissmp.commands;
 
 import eu.genesismc.genesissmp.GenesisSMP;
-import net.luckperms.api.model.user.User;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -25,7 +24,7 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         Player player = (Player) sender;
-        User updatePlayer = GenesisSMP.getPlugin().api.getPlayerAdapter(Player.class).getUser(player);
+        //User updatePlayer = GenesisSMP.getPlugin().api.getPlayerAdapter(Player.class).getUser(player);
 
         if (cmd.getName().equalsIgnoreCase("suffix")) {
 
@@ -95,8 +94,8 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                     GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been set!");
                 }
-                GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
-                GenesisSMP.getPlugin().api.runUpdateTask();
+                //GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
+                //GenesisSMP.getPlugin().api.runUpdateTask();
                 return true;
             }
             if (args[0].equals("remove")) {
