@@ -33,6 +33,12 @@ commands:
     permission: genesissmp.plots.use
     permission-message: You do not have permission to perform this command.
     default: op
+  nv:
+    description: Toggles night vision
+    usage: /nv
+    permission: genesissmp.nightvision
+    permission-message: You do not have access to perform this command.
+    default: op
 
 permissions:
   genesisprefix.*:
@@ -90,3 +96,6 @@ permissions:
   genesissmp.giveenjin:
     default: op
     description: Allows giving a user Enjin points.
+  genesissmp.nightvision:
+    default: op
+    description: Allows access to toggle nightvision with /nv

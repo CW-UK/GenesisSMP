@@ -102,6 +102,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new AdminCommand(), this);
         pm.registerEvents(new PlotCommand(), this);
         pm.registerEvents(new InventoryCommands(), this);
+        pm.registerEvents(new NightVision(), this);
         pm.registerEvents(new EntityPickupItem(), this);
         pm.registerEvents(new CreatureSpawn(), this);
         pm.registerEvents(new PlayerPortal(), this);
@@ -130,6 +131,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("invman").setTabCompleter(new InventoryCommands());
         this.getCommand("plot").setExecutor(new PlotCommand());
         this.getCommand("plot").setTabCompleter(new PlotCommand());
+        this.getCommand("nv").setExecutor(new NightVision());
 
         // WorldGuard check
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into WorldGuard..");
