@@ -17,7 +17,7 @@ public class GiveEnjinPoints {
     public boolean isRegistered(String player) {
         try {
             double points = EnjinServices.getService(PointService.class).get(player).getResult();
-            Bukkit.getLogger().info(player + " has " + points + " on Enjin..");
+            //Bukkit.getLogger().info(player + " has " + points + " on Enjin..");
             return true;
         } catch (Exception ex) {
             return false;
