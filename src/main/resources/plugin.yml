@@ -87,6 +87,12 @@ permissions:
   genesissmp.plots.use:
     default: op
     description: Allows using /plot command.
+  genesissmp.plots.expire:
+      default: op
+      description: Allows using /plot expire command.
+  genesissmp.plots.clear:
+    default: op
+    description: Allows using /plot clear command.
   genesissmp.blocklimit.bypass.all:
     default: op
     description: Allows bypassing of block place limits.

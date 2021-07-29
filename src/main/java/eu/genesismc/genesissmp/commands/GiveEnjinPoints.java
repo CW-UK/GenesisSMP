@@ -58,6 +58,7 @@ public class GiveEnjinPoints {
                 Bukkit.getLogger().info("[GenesisSMP] Error with giving points to " + player);
                 Bukkit.getLogger().info(ex.getStackTrace().toString());
             }
+
         });
 
     }

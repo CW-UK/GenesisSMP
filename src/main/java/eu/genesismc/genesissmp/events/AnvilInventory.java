@@ -22,7 +22,6 @@ public class AnvilInventory implements Listener {
                         "&3[&eGenesisSMP&3] Prevented &e" + e.getWhoClicked().getName() + " &3from &erenaming a spawner&3 on an anvil."
                 );
                 Bukkit.broadcast(msg, "illegalstack.notify");
-
             }
         }
     }
