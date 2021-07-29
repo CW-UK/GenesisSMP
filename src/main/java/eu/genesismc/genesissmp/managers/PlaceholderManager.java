@@ -2,6 +2,7 @@ package eu.genesismc.genesissmp.managers;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -28,35 +29,38 @@ public class PlaceholderManager extends PlaceholderExpansion implements Listener
 
         if (player == null || ph == null) { return ""; }
 
-        if (ph.startsWith("expiry_")) {
+        //if (ph.startsWith("expiry_")) {
 
             try {
+
+                Bukkit.getLogger().info(ChatColor.YELLOW + "Running holo update for " + ph);
+
                 FileConfiguration config = GenesisSMP.getPlugin().config;
-                int plot = Integer.parseInt(ph.replace("expiry_", ""));
-                long millis = config.getLong("Plots.Plot" + plot + ".Expires") - System.currentTimeMillis();
+                //int plot = Integer.parseInt(ph.replace("expiry_", ""));
+                int plot = Integer.parseInt(ph);
+                long millis = config.getLong("Plots.Plot" + plot + ".Expires",1) - System.currentTimeMillis();
 
                 if (millis < 2000) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {animation: expiring.txt}");
-                    return "";
+                    //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {animation: expiring.txt}");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 &c&lExpiring Now");
+                    return "&f";
                 }
-
-                String msg = String.format(
-                        "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
-                );
-
-                if (plot == 5) { Bukkit.getLogger().info("Placeholder will be " + msg); }
-
-                return msg;
+                else {
+                    String msg = String.format(
+                            "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                            TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                            TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+                    );
+                    if (plot == 5) { Bukkit.getLogger().info("Placeholder will be " + msg); }
+                    return msg;
+                }
 
             } catch (Exception e) {
                 Bukkit.getLogger().info("Something went really wrong.");
                 return "ERROR";
             }
-        }
-
-        return "INVALID";
+       // }
+       // return "INVALID";
     }
 
 }
