@@ -2,10 +2,7 @@ package eu.genesismc.genesissmp;
 
 import eu.genesismc.genesissmp.commands.*;
 import eu.genesismc.genesissmp.events.*;
-import eu.genesismc.genesissmp.managers.ConfigManager;
-import eu.genesismc.genesissmp.managers.PlaceholderManager;
-import eu.genesismc.genesissmp.managers.PlotManager;
-import eu.genesismc.genesissmp.managers.WorldGuardManager;
+import eu.genesismc.genesissmp.managers.*;
 import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -31,6 +28,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
     GiveEnjinPoints gep;
     BukkitTask plotTask;
     PlotManager plotManager;
+    InventoryManager inventoryManager;
     public HashMap<Player, String> waitingPrefix = new HashMap<Player, String>();
     public HashMap<Player, String> waitingSuffix = new HashMap<Player, String>();
     public String pluginPrefix = ChatColor.translateAlternateColorCodes('&', "&6&lGenesisMc > &e");
@@ -39,6 +37,12 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
     }
     public static Utils getUtils() {
         return getPlugin().utils;
+    }
+    public static PlotManager getPlotManager() {
+        return getPlugin().plotManager;
+    }
+    public static InventoryManager getInventoryManager() {
+        return getPlugin().inventoryManager;
     }
     public static GiveEnjinPoints getGEP() {
         return getPlugin().gep;
@@ -62,8 +66,15 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
 
+        // plugin variables
         config = this.getConfig();
+        plugin = this;
+        utils = new Utils();
+        gep = new GiveEnjinPoints();
+        plotManager = new PlotManager();
+        inventoryManager = new InventoryManager();
 
+        // Loading splash logo
         Bukkit.getLogger().info(ChatColor.AQUA + "  _____                      _      _____ __  __ _____");
         Bukkit.getLogger().info(ChatColor.AQUA + " / ____|                    (_)    / ____|  \\/  |  __ \\");
         Bukkit.getLogger().info(ChatColor.AQUA + "| |  __  ___ _ __   ___  ___ _ ___| (___ | \\  / | |__) |");
@@ -72,11 +83,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         Bukkit.getLogger().info(ChatColor.AQUA + " \\_____|\\___|_| |_|\\___||___/_|___/_____/|_|  |_|_|");
         Bukkit.getLogger().info(ChatColor.AQUA + "--------------------------------------------------------");
 
-        // plugin variables
-        plugin = this;
-        utils = new Utils();
-        gep = new GiveEnjinPoints();
-
+        // Event cancellation detector - do not use in production!
         /*detector.addListener(new CancellationDetector.CancelListener<PortalCreateEvent>() {
             @Override
             public void onCancelled(Plugin plugin, PortalCreateEvent event) {
@@ -142,7 +149,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
             Bukkit.getLogger().info(ChatColor.RED + "GenesisSMP > WorldGuard hook failed!");
         }
 
-        // luckperms API
+        // LuckPerms API
         try {
             Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into LuckPerms API..");
             RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
@@ -158,14 +165,18 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
                 Bukkit.getPluginManager().addPermission(new Permission("genesissmp.blocklimit.bypass." + key));
             }
         } catch (NullPointerException e) {
-            Bukkit.getLogger().info("GenesisSMP: Failed to get list from BlockChunkLimit in config.");
+            Bukkit.getLogger().info("GenesisSMP > Failed to get list from BlockChunkLimit in config.");
         }
 
-        // Creative plot expiry checker
-        plotManager = new PlotManager();
-        plotTask = Bukkit.getServer().getScheduler().runTaskTimer(this, ()->{
-            plotManager.runExpiryCheck();
-        }, 0, 600);
+        // Creative plot / inventory manager / plot expiry checker
+        try {
+            plotTask = Bukkit.getServer().getScheduler().runTaskTimer(this, () -> {
+                plotManager.runExpiryCheck();
+            }, 0, 600);
+            Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Creative plot expiry timer activated.");
+        } catch (Exception e) {
+            Bukkit.getLogger().info(ChatColor.RED + "GenesisSMP > Creative plot expiry timer failed.");
+        }
 
     }
 
