@@ -2,6 +2,7 @@ package eu.genesismc.genesissmp.events;
 
 import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -13,12 +14,13 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         if (event.getPlayer().hasPermission("essentials.fly")) {
             BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+            Player p = event.getPlayer();
             scheduler.scheduleSyncDelayedTask(GenesisSMP.getInstance(), new Runnable() {
                 @Override
                 public void run() {
-                    event.getPlayer().setAllowFlight(true);
-                    event.getPlayer().setFlying(true);
-                    event.getPlayer().performCommand("fly on");
+                    p.getPlayer().setAllowFlight(true);
+                    p.getPlayer().setFlying(true);
+                    p.getPlayer().performCommand("fly on");
                 }
             }, 20L);
         }
