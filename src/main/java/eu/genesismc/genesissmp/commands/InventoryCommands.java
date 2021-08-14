@@ -4,6 +4,9 @@ package eu.genesismc.genesissmp.commands;
 import eu.genesismc.genesissmp.GenesisSMP;
 import eu.genesismc.genesissmp.Utils;
 import eu.genesismc.genesissmp.managers.InventoryManager;
+import eu.genesismc.genesissmp.managers.PlotManager;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -15,7 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class InventoryCommands implements CommandExecutor, Listener, TabCompleter {
-    InventoryManager invManager = new InventoryManager();
+
+    InventoryManager invManager = GenesisSMP.getInventoryManager();
+    PlotManager plotManager = GenesisSMP.getPlotManager();
     String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
 
     @Override
@@ -70,7 +75,6 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
 
                     try {
                         invManager.restoreInventory(p);
-                        p.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
                         sender.sendMessage(pluginPrefix + p.getName() + "'s survival inventory has been restored.");
                     } catch (IOException e) {
                         p.sendMessage(pluginPrefix + "An error occurred restoring your inventory. Please inform a member of staff.");
@@ -81,6 +85,18 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
                         sender.sendMessage(pluginPrefix + p.getName() + "does not have a survival inventory to restore.");
                     }
                     return true;
+                }
+
+                // ****************************
+                //        Entering Plot
+                // ****************************
+                //             0       1     2
+                // /invman plotenter plot username
+                if (args[0].equalsIgnoreCase("plotenter")) {
+                    Player player = Bukkit.getPlayer(args[2]);
+                    if (plotManager.getAssignedPlot(player) == Integer.parseInt(args[1])) {
+                        player.setGameMode(GameMode.CREATIVE);
+                    }
                 }
 
             }
@@ -94,7 +110,7 @@ public class InventoryCommands implements CommandExecutor, Listener, TabComplete
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("invman")) {
+        if (cmd.getName().equalsIgnoreCase("invman") && commandSender.isOp()) {
             if (args.length == 1) {
                 final List<String> commands = Arrays.asList("save", "restore");
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
