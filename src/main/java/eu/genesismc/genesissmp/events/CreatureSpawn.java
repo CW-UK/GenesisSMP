@@ -22,7 +22,7 @@ public class CreatureSpawn implements Listener {
                 return;
             }
             Random r = new Random();
-            if (r.nextInt(100) + 1 > 4) {
+            if (r.nextInt(100) + 1 > 2) {
                 e.setCancelled(true);
             }
         }
