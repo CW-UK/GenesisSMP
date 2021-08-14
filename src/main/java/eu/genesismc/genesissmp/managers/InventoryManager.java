@@ -42,6 +42,7 @@ public class InventoryManager {
                     f.delete();
                 }
             }, 5L);
+            p.sendMessage(GenesisSMP.getPlugin().pluginPrefix + "Your survival inventory has been restored.");
         } catch (NullPointerException e) {
             Bukkit.getLogger().info("[GenesisSMP] Inventory was empty when trying to restore " + p.getName());
         } catch (Exception e) {
