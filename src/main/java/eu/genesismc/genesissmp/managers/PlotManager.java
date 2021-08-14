@@ -21,10 +21,11 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class PlotManager {
 
-    InventoryManager inventoryManager = new InventoryManager();
+    InventoryManager inventoryManager = GenesisSMP.getInventoryManager();
     final boolean debug = false;
 
     /**
@@ -138,10 +139,12 @@ public class PlotManager {
         if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running assignPlotToPlayer for " + i); }
         FileConfiguration config = GenesisSMP.getPlugin().config;
         long timeToExpire = config.getLong("Plots.ExpiryTime");
+        long expiryTime = System.currentTimeMillis() + timeToExpire;
         config.set("Plots.Plot"+i+".Owner", p.getName());
         config.set("Plots.Plot"+i+".Locked", true);
-        config.set("Plots.Plot"+i+".Expires", System.currentTimeMillis() + timeToExpire);
+        config.set("Plots.Plot"+i+".Expires", expiryTime);
         config.set("Plots.InPlot." + p.getName(), i);
+        plotSignClaimed(p, i, expiryTime);
         GenesisSMP.getPlugin().saveConfig();
     }
 
@@ -218,8 +221,9 @@ public class PlotManager {
             String plotOwner = plotOwner(plot);
             Bukkit.getLogger().info("Player is " + plotOwner);
             String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+            FileConfiguration config = GenesisSMP.getPlugin().config;
 
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + plotOwner);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub creative_plot" + plot + " " + plotOwner);
             unassignPlotFromPlayer(plot, plotOwner);
             plotSignExpired(plot);
 
@@ -230,11 +234,14 @@ public class PlotManager {
                 try {
                     Bukkit.getLogger().info("Restoring inventory of " + whosePlot);
                     inventoryManager.restoreInventory(whosePlot);
+                    whosePlot.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
                 } catch (Exception e) {
                     //ignore
                 }
             } else {
                 Bukkit.getLogger().info("Player was offline, unable to restore inventory.");
+                config.set("Plots.RestoreNextLogin." + plotOwner, true);
+                GenesisSMP.getPlugin().saveConfig();
             }
         } catch (Exception e) {
             Bukkit.getLogger().info(e.getStackTrace().toString());
@@ -303,12 +310,14 @@ public class PlotManager {
      * @param player Player
      * @param plot int
      */
-    public void plotSignClaimed(Player player, int plot) {
+    public void plotSignClaimed(Player player, int plot, long expiry) {
         if (debug) { Bukkit.getLogger().info(ChatColor.YELLOW + "Running plotSignClaimed for " + plot); }
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 3 &c&l✖ Claimed ✖");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 4 " + player.getName());
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 5 &f");
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {medium}&e%plots_"+plot+"%");
+        //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {medium}&e%plots_"+plot+"%");
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 &aExpires at " + getTimeFormat(expiry));
     }
 
     /**
@@ -336,7 +345,7 @@ public class PlotManager {
             FileConfiguration config = GenesisSMP.getPlugin().config;
             long currentTime = System.currentTimeMillis();
             for (int i = 1; i < 9; i++) {
-                Bukkit.getLogger().info("Checking plot " + i);
+                if (debug) { Bukkit.getLogger().info("Checking plot " + i); }
                 long expires = config.getLong("Plots.Plot" + i + ".Expires", 999);
                 if (expires != 999) {
                     if (currentTime > expires) {
@@ -355,6 +364,10 @@ public class PlotManager {
         } catch (Exception e) {
             Bukkit.getLogger().info(e.getStackTrace().toString());
         }
+    }
+
+    public String getTimeFormat(long millis) {
+        return new SimpleDateFormat("HH:mm:ss").format(millis);
     }
 
 }
