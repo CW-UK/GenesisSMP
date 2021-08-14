@@ -113,7 +113,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                         return true;
                     }
 
-                    sender.sendMessage(pluginPrefix + "Success! Please wait while we assign this plot to you..");
+                    sender.sendMessage(pluginPrefix + "Please wait while we assign this plot to you..");
 
                     // Save inventory
                     try {

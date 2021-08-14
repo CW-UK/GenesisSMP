@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 
 public class PlotManager {
 
-    InventoryManager inventoryManager = GenesisSMP.getInventoryManager();
     final boolean debug = false;
 
     /**
@@ -222,6 +221,7 @@ public class PlotManager {
             Bukkit.getLogger().info("Player is " + plotOwner);
             String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
             FileConfiguration config = GenesisSMP.getPlugin().config;
+            InventoryManager invManager = GenesisSMP.getInventoryManager();
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub creative_plot" + plot + " " + plotOwner);
             unassignPlotFromPlayer(plot, plotOwner);
@@ -229,14 +229,13 @@ public class PlotManager {
 
             if (Bukkit.getPlayerExact(plotOwner) != null) {
                 Player whosePlot = Bukkit.getPlayerExact(plotOwner);
-                assert whosePlot != null;
                 whosePlot.sendMessage(pluginPrefix + "Your creative plot has expired.");
                 try {
                     Bukkit.getLogger().info("Restoring inventory of " + whosePlot);
-                    inventoryManager.restoreInventory(whosePlot);
-                    whosePlot.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
+                    invManager.restoreInventory(whosePlot);
+                    //whosePlot.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
                 } catch (Exception e) {
-                    //ignore
+                    e.printStackTrace();
                 }
             } else {
                 Bukkit.getLogger().info("Player was offline, unable to restore inventory.");
@@ -244,7 +243,7 @@ public class PlotManager {
                 GenesisSMP.getPlugin().saveConfig();
             }
         } catch (Exception e) {
-            Bukkit.getLogger().info(e.getStackTrace().toString());
+            e.printStackTrace();
         }
 
     }
@@ -367,7 +366,7 @@ public class PlotManager {
     }
 
     public String getTimeFormat(long millis) {
-        return new SimpleDateFormat("HH:mm:ss").format(millis);
+        return new SimpleDateFormat("HH:mm:ss").format((millis - 3600000));
     }
 
 }
