@@ -3,14 +3,19 @@ package eu.genesismc.genesissmp.commands;
 import eu.genesismc.genesissmp.GenesisSMP;
 import eu.genesismc.genesissmp.managers.InventoryManager;
 import eu.genesismc.genesissmp.managers.PlotManager;
+import eu.genesismc.genesissmp.managers.WorldGuardManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.util.StringUtil;
 
 import java.io.IOException;
@@ -20,8 +25,8 @@ import java.util.List;
 
 public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
 
-    InventoryManager invManager = new InventoryManager();
-    PlotManager plotManager = new PlotManager();
+    InventoryManager invManager = GenesisSMP.getInventoryManager();
+    PlotManager plotManager = GenesisSMP.getPlotManager();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -36,10 +41,20 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 return true;
             }
 
-            // TODO: Remove this debug
-            if (args[0].equalsIgnoreCase("expire")) {
-                plotManager.expirePlot(Integer.parseInt(args[1]));
+            // ****************
+            //   EXPIRE PLOT
+            // ****************
+            if (args[0].equalsIgnoreCase("expire") && (sender.hasPermission("genesissmp.plots.expire") || sender.isOp())) {
+                if (args.length < 2) {
+                    sender.sendMessage(pluginPrefix + "Please specify a plot with /plot expire <plot>");
+                    return true;
+                }
+
+                int plot = Integer.parseInt(args[1]);
+                plotManager.expirePlot(plot);
+                sender.sendMessage(pluginPrefix + "Plot " + args[1] + " has been expired.");
                 return true;
+
             }
 
             // ****************
@@ -47,7 +62,26 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             // ****************
             if (args[0].equalsIgnoreCase("enter")) {
 
+                if (!WorldGuardManager.getInstance().regionIsCreativeArena(player)) {
+                    sender.sendMessage(pluginPrefix + "You must be in a creative plot to use this command.");
+                    return true;
+                }
+
                 if (plotManager.hasAssignedPlot(player)) {
+                    if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+                        try {
+                            invManager.saveInventory(player);
+                            player.sendMessage(pluginPrefix + "Your survival inventory has been saved.");
+                            player.getInventory().clear();
+                            player.setGameMode(GameMode.CREATIVE);
+                            return true;
+                        } catch (IOException e) {
+                            player.sendMessage(pluginPrefix + "Your survival inventory could not be stored. Please inform a member of staff of this error.");
+                            sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory could not be saved! (IO Error)");
+                            e.printStackTrace();
+                            return true;
+                        }
+                    }
                     sender.sendMessage(pluginPrefix + "You have already been assigned Plot " + plotManager.getAssignedPlot(player));
                     return true;
                 }
@@ -87,6 +121,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                         player.sendMessage(pluginPrefix + "Your survival inventory has been saved.");
                         //sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory has been saved.");
                         player.getInventory().clear();
+                        player.setGameMode(GameMode.CREATIVE);
                     } catch (IOException e) {
                         player.sendMessage(pluginPrefix + "Your survival inventory could not be stored. Please inform a member of staff of this error.");
                         sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory could not be saved! (IO Error)");
@@ -94,10 +129,9 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                         return true;
                     }
                     // Add player as member of plot
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg addmember -w smphub plot" + plotNumber + " " + playerName);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg addmember -w smphub creative_plot" + plotNumber + " " + playerName);
                     // Add player to config for the plot
                     plotManager.assignPlotToPlayer(plotNumber, player);
-                    plotManager.plotSignClaimed(player, plotNumber);
 
                 } catch (NumberFormatException e) {
                     sender.sendMessage(pluginPrefix + "You need to specify a plot number: /plot enter <x>");
@@ -119,7 +153,8 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
 
                 int plot = plotManager.getAssignedPlot(player);
                 // Remove player from plot members
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub plot" + plot + " " + playerName);
+                player.setGameMode(GameMode.SURVIVAL);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg removemember -w smphub creative_plot" + plot + " " + playerName);
                 // Remove player from config for the plot
                 plotManager.unassignPlotFromPlayer(plot, player.getName());
                 plotManager.plotSignExpired(plot);
@@ -142,6 +177,22 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
             //    CLEAR PLOT
             // ****************
             if (args[0].equalsIgnoreCase("clear")) {
+
+                if (sender.hasPermission("genesissmp.plots.clear") || sender.isOp()) {
+                    if (args.length < 2) {
+                        sender.sendMessage(pluginPrefix + "Please specify a plot with /plot clear <plot>");
+                        return true;
+                    }
+                    try {
+                        int plot = Integer.parseInt(args[1]);
+                        sender.sendMessage(pluginPrefix + "Clearing the area at Plot " + plot + " for you.");
+                        plotManager.clearPlot(plot);
+                        return true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 if (!plotManager.hasAssignedPlot(player)) {
                     sender.sendMessage(pluginPrefix + "You need to have an assigned plot before you can clear it.");
                     return true;
@@ -353,6 +404,25 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
         return null;
     }
 
+    @EventHandler
+    public void playerLogin(PlayerJoinEvent e) {
+        FileConfiguration config = GenesisSMP.getPlugin().config;
+        String pluginPrefix = GenesisSMP.getPlugin().pluginPrefix;
+        Bukkit.getLogger().info("CONNECTION FROM " + e.getPlayer().getName());
+        Player p = e.getPlayer();
+        if (config.getBoolean("Plots.RestoreNextLogin." + p.getName())) {
+            p.setGameMode(GameMode.SURVIVAL);
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(GenesisSMP.getPlugin(), () -> {
+                p.sendMessage(pluginPrefix + "Your creative plot expired while you were offline.");
+                try {
+                    GenesisSMP.getInventoryManager().restoreInventory(p);
+                    config.set("Plots.RestoreNextLogin." + p.getName(), null);
+                    p.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
+                } catch (Exception ex) {
+                    Bukkit.getLogger().info("Could not restore inventory of " + p.getName());
+                }
+            }, 60L);
+        }
+    }
 
 }
-
