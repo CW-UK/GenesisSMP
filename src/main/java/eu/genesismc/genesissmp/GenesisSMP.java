@@ -21,7 +21,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
 
     /*public CancellationDetector<PortalCreateEvent> detector = new CancellationDetector<PortalCreateEvent>(PortalCreateEvent.class);*/
 
-    private static GenesisSMP plugin;
+    public static GenesisSMP plugin;
     public FileConfiguration config;
     public LuckPerms api;
     private Utils utils;
@@ -36,16 +36,16 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         return plugin;
     }
     public static Utils getUtils() {
-        return getPlugin().utils;
+        return plugin.utils;
     }
     public static PlotManager getPlotManager() {
-        return getPlugin().plotManager;
+        return plugin.plotManager;
     }
     public static InventoryManager getInventoryManager() {
-        return getPlugin().inventoryManager;
+        return plugin.inventoryManager;
     }
     public static GiveEnjinPoints getGEP() {
-        return getPlugin().gep;
+        return plugin.gep;
     }
 
     public static GenesisSMP getInstance() {
