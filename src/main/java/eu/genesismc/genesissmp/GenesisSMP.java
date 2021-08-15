@@ -17,6 +17,10 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 
+// TODO:  Add co-op functionality, owner only can invite people to join plot
+// TODO:  Change biome of plot for block textures
+// TODO:  Allow setting/changing a time limit for plots by command (expiry time)
+
 public final class GenesisSMP extends JavaPlugin implements Listener {
 
     /*public CancellationDetector<PortalCreateEvent> detector = new CancellationDetector<PortalCreateEvent>(PortalCreateEvent.class);*/
