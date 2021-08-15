@@ -393,7 +393,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                             "Polished_Deepslate",
                             "Rooted_Dirt",
                             "Sand",
-                            "Smooth_Stone"
+                            "Smooth_Stone",
                             "Snow_Block",
                             "Stone",
                             "Tuff",
