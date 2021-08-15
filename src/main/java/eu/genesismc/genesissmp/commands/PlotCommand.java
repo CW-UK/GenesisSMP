@@ -183,13 +183,15 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                         sender.sendMessage(pluginPrefix + "Please specify a plot with /plot clear <plot>");
                         return true;
                     }
-                    try {
-                        int plot = Integer.parseInt(args[1]);
-                        sender.sendMessage(pluginPrefix + "Clearing the area at Plot " + plot + " for you.");
-                        plotManager.clearPlot(plot);
-                        return true;
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    else {
+                        try {
+                            int plot = Integer.parseInt(args[1]);
+                            sender.sendMessage(pluginPrefix + "Clearing the area at Plot " + plot + " for you.");
+                            plotManager.clearPlot(plot);
+                            return true;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -384,12 +386,14 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                             "Dripstone_Block",
                             "Flowering_Azalea",
                             "Grass_Block",
+                            "Gravel",
                             "Lava",
                             "Moss_Block",
                             "Netherrack",
                             "Polished_Deepslate",
                             "Rooted_Dirt",
                             "Sand",
+                            "Smooth_Stone"
                             "Snow_Block",
                             "Stone",
                             "Tuff",
@@ -417,7 +421,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 try {
                     GenesisSMP.getInventoryManager().restoreInventory(p);
                     config.set("Plots.RestoreNextLogin." + p.getName(), null);
-                    p.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
+                    //p.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
                 } catch (Exception ex) {
                     Bukkit.getLogger().info("Could not restore inventory of " + p.getName());
                 }
