@@ -3,6 +3,9 @@ package eu.genesismc.genesissmp.managers;
 import eu.genesismc.genesissmp.GenesisSMP;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
+import java.util.ArrayList;
+
 public class ConfigManager {
 
     public void setupConfig() {
@@ -55,6 +58,18 @@ public class ConfigManager {
             config.addDefault("Plots.Plot"+x+".Owner", null);
             config.addDefault("Plots.Plot"+x+".TimeLeave", null);
             config.addDefault("Plots.Plot"+x+".Locked", false);
+        }
+
+        try {
+            ArrayList<String> floors = new ArrayList<String>();
+            for (File file : new File(GenesisSMP.getPlugin().getDataFolder().getAbsolutePath() + File.separator + "schematics").listFiles()) {
+                if (file.getName().contains("floor-")) {
+                    floors.add(file.getName().replace("floor-","").replace(".schem",""));
+                }
+            }
+            config.addDefault("Plots.Floors", floors);
+        } catch (Exception e) {
+            //ignore
         }
 
         config.options().copyDefaults(true);

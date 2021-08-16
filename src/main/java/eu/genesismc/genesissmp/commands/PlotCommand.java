@@ -377,29 +377,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     }
                 }
                 else {
-                    commands = Arrays.asList(
-                            "Copper_Block",
-                            "Crimson_Nylium",
-                            "Deepslate",
-                            "Deepslate_Bricks",
-                            "Deepslate_Tiles",
-                            "Dripstone_Block",
-                            "Flowering_Azalea",
-                            "Grass_Block",
-                            "Gravel",
-                            "Lava",
-                            "Moss_Block",
-                            "Netherrack",
-                            "Polished_Deepslate",
-                            "Rooted_Dirt",
-                            "Sand",
-                            "Smooth_Stone",
-                            "Snow_Block",
-                            "Stone",
-                            "Tuff",
-                            "Warped_Nylium",
-                            "Water"
-                    );
+                    commands = GenesisSMP.getPlugin().getConfig().getStringList("Plots.Floors");
                 }
                 return StringUtil.copyPartialMatches(args[1], commands, new ArrayList<>());
             }

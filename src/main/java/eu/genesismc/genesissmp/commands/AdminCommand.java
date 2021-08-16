@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.util.StringUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,18 @@ import java.util.List;
 public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
 
     private void reloadConfig() {
+        try {
+            ArrayList<String> floors = new ArrayList<String>();
+            for (File file : new File(GenesisSMP.getPlugin().getDataFolder().getAbsolutePath() + File.separator + "schematics").listFiles()) {
+                if (file.getName().contains("floor-")) {
+                    floors.add(file.getName().replace("floor-","").replace(".schem",""));
+                }
+            }
+            GenesisSMP.getPlugin().getConfig().set("Plots.Floors", floors);
+            GenesisSMP.getPlugin().saveConfig();
+        } catch (Exception e) {
+            //ignore
+        }
         GenesisSMP.getPlugin().reloadConfig();
         GenesisSMP.getPlugin().config = GenesisSMP.getPlugin().getConfig();
     }
