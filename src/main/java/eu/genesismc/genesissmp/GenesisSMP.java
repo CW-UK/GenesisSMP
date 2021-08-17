@@ -20,6 +20,7 @@ import java.util.HashMap;
 // TODO:  Add co-op functionality, owner only can invite people to join plot
 // TODO:  Change biome of plot for block textures
 // TODO:  Allow setting/changing a time limit for plots by command (expiry time)
+// TODO:  Add hologram update for locked plots
 
 public final class GenesisSMP extends JavaPlugin implements Listener {
 
