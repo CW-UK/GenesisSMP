@@ -53,6 +53,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 int plot = Integer.parseInt(args[1]);
                 plotManager.expirePlot(plot);
                 sender.sendMessage(pluginPrefix + "Plot " + args[1] + " has been expired.");
+                GenesisSMP.getUtils().addLogEntry(sender.getName() + " expired plot " + args[1]);
                 return true;
 
             }
@@ -74,6 +75,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                             player.sendMessage(pluginPrefix + "Your survival inventory has been saved.");
                             player.getInventory().clear();
                             player.setGameMode(GameMode.CREATIVE);
+                            GenesisSMP.getUtils().addLogEntry(player.getName() + " had their inventory saved to re-enter their assigned plot " + args[1]);
                             return true;
                         } catch (IOException e) {
                             player.sendMessage(pluginPrefix + "Your survival inventory could not be stored. Please inform a member of staff of this error.");
@@ -113,7 +115,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                         return true;
                     }
 
-                    sender.sendMessage(pluginPrefix + "Please wait while we assign this plot to you..");
+                    sender.sendMessage(pluginPrefix + "You have claimed plot " + plotNumber);
 
                     // Save inventory
                     try {
@@ -122,6 +124,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                         //sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory has been saved.");
                         player.getInventory().clear();
                         player.setGameMode(GameMode.CREATIVE);
+                        GenesisSMP.getUtils().addLogEntry(player.getName() + " had their inventory saved upon claiming plot " + args[1]);
                     } catch (IOException e) {
                         player.sendMessage(pluginPrefix + "Your survival inventory could not be stored. Please inform a member of staff of this error.");
                         sender.sendMessage(pluginPrefix + player.getName() + "'s survival inventory could not be saved! (IO Error)");
@@ -132,7 +135,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg addmember -w smphub creative_plot" + plotNumber + " " + playerName);
                     // Add player to config for the plot
                     plotManager.assignPlotToPlayer(plotNumber, player);
-
+                    GenesisSMP.getUtils().addLogEntry(player.getName() + " claimed plot " + plotNumber);
                 } catch (NumberFormatException e) {
                     sender.sendMessage(pluginPrefix + "You need to specify a plot number: /plot enter <x>");
                     return true;
@@ -162,13 +165,15 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 // Restore inventory
                 try {
                     invManager.restoreInventory(player);
-                    player.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
+                    //player.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
+                    GenesisSMP.getUtils().addLogEntry(player.getName() + " had their inventory restored after leaving plot " + plot);
                 } catch (IOException e) {
                     player.sendMessage(pluginPrefix + "Your survival inventory could not be restored. Please inform a member of staff of this error.");
                     return true;
                 }
 
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "You have been successfully removed from Plot " + plot);
+                GenesisSMP.getUtils().addLogEntry(player.getName() + " left plot " + plot);
 
                 return true;
             }
@@ -188,6 +193,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                             int plot = Integer.parseInt(args[1]);
                             sender.sendMessage(pluginPrefix + "Clearing the area at Plot " + plot + " for you.");
                             plotManager.clearPlot(plot);
+                            GenesisSMP.getUtils().addLogEntry(player.getName() + " forced plot " + plot + " to be cleared");
                             return true;
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -203,6 +209,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     int plot = plotManager.getAssignedPlot(player);
                     sender.sendMessage(pluginPrefix + "Clearing the area at Plot " + plot + " for you.");
                     plotManager.clearPlot(plot);
+                    GenesisSMP.getUtils().addLogEntry(player.getName() + " cleared plot " + plot);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -225,6 +232,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     int plot = plotManager.getAssignedPlot(player);
                     sender.sendMessage(pluginPrefix + "Changing the floor of Plot " + plot + " to " + args[1]);
                     plotManager.plotFloor(plot, args[1]);
+                    GenesisSMP.getUtils().addLogEntry(player.getName() + " changed the floor of plot " + plot + " to " + args[1]);
                 } catch (IOException e) {
                     sender.sendMessage(pluginPrefix + "Invalid floor option.");
                 }
@@ -254,6 +262,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 if (args[1].equalsIgnoreCase("all")) {
                     if (plotManager.lockAllPlots()) {
                         sender.sendMessage(pluginPrefix + "All unclaimed plots have been locked.");
+                        GenesisSMP.getUtils().addLogEntry(player.getName() + " locked all plots");
                         return true;
                     }
                     sender.sendMessage(pluginPrefix + "Something went wrong trying to lock all unclaimed plots.");
@@ -274,6 +283,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
 
                     if (plotManager.lockPlot(plotNumber)) {
                         sender.sendMessage(pluginPrefix + "Plot " + plotNumber + " has been locked.");
+                        GenesisSMP.getUtils().addLogEntry(player.getName() + " locked plot " + plotNumber);
                         return true;
                     }
 
@@ -303,6 +313,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 if (args[1].equalsIgnoreCase("all")) {
                     if (plotManager.unlockAllPlots()) {
                         sender.sendMessage(pluginPrefix + "All unclaimed plots have been unlocked.");
+                        GenesisSMP.getUtils().addLogEntry(player.getName() + " unlocked all plots");
                         return true;
                     }
                     sender.sendMessage(pluginPrefix + "Something went wrong trying to unlock all unclaimed plots.");
@@ -329,6 +340,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
 
                     if (plotManager.unlockPlot(plotNumber)) {
                         sender.sendMessage(pluginPrefix + "Plot " + plotNumber + " has been unlocked.");
+                        GenesisSMP.getUtils().addLogEntry(player.getName() + " unlocked plot " + plotNumber);
                         return true;
                     }
 
@@ -399,6 +411,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                 try {
                     GenesisSMP.getInventoryManager().restoreInventory(p);
                     config.set("Plots.RestoreNextLogin." + p.getName(), null);
+                    GenesisSMP.getUtils().addLogEntry(p.getName() + " had their inventory restored as their plot expired while they were offline");
                     //p.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
                 } catch (Exception ex) {
                     Bukkit.getLogger().info("Could not restore inventory of " + p.getName());

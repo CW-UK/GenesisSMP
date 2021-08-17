@@ -1,5 +1,6 @@
 package eu.genesismc.genesissmp.events;
 
+import eu.genesismc.genesissmp.GenesisSMP;
 import eu.genesismc.genesissmp.managers.WorldGuardManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
@@ -33,6 +34,7 @@ public class PlayerDeath implements Listener {
             }
 
             player.getInventory().clear();
+            GenesisSMP.getUtils().addLogEntry(player.getName() + " died in an area where keepInventory is off");
 
         }
     }

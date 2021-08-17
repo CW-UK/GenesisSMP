@@ -84,6 +84,7 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " meta removesuffix 1");
                     GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been removed.");
+                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " removed their suffix.");
                 }
                 else {
                     /*Predicate<Node> removeSuffix = NodeType.SUFFIX.predicate(n -> n.getPriority() == 1);
@@ -93,6 +94,7 @@ public class SuffixCommand implements CommandExecutor, TabCompleter, Listener {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " meta setsuffix 1 \"" + GenesisSMP.getPlugin().waitingSuffix.get(player) + "\"");
                     GenesisSMP.getPlugin().waitingSuffix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your suffix has been set!");
+                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " changed their suffix.");
                 }
                 //GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
                 //GenesisSMP.getPlugin().api.runUpdateTask();

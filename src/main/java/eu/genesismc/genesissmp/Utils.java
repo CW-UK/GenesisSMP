@@ -7,6 +7,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,6 +91,17 @@ public class Utils {
             return null;
         }
         return Bukkit.getPlayer(player);
+    }
+
+    public void addLogEntry(String str) {
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(GenesisSMP.getPlugin().getDataFolder().getAbsolutePath() + File.separator + "command-log.txt", true), "utf-8"))) {
+            Bukkit.getLogger().info("Attempting to write to " + GenesisSMP.getPlugin().getDataFolder().getAbsolutePath() + "plot-log.txt");
+            SimpleDateFormat time = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            writer.write(System.lineSeparator() + "[" + time.format(new Date()) + "] " + str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

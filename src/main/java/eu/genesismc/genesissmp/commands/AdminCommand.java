@@ -49,9 +49,11 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 if (args.length > 3) {
                     String reason = StringUtils.join(ArrayUtils.subarray(args, 3, args.length), " ");
                     GenesisSMP.getGEP().giveEnjinPoints(args[1], Integer.parseInt(args[2]), reason);
+                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " gave " + args[1] + " " + args[2] + " Enjin points. Reason: " + reason);
                 }
                 else {
                     GenesisSMP.getGEP().giveEnjinPoints(args[1], Integer.parseInt(args[2]), null);
+                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " gave " + args[1] + " " + args[2] + " Enjin points. No reason was given.");
                 }
                 return true;
             }
@@ -67,6 +69,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 else {
                     sender.sendMessage(args[1] + ChatColor.RED + " is not registered with Enjin.");
                 }
+                GenesisSMP.getUtils().addLogEntry(sender.getName() + " checked if " + args[1] + " is registered with Enjin.");
                 return true;
             }
 
@@ -79,6 +82,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "BanAnnounce Settings:");
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Strikes Enabled: " + org.bukkit.ChatColor.WHITE + config.getBoolean("BanAnnounce.strike"));
                 sender.sendMessage(pluginPrefix + ChatColor.YELLOW + "Strike Quantity: " + org.bukkit.ChatColor.WHITE + config.getInt("BanAnnounce.strike-amount"));
+                GenesisSMP.getUtils().addLogEntry(sender.getName() + " reloaded the plugin.");
                 return true;
             }
             if (args[0].equals("setendspawn") && sender.isOp()) {
@@ -96,6 +100,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 GenesisSMP.getPlugin().saveConfig();
                 reloadConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Spawn point for The End has been changed.");
+                GenesisSMP.getUtils().addLogEntry(sender.getName() + " changed the End spawn point to XYZYP: " + x + ", " + y + ", " + z + ", " + yaw + ", " + pitch);
                 return true;
             }
             if (args[0].equals("setplotcenter") && sender.isOp()) {
@@ -114,6 +119,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 GenesisSMP.getPlugin().saveConfig();
                 reloadConfig();
                 sender.sendMessage(pluginPrefix + ChatColor.GREEN + "Plot " + plot + " has been updated with new coordinates.");
+                GenesisSMP.getUtils().addLogEntry(sender.getName() + " changed the center point for plot " + args[1] + " to: " + x + ", " + y + ", " + z);
                 return true;
             }
 

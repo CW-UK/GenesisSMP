@@ -42,6 +42,7 @@ public class BlockPlace implements Listener {
         if (chunkAmount > currentLimit) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "A limit of " + ChatColor.WHITE + currentLimit + ChatColor.RED + " per chunk is in place for " + ChatColor.WHITE + type.toString().toLowerCase() + "s");
+            GenesisSMP.getUtils().addLogEntry(player.getName() + " tried to place too many " + type.toString() + " per chunk at " + block.getLocation().toString());
         }
 
     }
@@ -58,6 +59,7 @@ public class BlockPlace implements Listener {
 
         if (chunkAmount >= currentLimit) {
             e.setCancelled(true);
+            //GenesisSMP.getUtils().addLogEntry("Prevented dispenser/dropper firing due to being over-limit at " + e.getBlock().getLocation().toString());
             //Bukkit.getLogger().info("Cancelling " + chunkAmount + "(" + currentLimit + ") dispensing blocks in chunk " + chunk);
         }
 

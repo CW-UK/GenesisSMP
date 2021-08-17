@@ -227,11 +227,14 @@ public class PlotManager {
             unassignPlotFromPlayer(plot, plotOwner);
             plotSignExpired(plot);
 
+            GenesisSMP.getUtils().addLogEntry(plotOwner + "'s plot ("+plot+") auto-expired");
+
             if (Bukkit.getPlayerExact(plotOwner) != null) {
                 Player whosePlot = Bukkit.getPlayerExact(plotOwner);
                 whosePlot.sendMessage(pluginPrefix + "Your creative plot has expired.");
                 try {
                     Bukkit.getLogger().info("Restoring inventory of " + whosePlot);
+                    GenesisSMP.getUtils().addLogEntry(plotOwner + "'s inventory was restored as their plot ("+plot+") auto-expired");
                     invManager.restoreInventory(whosePlot);
                     //whosePlot.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
                 } catch (Exception e) {
@@ -240,6 +243,7 @@ public class PlotManager {
             } else {
                 Bukkit.getLogger().info("Player was offline, unable to restore inventory.");
                 config.set("Plots.RestoreNextLogin." + plotOwner, true);
+                GenesisSMP.getUtils().addLogEntry(plotOwner + " was offline when their plot ("+plot+") auto-expired. Inventory will be restored at next login.");
                 GenesisSMP.getPlugin().saveConfig();
             }
         } catch (Exception e) {
@@ -315,7 +319,6 @@ public class PlotManager {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 4 " + player.getName());
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 5 &f");
         //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 {medium}&e%plots_"+plot+"%");
-
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "holo setline plot"+plot + " 6 &aExpires at " + getTimeFormat(expiry));
     }
 

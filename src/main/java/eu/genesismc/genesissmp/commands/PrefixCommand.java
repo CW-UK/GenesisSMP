@@ -84,6 +84,7 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " meta removeprefix 61");
                     GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been removed.");
+                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " removed their prefix.");
                 }
                 else {
                     /*Predicate<Node> removePrefix = NodeType.PREFIX.predicate(n -> n.getPriority() == 61);
@@ -93,6 +94,7 @@ public class PrefixCommand implements CommandExecutor, TabCompleter, Listener {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + sender.getName() + " meta setprefix 61 \"" + GenesisSMP.getPlugin().waitingPrefix.get(player) + "\"");
                     GenesisSMP.getPlugin().waitingPrefix.remove(player);
                     sender.sendMessage(pluginPrefix + "Your prefix has been set!");
+                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " changed their prefix.");
                 }
                 //GenesisSMP.getPlugin().api.getUserManager().saveUser(updatePlayer);
                 //GenesisSMP.getPlugin().api.runUpdateTask();

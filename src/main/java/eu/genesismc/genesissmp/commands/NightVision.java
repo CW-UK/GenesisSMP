@@ -22,10 +22,12 @@ public class NightVision implements CommandExecutor, Listener {
                 if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
                     player.removePotionEffect(PotionEffectType.NIGHT_VISION);
                     player.sendMessage(pluginPrefix + "Night vision has been turned " + ChatColor.RED + "OFF.");
+                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " turned off NV");
                 }
                 else {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, true, false));
                     player.sendMessage(pluginPrefix + "Night vision has been turned " + ChatColor.GREEN + "ON.");
+                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " turned on NV");
                 }
                 return true;
             }
