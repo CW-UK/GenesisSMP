@@ -76,9 +76,9 @@
     <dependency>
       <groupId>ultrapunishments.com</groupId>
       <artifactId>ultrapunishments</artifactId>
-      <version>1.8.3</version>
+      <version>1.8.6</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/UltraPunishments-1.8.3.jar</systemPath>
+      <systemPath>${project.basedir}/src/main/resources/UltraPunishments.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>bukkit.enjin.com</groupId>
