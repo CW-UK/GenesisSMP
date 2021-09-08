@@ -30,7 +30,7 @@ public class EntityPickupItem implements Listener {
         if (e.getEntity() instanceof Skeleton) {
             if (!config.getBoolean("PreventPickup.enabled")) { return; }
             Random r = new Random();
-            if (r.nextInt(100)+1 > 25) {
+            if (r.nextInt(100)+1 > 10) {
                 e.getDrops().remove(new ItemStack(Material.BOW, 1));
             }
         }
