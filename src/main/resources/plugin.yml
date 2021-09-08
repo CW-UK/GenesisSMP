@@ -40,6 +40,12 @@ commands:
     permission: genesissmp.nightvision
     permission-message: You do not have access to perform this command.
     default: op
+  haste:
+    description: Toggles haste
+    usage: /haste
+    permission: genesissmp.haste
+    permission-message: You do not have access to perform this command.
+    default: op
 
 permissions:
   genesisprefix.*:
@@ -106,3 +112,6 @@ permissions:
   genesissmp.nightvision:
     default: op
     description: Allows access to toggle nightvision with /nv
+  genesissmp.haste:
+    default: op
+    description: Allows access to toggle haste with /haste

@@ -115,6 +115,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         pm.registerEvents(new PlotCommand(), this);
         pm.registerEvents(new InventoryCommands(), this);
         pm.registerEvents(new NightVision(), this);
+        pm.registerEvents(new Haste(), this);
         pm.registerEvents(new EntityPickupItem(), this);
         pm.registerEvents(new CreatureSpawn(), this);
         pm.registerEvents(new PlayerPortal(), this);
