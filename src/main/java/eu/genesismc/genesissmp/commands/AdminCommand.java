@@ -4,10 +4,7 @@ import eu.genesismc.genesissmp.GenesisSMP;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -49,11 +46,15 @@ public class AdminCommand implements CommandExecutor, TabCompleter, Listener {
                 if (args.length > 3) {
                     String reason = StringUtils.join(ArrayUtils.subarray(args, 3, args.length), " ");
                     GenesisSMP.getGEP().giveEnjinPoints(args[1], Integer.parseInt(args[2]), reason);
-                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " gave " + args[1] + " " + args[2] + " Enjin points. Reason: " + reason);
+                    if (!(sender instanceof ConsoleCommandSender)) {
+                        GenesisSMP.getUtils().addLogEntry(sender.getName() + " gave " + args[1] + " " + args[2] + " Enjin points. Reason: " + reason);
+                    }
                 }
                 else {
                     GenesisSMP.getGEP().giveEnjinPoints(args[1], Integer.parseInt(args[2]), null);
-                    GenesisSMP.getUtils().addLogEntry(sender.getName() + " gave " + args[1] + " " + args[2] + " Enjin points. No reason was given.");
+                    if (!(sender instanceof ConsoleCommandSender)) {
+                        GenesisSMP.getUtils().addLogEntry(sender.getName() + " gave " + args[1] + " " + args[2] + " Enjin points. No reason was given.");
+                    }
                 }
                 return true;
             }
