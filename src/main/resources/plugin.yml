@@ -36,6 +36,7 @@ commands:
   nv:
     description: Toggles night vision
     usage: /nv
+    aliases: nightvision
     permission: genesissmp.nightvision
     permission-message: You do not have access to perform this command.
     default: op
