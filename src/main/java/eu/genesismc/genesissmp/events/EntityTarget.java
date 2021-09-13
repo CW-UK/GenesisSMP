@@ -13,6 +13,6 @@ public class EntityTarget implements Listener {
         if (e.getEntity() instanceof Vex && e.getTarget() instanceof Player) {
             if (e.getReason() != EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) { e.setTarget(null); }
         }
-    }
+    }gggg
 
 }
