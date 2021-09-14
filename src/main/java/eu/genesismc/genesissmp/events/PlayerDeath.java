@@ -14,29 +14,29 @@ public class PlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
 
-        if (event.getEntity() instanceof Player) {
+        event.getEntity();
 
-            Player player = event.getEntity().getPlayer();
+        Player player = event.getEntity().getPlayer();
+        if (player == null) { return; }
 
-            if (event.getEntity().getPlayer().hasPermission("invdrop.bypass")) { return; } // perm prevents drop
-            if (!WorldGuardManager.getInstance().regionHasInvDrop(event.getEntity().getPlayer())) {
-                return;
-            }
-
-            player.sendMessage(ChatColor.GOLD +
-                    "You died in an area that doesn't have Keep Inventory enabled. Your inventory was dropped at your death location!");
-
-            for (ItemStack itemStack : player.getInventory().getContents()) {
-                if (itemStack != null) {
-                    player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
-                    player.getInventory().removeItem(itemStack);
-                }
-            }
-
-            player.getInventory().clear();
-            GenesisSMP.getUtils().addLogEntry(player.getName() + " died in an area where keepInventory is off");
-
+        if (event.getEntity().getPlayer().hasPermission("invdrop.bypass")) { return; } // perm prevents drop
+        if (!WorldGuardManager.getInstance().regionHasInvDrop(event.getEntity().getPlayer())) {
+            return;
         }
+
+        player.sendMessage(ChatColor.GOLD + "You died in an area that doesn't have Keep Inventory enabled.");
+        player.sendMessage(ChatColor.GOLD + "Your inventory was dropped on the floor where you died.");
+
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack != null) {
+                player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+                player.getInventory().removeItem(itemStack);
+            }
+        }
+
+        player.getInventory().clear();
+        GenesisSMP.getUtils().addLogEntry(player.getName() + " died in an area where keepInventory is off");
+
     }
 
 }
