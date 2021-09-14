@@ -236,7 +236,6 @@ public class PlotManager {
                     Bukkit.getLogger().info("Restoring inventory of " + whosePlot);
                     GenesisSMP.getUtils().addLogEntry(plotOwner + "'s inventory was restored as their plot ("+plot+") auto-expired");
                     invManager.restoreInventory(whosePlot);
-                    //whosePlot.sendMessage(pluginPrefix + "Your survival inventory has been restored.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
