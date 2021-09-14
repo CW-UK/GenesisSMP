@@ -17,7 +17,6 @@ public class GiveEnjinPoints {
     public boolean isRegistered(String player) {
         try {
             double points = EnjinServices.getService(PointService.class).get(player).getResult();
-            //Bukkit.getLogger().info(player + " has " + points + " on Enjin..");
             return true;
         } catch (Exception ex) {
             return false;
@@ -54,7 +53,6 @@ public class GiveEnjinPoints {
                 }
 
             } catch (Exception ex) {
-                // ignore
                 Bukkit.getLogger().info("[GenesisSMP] Error with giving points to " + player);
                 Bukkit.getLogger().info(ex.getStackTrace().toString());
             }
