@@ -146,6 +146,7 @@ public final class GenesisSMP extends JavaPlugin implements Listener {
         this.getCommand("plot").setExecutor(new PlotCommand());
         this.getCommand("plot").setTabCompleter(new PlotCommand());
         this.getCommand("nv").setExecutor(new NightVision());
+        this.getCommand("haste").setExecutor(new Haste());
 
         // WorldGuard check
         Bukkit.getLogger().info(ChatColor.AQUA + "GenesisSMP > Hooking into WorldGuard..");
