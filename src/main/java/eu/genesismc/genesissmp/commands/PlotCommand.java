@@ -370,6 +370,7 @@ public class PlotCommand implements CommandExecutor, Listener, TabCompleter {
                     commands = Arrays.asList(
                             "clear",
                             "enter",
+                            "expire",
                             "floor",
                             "leave",
                             "lock",
