@@ -17,6 +17,7 @@ commands:
     description: Admin command for GenesisSMP
     default: op
     permission-message: You do not have permission to perform this command.
+    aliases: [gen, genesis]
   clearcrate:
     description: Clears the loot crate in The End
     default: op
