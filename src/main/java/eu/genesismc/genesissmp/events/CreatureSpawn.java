@@ -1,9 +1,12 @@
 package eu.genesismc.genesissmp.events;
 
 import eu.genesismc.genesissmp.GenesisSMP;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Strider;
+import org.bukkit.entity.Wither;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -31,6 +34,13 @@ public class CreatureSpawn implements Listener {
             if (e.getLocation().getWorld().getName().contains("smphub")) {
                 e.setCancelled(true);
             }
+        }
+
+        if (e.getEntity() instanceof Wither) {
+            LivingEntity wither = e.getEntity();
+            double newMaxHealth = wither.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() * 2;
+            wither.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(newMaxHealth);
+            wither.setHealth(newMaxHealth);
         }
 
     }
