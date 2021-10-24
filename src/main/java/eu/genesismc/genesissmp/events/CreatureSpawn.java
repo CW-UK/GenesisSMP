@@ -38,9 +38,8 @@ public class CreatureSpawn implements Listener {
 
         if (e.getEntity() instanceof Wither) {
             LivingEntity wither = e.getEntity();
-            double newMaxHealth = wither.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() * 2;
-            wither.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(newMaxHealth);
-            wither.setHealth(newMaxHealth);
+            wither.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(wither.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() * 4);
+            wither.setHealth(wither.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() * 4);
         }
 
     }
