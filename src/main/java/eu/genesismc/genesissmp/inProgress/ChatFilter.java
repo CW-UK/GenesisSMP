@@ -1,4 +1,4 @@
-package eu.genesismc.genesissmp.listeners;
+package eu.genesismc.genesissmp.inProgress;
 
 import org.bukkit.event.Listener;
 
