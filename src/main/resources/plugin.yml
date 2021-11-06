@@ -88,6 +88,9 @@ permissions:
   genesisprefix.donator.suffix:
     default: op
     description: Given to players who have purchased a suffix token.
+  genesisprefix.bypass.length:
+    default: op
+    description: Allows bypassing prefix/suffix length restrictions.
 
   genesissmp.plots.lock:
     default: op
